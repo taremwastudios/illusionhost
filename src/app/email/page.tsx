@@ -1,18 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
 
 export default function EmailPage() {
   const [domain, setDomain] = useState("");
   const [showRecords, setShowRecords] = useState(false);
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
 
   const handleCheck = (e: React.FormEvent) => {
     e.preventDefault();
     if (domain.trim()) {
       setShowRecords(true);
     }
+  };
+
+  const toggleCard = (cardName: string) => {
+    setExpandedCard(expandedCard === cardName ? null : cardName);
   };
 
   const mxRecords = [
@@ -69,8 +72,6 @@ export default function EmailPage() {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
-
       {/* Hero Section */}
       <section className="hero-section">
         <div className="container">
@@ -219,7 +220,10 @@ export default function EmailPage() {
           </p>
           <div className="pricing-grid">
             {/* Google Workspace */}
-            <div className="pricing-card featured">
+            <div 
+              className={`pricing-card featured ${expandedCard === 'google' ? 'expanded' : ''}`}
+              onClick={() => toggleCard('google')}
+            >
               <div className="pricing-badge">Most Popular</div>
               <h3>Google Workspace</h3>
               <div className="price">
@@ -234,11 +238,28 @@ export default function EmailPage() {
                 <li>✓ Google Docs, Sheets, Slides</li>
                 <li>✓ Spam & phishing protection</li>
               </ul>
-              <button className="btn btn-primary btn-full">Configure</button>
+              {expandedCard === 'google' && (
+                <div className="card-details">
+                  <h4>Setup Instructions</h4>
+                  <ol>
+                    <li>Sign up for Google Workspace</li>
+                    <li>Verify domain ownership</li>
+                    <li>Add MX records (shown above)</li>
+                    <li>Create user accounts</li>
+                  </ol>
+                  <button className="btn btn-primary btn-full" onClick={(e) => e.stopPropagation()}>Get Started</button>
+                </div>
+              )}
+              <button className={`btn ${expandedCard === 'google' ? 'btn-secondary' : 'btn-primary'} btn-full`} onClick={(e) => e.stopPropagation()}>
+                {expandedCard === 'google' ? 'Close' : 'Configure'}
+              </button>
             </div>
 
             {/* Microsoft 365 */}
-            <div className="pricing-card">
+            <div 
+              className={`pricing-card ${expandedCard === 'microsoft' ? 'expanded' : ''}`}
+              onClick={() => toggleCard('microsoft')}
+            >
               <h3>Microsoft 365</h3>
               <div className="price">
                 <span className="amount">$5</span>
@@ -252,11 +273,28 @@ export default function EmailPage() {
                 <li>✓ Teams video meetings</li>
                 <li>✓ Advanced threat protection</li>
               </ul>
-              <button className="btn btn-secondary btn-full">Configure</button>
+              {expandedCard === 'microsoft' && (
+                <div className="card-details">
+                  <h4>Setup Instructions</h4>
+                  <ol>
+                    <li>Sign up for Microsoft 365</li>
+                    <li>Add domain to Microsoft admin</li>
+                    <li>Configure MX records</li>
+                    <li>Set up user licenses</li>
+                  </ol>
+                  <button className="btn btn-primary btn-full" onClick={(e) => e.stopPropagation()}>Get Started</button>
+                </div>
+              )}
+              <button className={`btn ${expandedCard === 'microsoft' ? 'btn-primary' : 'btn-secondary'} btn-full`} onClick={(e) => e.stopPropagation()}>
+                {expandedCard === 'microsoft' ? 'Close' : 'Configure'}
+              </button>
             </div>
 
             {/* Proton Mail */}
-            <div className="pricing-card">
+            <div 
+              className={`pricing-card ${expandedCard === 'proton' ? 'expanded' : ''}`}
+              onClick={() => toggleCard('proton')}
+            >
               <h3>Proton Mail</h3>
               <div className="price">
                 <span className="amount">$5</span>
@@ -270,11 +308,28 @@ export default function EmailPage() {
                 <li>✓ Secure calendar</li>
                 <li>✓ Based in Switzerland</li>
               </ul>
-              <button className="btn btn-secondary btn-full">Configure</button>
+              {expandedCard === 'proton' && (
+                <div className="card-details">
+                  <h4>Setup Instructions</h4>
+                  <ol>
+                    <li>Create Proton Business plan</li>
+                    <li>Add custom domain</li>
+                    <li>Configure DNS records</li>
+                    <li>Set up encryption keys</li>
+                  </ol>
+                  <button className="btn btn-primary btn-full" onClick={(e) => e.stopPropagation()}>Get Started</button>
+                </div>
+              )}
+              <button className={`btn ${expandedCard === 'proton' ? 'btn-primary' : 'btn-secondary'} btn-full`} onClick={(e) => e.stopPropagation()}>
+                {expandedCard === 'proton' ? 'Close' : 'Configure'}
+              </button>
             </div>
 
             {/* Zoho Mail */}
-            <div className="pricing-card">
+            <div 
+              className={`pricing-card ${expandedCard === 'zoho' ? 'expanded' : ''}`}
+              onClick={() => toggleCard('zoho')}
+            >
               <h3>Zoho Mail</h3>
               <div className="price">
                 <span className="amount">$2</span>
@@ -288,7 +343,21 @@ export default function EmailPage() {
                 <li>✓ Zoho CRM integration</li>
                 <li>✓ Ad-free experience</li>
               </ul>
-              <button className="btn btn-secondary btn-full">Configure</button>
+              {expandedCard === 'zoho' && (
+                <div className="card-details">
+                  <h4>Setup Instructions</h4>
+                  <ol>
+                    <li>Sign up for Zoho Mail</li>
+                    <li>Add and verify domain</li>
+                    <li>Update DNS settings</li>
+                    <li>Create mailboxes</li>
+                  </ol>
+                  <button className="btn btn-primary btn-full" onClick={(e) => e.stopPropagation()}>Get Started</button>
+                </div>
+              )}
+              <button className={`btn ${expandedCard === 'zoho' ? 'btn-primary' : 'btn-secondary'} btn-full`} onClick={(e) => e.stopPropagation()}>
+                {expandedCard === 'zoho' ? 'Close' : 'Configure'}
+              </button>
             </div>
           </div>
         </div>
@@ -332,8 +401,6 @@ export default function EmailPage() {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 }

@@ -980,6 +980,55 @@ body {
   color: white;
 }
 
+/* Expandable Card Styles */
+.pricing-card {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-4px);
+}
+
+.pricing-card.expanded {
+  transform: scale(1.02);
+  box-shadow: 0 20px 40px rgba(139, 92, 246, 0.3);
+}
+
+.card-details {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  animation: slideDown 0.3s ease;
+}
+
+.card-details h4 {
+  color: var(--text-white);
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+.card-details ol {
+  margin-left: 1.25rem;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.card-details ol li {
+  margin-bottom: 0.5rem;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* DNS Records - Grouped */
 .records-group {
   margin-bottom: 2rem;
