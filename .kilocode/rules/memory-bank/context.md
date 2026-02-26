@@ -23,6 +23,7 @@ Illusionhost is a full-featured domain selling service website similar to Namech
   - Contact page with form
   - Login/Signup pages
   - Shopping cart page
+  - **Email page with MX Records configuration** - new page showing DNS records for custom email
 
 ## Current Structure
 
