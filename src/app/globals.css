@@ -897,3 +897,98 @@ body {
     justify-content: center;
   }
 }
+
+/* Email Page - Provider Cards */
+.pricing-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: white;
+  padding: 0.25rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  z-index: 1;
+}
+
+.pricing-card .price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.25rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.pricing-card .amount {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.pricing-card .period {
+  font-size: 1rem;
+  color: var(--text-light);
+}
+
+.pricing-card .price-description {
+  text-align: center;
+  color: var(--text-light);
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.features-list {
+  list-style: none;
+  margin: 1.5rem 0 2rem;
+  padding: 0;
+}
+
+.features-list li {
+  padding: 0.5rem 0;
+  color: var(--text-light);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.features-list li::before {
+  content: "✓";
+  color: var(--success);
+  font-weight: 600;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid var(--primary);
+  color: var(--primary-light);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* DNS Records - Grouped */
+.records-group {
+  margin-bottom: 2rem;
+}
+
+.records-group h4 {
+  color: var(--primary-light);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}

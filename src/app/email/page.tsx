@@ -115,109 +115,95 @@ export default function EmailPage() {
               </p>
 
               <div className="records-table">
-                <h3>MX Records</h3>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Priority</th>
-                      <th>Host</th>
-                      <th>Value</th>
-                      <th>TTL</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {mxRecords.map((record, index) => (
-                      <tr key={index}>
-                        <td>{record.priority}</td>
-                        <td>{record.host}</td>
-                        <td className="record-value">{record.value}</td>
-                        <td>{record.ttl}</td>
+                <h3>DNS Records</h3>
+                <div className="records-group">
+                  <h4>MX Records</h4>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Priority</th>
+                        <th>Host</th>
+                        <th>Value</th>
+                        <th>TTL</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {mxRecords.map((record, index) => (
+                        <tr key={index}>
+                          <td>{record.priority}</td>
+                          <td>{record.host}</td>
+                          <td className="record-value">{record.value}</td>
+                          <td>{record.ttl}</td>
+                          <td>
+                            <button
+                              onClick={() => copyToClipboard(record.value)}
+                              className="btn-small"
+                            >
+                              Copy
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="records-group">
+                  <h4>SPF & DKIM</h4>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Host</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>TTL</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{spfRecord.host}</td>
+                        <td>{spfRecord.type}</td>
+                        <td className="record-value">{spfRecord.value}</td>
+                        <td>{spfRecord.ttl}</td>
                         <td>
                           <button
-                            onClick={() => copyToClipboard(record.value)}
+                            onClick={() => copyToClipboard(spfRecord.value)}
                             className="btn-small"
                           >
                             Copy
                           </button>
                         </td>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                      <tr>
+                        <td>{dkimRecord.host}</td>
+                        <td>{dkimRecord.type}</td>
+                        <td className="record-value">{dkimRecord.value}</td>
+                        <td>{dkimRecord.ttl}</td>
+                        <td>
+                          <button
+                            onClick={() => copyToClipboard(dkimRecord.value)}
+                            className="btn-small"
+                          >
+                            Copy
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
-              <div className="records-table">
-                <h3>SPF Record (Recommended)</h3>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Host</th>
-                      <th>Type</th>
-                      <th>Value</th>
-                      <th>TTL</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{spfRecord.host}</td>
-                      <td>{spfRecord.type}</td>
-                      <td className="record-value">{spfRecord.value}</td>
-                      <td>{spfRecord.ttl}</td>
-                      <td>
-                        <button
-                          onClick={() => copyToClipboard(spfRecord.value)}
-                          className="btn-small"
-                        >
-                          Copy
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="records-table">
-                <h3>DKIM Record (Optional)</h3>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Host</th>
-                      <th>Type</th>
-                      <th>Value</th>
-                      <th>TTL</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{dkimRecord.host}</td>
-                      <td>{dkimRecord.type}</td>
-                      <td className="record-value">{dkimRecord.value}</td>
-                      <td>{dkimRecord.ttl}</td>
-                      <td>
-                        <button
-                          onClick={() => copyToClipboard(dkimRecord.value)}
-                          className="btn-small"
-                        >
-                          Copy
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="info-box">
-                <h4>How to add these records:</h4>
-                <ol>
-                  <li>Log in to your DNS provider dashboard</li>
-                  <li>Navigate to DNS settings or zone file editor</li>
-                  <li>Add each MX record with the values shown above</li>
-                  <li>Add the SPF record to prevent email spoofing</li>
-                  <li>Wait up to 24 hours for DNS propagation</li>
-                </ol>
+                <div className="info-box">
+                  <h4>Setup Instructions</h4>
+                  <ol>
+                    <li>Log in to your DNS provider dashboard</li>
+                    <li>Navigate to DNS settings or zone file editor</li>
+                    <li>Add each MX record with the values shown above</li>
+                    <li>Add the SPF record to prevent email spoofing</li>
+                    <li>Wait up to 24 hours for DNS propagation</li>
+                  </ol>
+                </div>
               </div>
             </div>
           </div>
@@ -227,39 +213,82 @@ export default function EmailPage() {
       {/* Email Providers Section */}
       <section className="section">
         <div className="container">
-          <h2 className="section-title">Supported Email Providers</h2>
-          <div className="providers-grid">
-            <div className="provider-card">
+          <h2 className="section-title">Choose Your Email Provider</h2>
+          <p className="section-description">
+            Connect your domain with leading email services. Each provider offers unique features.
+          </p>
+          <div className="pricing-grid">
+            {/* Google Workspace */}
+            <div className="pricing-card featured">
+              <div className="pricing-badge">Most Popular</div>
               <h3>Google Workspace</h3>
-              <p>
-                Professional email with Gmail. Includes 30GB storage and
-                business tools.
-              </p>
-              <span className="price">From $6/month</span>
+              <div className="price">
+                <span className="amount">$6</span>
+                <span className="period">/user/mo</span>
+              </div>
+              <p className="price-description">Professional email with Gmail interface</p>
+              <ul className="features-list">
+                <li>✓ Custom email @yourdomain.com</li>
+                <li>✓ 30GB cloud storage</li>
+                <li>✓ Google Meet (100 participants)</li>
+                <li>✓ Google Docs, Sheets, Slides</li>
+                <li>✓ Spam & phishing protection</li>
+              </ul>
+              <button className="btn btn-primary btn-full">Configure</button>
             </div>
-            <div className="provider-card">
+
+            {/* Microsoft 365 */}
+            <div className="pricing-card">
               <h3>Microsoft 365</h3>
-              <p>
-                Business email with Outlook. Includes Office apps and 1TB
-                OneDrive.
-              </p>
-              <span className="price">From $5/month</span>
+              <div className="price">
+                <span className="amount">$5</span>
+                <span className="period">/user/mo</span>
+              </div>
+              <p className="price-description">Business email with Outlook</p>
+              <ul className="features-list">
+                <li>✓ Custom email @yourdomain.com</li>
+                <li>✓ 1TB OneDrive storage</li>
+                <li>✓ Full Office suite apps</li>
+                <li>✓ Teams video meetings</li>
+                <li>✓ Advanced threat protection</li>
+              </ul>
+              <button className="btn btn-secondary btn-full">Configure</button>
             </div>
-            <div className="provider-card">
+
+            {/* Proton Mail */}
+            <div className="pricing-card">
               <h3>Proton Mail</h3>
-              <p>
-                Secure, encrypted email. Privacy-focused with end-to-end
-                encryption.
-              </p>
-              <span className="price">From $5/month</span>
+              <div className="price">
+                <span className="amount">$5</span>
+                <span className="period">/user/mo</span>
+              </div>
+              <p className="price-description">Privacy-first encrypted email</p>
+              <ul className="features-list">
+                <li>✓ Custom email @yourdomain.com</li>
+                <li>✓ End-to-end encryption</li>
+                <li>✓ No tracking or ads</li>
+                <li>✓ Secure calendar</li>
+                <li>✓ Based in Switzerland</li>
+              </ul>
+              <button className="btn btn-secondary btn-full">Configure</button>
             </div>
-            <div className="provider-card">
+
+            {/* Zoho Mail */}
+            <div className="pricing-card">
               <h3>Zoho Mail</h3>
-              <p>
-                Business email with collaboration tools. Great for small
-                businesses.
-              </p>
-              <span className="price">From $2/month</span>
+              <div className="price">
+                <span className="amount">$2</span>
+                <span className="period">/user/mo</span>
+              </div>
+              <p className="price-description">Business email with collaboration</p>
+              <ul className="features-list">
+                <li>✓ Custom email @yourdomain.com</li>
+                <li>✓ 5GB storage per user</li>
+                <li>✓ Built-in workspace suite</li>
+                <li>✓ Zoho CRM integration</li>
+                <li>✓ Ad-free experience</li>
+              </ul>
+              <button className="btn btn-secondary btn-full">Configure</button>
             </div>
           </div>
         </div>
