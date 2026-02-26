@@ -8,12 +8,14 @@ export default function HostingPage() {
         "1 Website",
         "10 GB SSD Storage",
         "Unlimited Bandwidth",
-        "Free Domain",
+        "Free Domain (.com, .net only)",
+        "1 Free Domain",
         "Free SSL Certificate",
         "99.9% Uptime",
         "Email Support",
       ],
       popular: false,
+      domains: { count: 1, premium: 0, tlds: [".com", ".net"] },
     },
     {
       name: "Professional Hosting",
@@ -23,7 +25,8 @@ export default function HostingPage() {
         "Unlimited Websites",
         "50 GB SSD Storage",
         "Unlimited Bandwidth",
-        "Free Domain",
+        "Free Domain (any TLD)",
+        "3 Free Domains (1 .ai incl.)",
         "Free SSL Certificate",
         "99.9% Uptime",
         "Priority Support",
@@ -31,6 +34,7 @@ export default function HostingPage() {
         "Malware Protection",
       ],
       popular: true,
+      domains: { count: 3, premium: 1, tlds: ["Any TLD", "1 .ai included"] },
     },
     {
       name: "Business Hosting",
@@ -40,7 +44,8 @@ export default function HostingPage() {
         "Unlimited Websites",
         "200 GB SSD Storage",
         "Unlimited Bandwidth",
-        "Free Domain",
+        "Free Domain (any TLD)",
+        "5 Free Domains (2 .ai incl.)",
         "Free SSL Certificate",
         "99.99% Uptime",
         "24/7 Phone Support",
@@ -49,6 +54,7 @@ export default function HostingPage() {
         "Advanced DDoS Protection",
       ],
       popular: false,
+      domains: { count: 5, premium: 2, tlds: ["Any TLD", "2 .ai included"] },
     },
     {
       name: "WordPress Hosting",
@@ -58,7 +64,8 @@ export default function HostingPage() {
         "Unlimited Websites",
         "50 GB SSD Storage",
         "Unlimited Bandwidth",
-        "Free Domain",
+        "Free Domain (any TLD)",
+        "3 Free Domains (1 .ai incl.)",
         "Free SSL Certificate",
         "WordPress Pre-installed",
         "WP-CLI Access",
@@ -66,6 +73,7 @@ export default function HostingPage() {
         "Priority Support",
       ],
       popular: false,
+      domains: { count: 3, premium: 1, tlds: ["Any TLD", "1 .ai included"] },
     },
   ];
 
@@ -80,7 +88,7 @@ export default function HostingPage() {
         <div className="pricing-container">
           <div className="section-header">
             <h2>Choose Your Hosting Plan</h2>
-            <p>All plans include a FREE domain — yours forever! Just keep your plan active.</p>
+            <p>Get FREE domains with your hosting! Starter: .com/.net only | Professional: 3 domains (1 .ai) | Business: 5 domains (2 .ai)</p>
           </div>
           
           <div className="pricing-grid">

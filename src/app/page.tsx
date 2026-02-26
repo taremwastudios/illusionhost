@@ -43,8 +43,8 @@ export default function Home() {
             Get Your <span>Domain FREE</span>
           </h1>
           <p className="hero-subtitle">
-            That&apos;s right — we GIVE domains away for FREE! The catch? Just get any hosting plan starting at $2/month. 
-            Simple, affordable, and transparent.
+            That&apos;s right — we GIVE domains away for FREE! The catch? Just get any hosting plan. 
+            Starter ($2): .com/.net only | Professional ($12): 3 domains + 1 .ai | Business ($25): 5 domains + 2 .ai
           </p>
           
           <div className="domain-search">
@@ -63,11 +63,11 @@ export default function Home() {
           <div className="tld-tags">
             <span className="tld-tag free">.com FREE</span>
             <span className="tld-tag free">.net FREE</span>
-            <span className="tld-tag free">.org FREE</span>
-            <span className="tld-tag free">.io FREE</span>
-            <span className="tld-tag free">.app FREE</span>
-            <span className="tld-tag free">.xyz FREE</span>
-            <span style={{ color: "var(--text-light)", fontSize: "0.875rem" }}>with any hosting plan</span>
+            <span className="tld-tag free">.org FREE*</span>
+            <span className="tld-tag free">.io FREE*</span>
+            <span className="tld-tag free">.ai FREE*</span>
+            <span className="tld-tag free">.xyz FREE*</span>
+            <span style={{ color: "var(--text-light)", fontSize: "0.875rem" }}>*Pro/Business plans</span>
           </div>
         </div>
       </section>

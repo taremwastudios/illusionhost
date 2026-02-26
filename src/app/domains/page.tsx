@@ -6,7 +6,24 @@ interface DomainResult {
   name: string;
   available: boolean;
   tld: string;
+  requiredPlan: string;
+  isPremium: boolean;
 }
+
+const tldInfo: Record<string, { plan: string; premium: boolean; domains: number }> = {
+  ".com": { plan: "Starter ($2/mo)", premium: false, domains: 1 },
+  ".net": { plan: "Starter ($2/mo)", premium: false, domains: 1 },
+  ".org": { plan: "Professional ($12/mo)", premium: false, domains: 3 },
+  ".io": { plan: "Professional ($12/mo)", premium: true, domains: 3 },
+  ".app": { plan: "Professional ($12/mo)", premium: false, domains: 3 },
+  ".dev": { plan: "Professional ($12/mo)", premium: false, domains: 3 },
+  ".co": { plan: "Professional ($12/mo)", premium: false, domains: 3 },
+  ".ai": { plan: "Professional ($12/mo)", premium: true, domains: 1 },
+  ".xyz": { plan: "Professional ($12/mo)", premium: false, domains: 3 },
+  ".online": { plan: "Professional ($12/mo)", premium: false, domains: 3 },
+  ".site": { plan: "Professional ($12/mo)", premium: false, domains: 3 },
+  ".store": { plan: "Professional ($12/mo)", premium: false, domains: 3 },
+};
 
 const availableTLDs = [
   { ext: ".com", available: true },
@@ -35,14 +52,19 @@ export default function DomainsPage() {
     setLoading(true);
     setResults(null);
 
-    // Simulate domain search - all domains are "available" when you have a plan
+    // Simulate domain search - show which plan is needed for each TLD
     setTimeout(() => {
       const domain = searchQuery.toLowerCase().replace(/[^a-z0-9-]/g, "");
-      const mockResults: DomainResult[] = availableTLDs.map((tld) => ({
-        name: `${domain}${tld.ext}`,
-        available: tld.available,
-        tld: tld.ext,
-      }));
+      const mockResults: DomainResult[] = availableTLDs.map((tld) => {
+        const info = tldInfo[tld.ext];
+        return {
+          name: `${domain}${tld.ext}`,
+          available: tld.available,
+          tld: tld.ext,
+          requiredPlan: info.plan,
+          isPremium: info.premium,
+        };
+      });
       setResults(mockResults);
       setLoading(false);
     }, 1500);
@@ -147,30 +169,34 @@ export default function DomainsPage() {
               🎉 Available Domains for &quot;{searchQuery}&quot;
             </h2>
             
-            {/* Show hosting plan prompt if no active plan */}
+            {/* Plan explanation */}
             <div style={{
-              background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+              background: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
               color: "white",
               padding: "1.5rem",
               borderRadius: "1rem",
-              marginBottom: "2rem",
-              textAlign: "center"
+              marginBottom: "2rem"
             }}>
-              <h3 style={{ marginBottom: "0.5rem" }}>🚀 Your Domain is FREE!</h3>
-              <p style={{ marginBottom: "1rem", opacity: 0.9 }}>
-                Simply activate any hosting plan starting at $2/month and this domain is yours for FREE!
-              </p>
-              <a href="/hosting" className="nav-btn-primary" style={{
-                display: "inline-block",
-                background: "white",
-                color: "#10b981",
-                padding: "0.75rem 2rem",
-                borderRadius: "0.5rem",
-                textDecoration: "none",
-                fontWeight: "600"
+              <h3 style={{ marginBottom: "0.75rem" }}>🚀 FREE Domains — Choose Your Plan</h3>
+              <div style={{ 
+                display: "grid", 
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                gap: "1rem",
+                marginTop: "1rem"
               }}>
-                Get Started from $2/month
-              </a>
+                <div style={{ background: "rgba(255,255,255,0.15)", padding: "1rem", borderRadius: "0.5rem" }}>
+                  <div style={{ fontWeight: "700" }}>Starter — $2/mo</div>
+                  <div style={{ fontSize: "0.875rem", opacity: 0.9 }}>1 domain (.com/.net)</div>
+                </div>
+                <div style={{ background: "rgba(255,255,255,0.15)", padding: "1rem", borderRadius: "0.5rem" }}>
+                  <div style={{ fontWeight: "700" }}>Professional — $12/mo</div>
+                  <div style={{ fontSize: "0.875rem", opacity: 0.9 }}>3 domains (any + 1 .ai)</div>
+                </div>
+                <div style={{ background: "rgba(255,255,255,0.15)", padding: "1rem", borderRadius: "0.5rem" }}>
+                  <div style={{ fontWeight: "700" }}>Business — $25/mo</div>
+                  <div style={{ fontSize: "0.875rem", opacity: 0.9 }}>5 domains (any + 2 .ai)</div>
+                </div>
+              </div>
             </div>
 
             <div style={{ 
@@ -183,7 +209,7 @@ export default function DomainsPage() {
                   background: "white",
                   padding: "1.5rem",
                   borderRadius: "0.75rem",
-                  border: "2px solid var(--border)",
+                  border: result.isPremium ? "2px solid #f59e0b" : "2px solid var(--border)",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
@@ -196,15 +222,21 @@ export default function DomainsPage() {
                     fontWeight: "700" 
                   }}>FREE</span>
                   <span style={{ 
-                    color: "var(--text-light)", 
-                    fontSize: "0.875rem" 
-                  }}>with active hosting plan</span>
+                    background: result.isPremium ? "#fef3c7" : "#e0e7ff",
+                    color: result.isPremium ? "#92400e" : "#3730a3",
+                    padding: "0.25rem 0.75rem",
+                    borderRadius: "1rem",
+                    fontSize: "0.75rem",
+                    fontWeight: "600"
+                  }}>
+                    {result.isPremium ? "⭐ Premium" : ""} {result.requiredPlan}
+                  </span>
                   <a 
                     href="/hosting" 
                     className="domain-action-btn" 
                     style={{ width: "100%", textAlign: "center", textDecoration: "none" }}
                   >
-                    Claim This Domain
+                    Get This Plan
                   </a>
                 </div>
               ))}
@@ -217,12 +249,12 @@ export default function DomainsPage() {
       <section className="pricing-section" style={{ background: "var(--light)" }}>
         <div className="pricing-container">
           <div className="section-header">
-            <h2>Starting at Just $2/Month</h2>
-            <p>That&apos;s less than a cup of coffee! All plans include your free domain.</p>
+            <h2>Choose Your Plan — Get FREE Domains</h2>
+            <p>The more you pay, the more premium domains you get! .ai domains are premium — only on Professional+ plans.</p>
           </div>
           
           <div className="pricing-grid">
-            <div className="pricing-card featured">
+            <div className="pricing-card">
               <div className="pricing-header">
                 <h3 className="pricing-name">Starter</h3>
                 <div className="pricing-price">
@@ -235,16 +267,17 @@ export default function DomainsPage() {
                 <li>1 Website</li>
                 <li>10 GB SSD Storage</li>
                 <li>Unlimited Bandwidth</li>
-                <li>🎁 Free Domain (Yours forever!)</li>
+                <li>🎁 <strong>1 Free Domain</strong></li>
+                <li style={{ color: "#6b7280", fontSize: "0.875rem" }}>.com or .net only</li>
                 <li>Free SSL Certificate</li>
                 <li>99.9% Uptime</li>
               </ul>
-              <a href="/hosting" className="pricing-btn primary">
+              <a href="/hosting" className="pricing-btn secondary">
                 Get Started
               </a>
             </div>
             
-            <div className="pricing-card">
+            <div className="pricing-card featured">
               <div className="pricing-header">
                 <h3 className="pricing-name">Professional</h3>
                 <div className="pricing-price">
@@ -257,12 +290,14 @@ export default function DomainsPage() {
                 <li>Unlimited Websites</li>
                 <li>50 GB SSD Storage</li>
                 <li>Unlimited Bandwidth</li>
-                <li>🎁 Free Domain</li>
+                <li>🎁 <strong>3 Free Domains</strong></li>
+                <li style={{ color: "#059669", fontWeight: "600" }}>⭐ Includes 1 .ai domain!</li>
+                <li>Any TLD (.io, .app, etc.)</li>
                 <li>Free SSL Certificate</li>
                 <li>Priority Support</li>
                 <li>Daily Backups</li>
               </ul>
-              <a href="/hosting" className="pricing-btn secondary">
+              <a href="/hosting" className="pricing-btn primary">
                 Get Started
               </a>
             </div>
@@ -280,7 +315,9 @@ export default function DomainsPage() {
                 <li>Unlimited Websites</li>
                 <li>200 GB SSD Storage</li>
                 <li>Unlimited Bandwidth</li>
-                <li>🎁 Free Domain</li>
+                <li>🎁 <strong>5 Free Domains</strong></li>
+                <li style={{ color: "#059669", fontWeight: "600" }}>⭐ Includes 2 .ai domains!</li>
+                <li>Any TLD (.io, .app, etc.)</li>
                 <li>Free SSL Certificate</li>
                 <li>24/7 Phone Support</li>
                 <li>Hourly Backups</li>
@@ -298,38 +335,40 @@ export default function DomainsPage() {
       <section className="features">
         <div className="section-header">
           <h2>Frequently Asked Questions</h2>
-          <p>Everything you need to know about our free domain offer</p>
+          <p>Everything you need to know about our FREE domain offer</p>
         </div>
         
-        <div className="features-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}>
+        <div className="features-grid" style={{ marginTop: "2rem" }}>
           <div className="feature-card">
-            <h3>💰 Is the domain really free?</h3>
-            <p>Yes! As long as you have an active hosting plan with us, your domain is 100% free. No hidden fees, no catches!</p>
+            <h3>How do I get my free domain?</h3>
+            <p>Simply sign up for any hosting plan and search for your desired domain. When you find one you like, claim it during checkout — it&apos;s completely FREE with your plan!</p>
           </div>
           
           <div className="feature-card">
-            <h3>🔄 What happens if I cancel my hosting?</h3>
-            <p>If you cancel your hosting plan, you&apos;ll need to transfer your domain away or renew it at standard rates ($12.99+/year).</p>
+            <h3>What&apos;s the catch?</h3>
+            <p>There&apos;s no catch! Your domain stays free as long as you maintain an active hosting plan. If you cancel, you can transfer the domain elsewhere at standard rates.</p>
           </div>
           
           <div className="feature-card">
-            <h3>🌐 What extensions can I get for free?</h3>
-            <p>All popular extensions including .com, .net, .org, .io, .app, .dev, .co, .ai, .xyz, and many more!</p>
+            <h3>Can I get a .ai domain for free?</h3>
+            <p>Yes! .ai domains are premium but available on Professional ($12/mo) and Business ($25/mo) plans. Professional includes 1 .ai domain, Business includes 2 .ai domains.</p>
           </div>
           
           <div className="feature-card">
-            <h3>⏰ How long does it take?</h3>
-            <p>Instant! Once you sign up for hosting, your domain is immediately registered and ready to use.</p>
+            <h3>How many free domains can I get?</h3>
+            <p><strong>Starter ($2/mo)</strong>: 1 domain (.com/.net only)<br/>
+            <strong>Professional ($12/mo)</strong>: 3 domains (any TLD + 1 .ai)<br/>
+            <strong>Business ($25/mo)</strong>: 5 domains (any TLD + 2 .ai)</p>
           </div>
           
           <div className="feature-card">
-            <h3>🔒 Is SSL included?</h3>
-            <p>Absolutely! All our hosting plans include free SSL certificates, so your site is secure from day one.</p>
+            <h3>What happens when my plan expires?</h3>
+            <p>Your domain is yours as long as your hosting plan is active. You can renew your hosting to keep the domain free, or transfer it to another registrar at standard domain renewal rates.</p>
           </div>
           
           <div className="feature-card">
-            <h3>📝 Can I transfer my existing domain?</h3>
-            <p>Yes! We can transfer your existing domain to us for free when you sign up for any hosting plan.</p>
+            <h3>Can I upgrade my plan later?</h3>
+            <p>Absolutely! You can upgrade anytime and instantly unlock more domain allowances and premium TLDs like .ai and .io.</p>
           </div>
         </div>
       </section>
