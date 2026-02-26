@@ -19,7 +19,7 @@ export default function AIPage() {
       id: "virtualbox",
       title: "Illusion VirtualBox Code Agent",
       description: "Advanced AI coding assistant for complex development tasks. Get $100k in free credits when you're on a Professional plan!",
-      icon: "🤖",
+      icon: "◇",
       features: [
         "Complex code generation",
         "Full-stack development",
@@ -35,7 +35,7 @@ export default function AIPage() {
       id: "vg4",
       title: "Illusion vG 4 - Game Code Agent",
       description: "The world's most powerful AI game development assistant. Built specifically for game studios!",
-      icon: "🎮",
+      icon: "◇",
       popular: true,
       features: [
         "3D/2D sprite creation",
@@ -84,7 +84,7 @@ export default function AIPage() {
         }} />
 
         <div className="hero-content" style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>🧠</div>
+          <div style={{ fontSize: "4rem", marginBottom: "1rem", color: "#a78bfa" }}>◇</div>
           <h1 style={{ fontSize: "3.5rem", marginBottom: "1rem" }}>
             <span style={{ color: "#a78bfa" }}>Illusion</span> AI Suite
           </h1>
@@ -244,7 +244,7 @@ export default function AIPage() {
                     marginBottom: "1rem",
                     color: expandedCard === product.id ? "#a78bfa" : "var(--dark)"
                   }}>
-                    ✨ Features
+                    <span style={{ color: "#a78bfa" }}>◇</span> Features
                   </h4>
                   <ul style={{ 
                     listStyle: "none", 
@@ -320,7 +320,7 @@ export default function AIPage() {
           }} />
           
           <div style={{ position: "relative", zIndex: 1 }}>
-            <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🎁</div>
+            <div style={{ fontSize: "3rem", marginBottom: "1rem", color: "#fbbf24" }}>◇</div>
             <h2 style={{ fontSize: "2rem", marginBottom: "1rem" }}>
               Special Offer for Professional Plan Users!
             </h2>
@@ -366,20 +366,20 @@ export default function AIPage() {
         }}>
           {techSpecs.map((spec, idx) => (
             <div key={idx} style={{
-              background: "var(--surface)",
+              background: "#1e1b4b",
               borderRadius: "1rem",
               padding: "1.5rem",
-              border: "1px solid var(--border)"
+              border: "1px solid #4c1d95"
             }}>
               <div style={{ 
-                color: "var(--text-light)", 
+                color: "rgba(255,255,255,0.7)", 
                 fontSize: "0.875rem",
                 marginBottom: "0.5rem"
               }}>
                 {spec.label}
               </div>
               <div style={{ 
-                color: "var(--dark)", 
+                color: "white", 
                 fontSize: "1.25rem", 
                 fontWeight: "600" 
               }}>
@@ -393,7 +393,7 @@ export default function AIPage() {
       {/* vG 4 Features Deep Dive */}
       <section className="container" style={{ padding: "5rem 2rem", background: "var(--surface)", borderRadius: "2rem", marginBottom: "3rem" }}>
         <div className="section-header">
-          <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🎮</div>
+          <div style={{ fontSize: "3rem", marginBottom: "1rem", color: "#a78bfa" }}>◇</div>
           <h2 style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>Illusion vG 4</h2>
           <p style={{ fontSize: "1.125rem", color: "var(--text-light)", maxWidth: "700px", margin: "0 auto" }}>
             The greatest game code agent in the world. Designed specifically for game studios of all sizes.
@@ -407,29 +407,29 @@ export default function AIPage() {
           marginTop: "3rem"
         }}>
           {[
-            { icon: "🎨", title: "3D/2D Sprites", desc: "Generate stunning sprites and textures instantly" },
-            { icon: "🔮", title: "3D Rendering", desc: "Real-time 3D tools and graphics rendering" },
-            { icon: "🏗️", title: "Modeling", desc: "AI-powered 3D modeling and sculpting" },
-            { icon: "⚡", title: "100 Lines/sec", desc: "Blazing fast code generation speed" },
-            { icon: "📦", title: "Multi-Export", desc: "Package to .apk, web, Flutter, and more" },
-            { icon: "🥽", title: "VR Beta", desc: "Experimental VR rendering technology" },
-            { icon: "🎯", title: "Game Templates", desc: "Ready-to-use game templates and assets" },
-            { icon: "🔄", title: "Auto-Update", desc: "Continuous integration with your codebase" }
+            { icon: "◇", title: "3D/2D Sprites", desc: "Generate stunning sprites and textures instantly" },
+            { icon: "◇", title: "3D Rendering", desc: "Real-time 3D tools and graphics rendering" },
+            { icon: "◇", title: "Modeling", desc: "AI-powered 3D modeling and sculpting" },
+            { icon: "◇", title: "100 Lines/sec", desc: "Blazing fast code generation speed" },
+            { icon: "◇", title: "Multi-Export", desc: "Package to .apk, web, Flutter, and more" },
+            { icon: "◇", title: "VR Beta", desc: "Experimental VR rendering technology" },
+            { icon: "◇", title: "Game Templates", desc: "Ready-to-use game templates and assets" },
+            { icon: "◇", title: "Auto-Update", desc: "Continuous integration with your codebase" }
           ].map((feature, idx) => (
             <div key={idx} style={{
-              background: "white",
+              background: "#1e1b4b",
               borderRadius: "1rem",
               padding: "1.5rem",
-              border: "1px solid var(--border)",
+              border: "1px solid #4c1d95",
               transition: "transform 0.2s",
               cursor: "default"
             }}
             onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-4px)"}
             onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}
             >
-              <div style={{ fontSize: "2rem", marginBottom: "0.75rem" }}>{feature.icon}</div>
-              <h4 style={{ marginBottom: "0.5rem", color: "var(--dark)" }}>{feature.title}</h4>
-              <p style={{ color: "var(--text-light)", fontSize: "0.9rem", margin: 0 }}>{feature.desc}</p>
+              <div style={{ fontSize: "2rem", marginBottom: "0.75rem", color: "#a78bfa" }}>{feature.icon}</div>
+              <h4 style={{ marginBottom: "0.5rem", color: "white" }}>{feature.title}</h4>
+              <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.9rem", margin: 0 }}>{feature.desc}</p>
             </div>
           ))}
         </div>
