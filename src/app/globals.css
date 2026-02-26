@@ -1,24 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --primary: #6366f1;
-  --primary-dark: #4f46e5;
-  --primary-light: #818cf8;
-  --secondary: #10b981;
-  --secondary-dark: #059669;
+  --primary: #8b5cf6;
+  --primary-dark: #7c3aed;
+  --primary-light: #a78bfa;
+  --secondary: #06b6d4;
+  --secondary-dark: #0891b2;
   --accent: #f59e0b;
-  --dark: #0f172a;
-  --dark-secondary: #1e293b;
-  --light: #f8fafc;
-  --light-secondary: #e2e8f0;
-  --text: #334155;
-  --text-light: #64748b;
-  --text-white: #f1f5f9;
+  --dark: #000000;
+  --dark-secondary: #1a1a2e;
+  --dark-tertiary: #16213e;
+  --light: #0f0f23;
+  --light-secondary: #1e1e3f;
+  --text: #e2e8f0;
+  --text-light: #94a3b8;
+  --text-white: #f8fafc;
   --error: #ef4444;
   --success: #22c55e;
-  --border: #e2e8f0;
-  --gradient-start: #6366f1;
-  --gradient-end: #8b5cf6;
+  --border: #2d2d4a;
+  --gradient-start: #8b5cf6;
+  --gradient-end: #d946ef;
 }
 
 * {
@@ -40,7 +41,7 @@ body {
 
 /* Navigation */
 .navbar {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(15, 15, 35, 0.95);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
   position: sticky;
@@ -73,7 +74,7 @@ body {
 .logo-text {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--dark);
+  color: var(--text-white);
 }
 
 .nav-links {
@@ -90,7 +91,7 @@ body {
 }
 
 .nav-link:hover {
-  color: var(--primary);
+  color: var(--primary-light);
 }
 
 .cart-link {
@@ -151,7 +152,7 @@ body {
   display: block;
   width: 24px;
   height: 2px;
-  background: var(--dark);
+  background: var(--text-white);
   position: relative;
   transition: all 0.3s;
 }
@@ -162,7 +163,7 @@ body {
   position: absolute;
   width: 24px;
   height: 2px;
-  background: var(--dark);
+  background: var(--text-white);
   transition: all 0.3s;
 }
 
@@ -240,10 +241,10 @@ body {
 
 /* Domain Search */
 .domain-search {
-  background: white;
+  background: var(--dark-secondary);
   border-radius: 1rem;
   padding: 0.5rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 25px 50px -12px rgba(139, 92, 246, 0.25);
   display: flex;
   gap: 0.5rem;
 }
@@ -256,6 +257,8 @@ body {
   border-radius: 0.75rem;
   outline: none;
   transition: border-color 0.2s;
+  background: var(--dark);
+  color: var(--text);
 }
 
 .domain-search input:focus {
@@ -322,7 +325,7 @@ body {
 .section-header h2 {
   font-size: 2.5rem;
   font-weight: 700;
-  color: var(--dark);
+  color: var(--text-white);
   margin-bottom: 1rem;
 }
 
@@ -340,7 +343,7 @@ body {
 }
 
 .feature-card {
-  background: white;
+  background: var(--dark-secondary);
   border-radius: 1rem;
   padding: 2rem;
   border: 1px solid var(--border);
@@ -349,8 +352,8 @@ body {
 
 .feature-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
-  border-color: var(--primary-light);
+  box-shadow: 0 20px 40px -12px rgba(139, 92, 246, 0.2);
+  border-color: var(--primary);
 }
 
 .feature-icon {
@@ -368,7 +371,7 @@ body {
 .feature-card h3 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--dark);
+  color: var(--text-white);
   margin-bottom: 0.75rem;
 }
 
@@ -379,7 +382,7 @@ body {
 
 /* Pricing Section */
 .pricing-section {
-  background: white;
+  background: var(--dark-secondary);
   padding: 6rem 2rem;
 }
 
@@ -396,7 +399,7 @@ body {
 }
 
 .pricing-card {
-  background: white;
+  background: var(--dark);
   border-radius: 1.5rem;
   padding: 2.5rem;
   border: 2px solid var(--border);
@@ -451,13 +454,13 @@ body {
 .pricing-currency {
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--dark);
+  color: var(--text-white);
 }
 
 .pricing-amount {
   font-size: 3.5rem;
   font-weight: 800;
-  color: var(--dark);
+  color: var(--text-white);
 }
 
 .pricing-period {
@@ -504,14 +507,14 @@ body {
 }
 
 .pricing-btn.secondary {
-  background: var(--light);
-  color: var(--dark);
+  background: var(--dark-secondary);
+  color: var(--text);
   border: 2px solid var(--border);
 }
 
 .pricing-btn.secondary:hover {
   border-color: var(--primary);
-  color: var(--primary);
+  color: var(--primary-light);
 }
 
 /* Domain Results */
@@ -519,9 +522,9 @@ body {
   max-width: 900px;
   margin: 3rem auto;
   padding: 2rem;
-  background: white;
+  background: var(--dark-secondary);
   border-radius: 1rem;
-  box-shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 40px -12px rgba(139, 92, 246, 0.15);
 }
 
 .domain-result-item {
@@ -539,7 +542,7 @@ body {
 .domain-name {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--dark);
+  color: var(--text-white);
 }
 
 .domain-status {
@@ -561,7 +564,7 @@ body {
 .domain-price {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--dark);
+  color: var(--text-white);
 }
 
 .domain-action-btn {
@@ -626,10 +629,10 @@ body {
 }
 
 .contact-form {
-  background: white;
+  background: var(--dark-secondary);
   padding: 3rem;
   border-radius: 1.5rem;
-  box-shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 40px -12px rgba(139, 92, 246, 0.15);
 }
 
 .form-group {
@@ -639,7 +642,7 @@ body {
 .form-group label {
   display: block;
   font-weight: 600;
-  color: var(--dark);
+  color: var(--text-white);
   margin-bottom: 0.5rem;
 }
 
@@ -653,6 +656,8 @@ body {
   font-size: 1rem;
   outline: none;
   transition: border-color 0.2s;
+  background: var(--dark);
+  color: var(--text);
 }
 
 .form-group input:focus,
@@ -853,7 +858,7 @@ body {
     top: 70px;
     left: 0;
     right: 0;
-    background: white;
+    background: var(--dark-secondary);
     flex-direction: column;
     padding: 2rem;
     gap: 1rem;
