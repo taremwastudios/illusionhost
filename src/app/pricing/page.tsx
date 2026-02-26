@@ -1,23 +1,8 @@
 export default function PricingPage() {
-  const domainPricing = [
-    { ext: ".com", price: 12.99, renewal: 14.99 },
-    { ext: ".net", price: 9.99, renewal: 12.99 },
-    { ext: ".org", price: 11.99, renewal: 14.99 },
-    { ext: ".io", price: 49.99, renewal: 59.99 },
-    { ext: ".app", price: 14.99, renewal: 17.99 },
-    { ext: ".dev", price: 14.99, renewal: 17.99 },
-    { ext: ".co", price: 29.99, renewal: 34.99 },
-    { ext: ".ai", price: 79.99, renewal: 89.99 },
-    { ext: ".xyz", price: 2.99, renewal: 4.99 },
-    { ext: ".online", price: 3.99, renewal: 5.99 },
-    { ext: ".site", price: 3.99, renewal: 5.99 },
-    { ext: ".store", price: 4.99, renewal: 6.99 },
-  ];
-
   const hostingPlans = [
     {
       name: "Starter",
-      price: 5,
+      price: 2,
       features: ["1 Website", "10 GB SSD", "Unlimited Bandwidth", "Free Domain", "Free SSL", "Email Support"],
     },
     {
@@ -54,7 +39,7 @@ export default function PricingPage() {
         <div className="pricing-container">
           <div className="section-header">
             <h2>Web Hosting Plans</h2>
-            <p>All plans include free domain registration and SSL certificate.</p>
+            <p>All plans include a FREE domain — yours forever! Just keep your plan active.</p>
           </div>
           
           <div className="pricing-grid">
@@ -85,37 +70,24 @@ export default function PricingPage() {
       <section className="container">
         <div className="section-header">
           <h2>Domain Pricing</h2>
-          <p>Register your perfect domain today.</p>
+          <p>Your domain is FREE with any active hosting plan!</p>
         </div>
         
         <div style={{ 
           background: "white", 
           borderRadius: "1rem", 
-          overflow: "hidden",
-          boxShadow: "0 10px 40px -12px rgba(0, 0, 0, 0.1)"
+          padding: "2rem",
+          boxShadow: "0 10px 40px -12px rgba(0, 0, 0, 0.1)",
+          textAlign: "center"
         }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ background: "var(--light)" }}>
-                <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "var(--dark)" }}>Extension</th>
-                <th style={{ padding: "1rem", textAlign: "right", fontWeight: "600", color: "var(--dark)" }}>Registration</th>
-                <th style={{ padding: "1rem", textAlign: "right", fontWeight: "600", color: "var(--dark)" }}>Renewal</th>
-                <th style={{ padding: "1rem", textAlign: "center", fontWeight: "600", color: "var(--dark)" }}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {domainPricing.map((domain, index) => (
-                <tr key={index} style={{ borderBottom: "1px solid var(--border)" }}>
-                  <td style={{ padding: "1rem", fontWeight: "600", color: "var(--dark)" }}>{domain.ext}</td>
-                  <td style={{ padding: "1rem", textAlign: "right", color: "var(--dark)" }}>${domain.price}/yr</td>
-                  <td style={{ padding: "1rem", textAlign: "right", color: "var(--text-light)" }}>${domain.renewal}/yr</td>
-                  <td style={{ padding: "1rem", textAlign: "center" }}>
-                    <button className="domain-action-btn" style={{ padding: "0.5rem 1rem", fontSize: "0.875rem" }}>Register</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>🎁</div>
+          <h3 style={{ fontSize: "1.5rem", marginBottom: "0.5rem", color: "var(--dark)" }}>Free Domain Included!</h3>
+          <p style={{ color: "var(--text-light)", marginBottom: "1.5rem" }}>
+            All hosting plans come with a free domain registration. Search for your perfect domain and claim it for free when you sign up!
+          </p>
+          <a href="/domains" className="nav-btn-primary" style={{ display: "inline-block", textDecoration: "none" }}>
+            Find Your Free Domain
+          </a>
         </div>
       </section>
 

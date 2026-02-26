@@ -2,7 +2,7 @@ export default function HostingPage() {
   const hostingPlans = [
     {
       name: "Starter Hosting",
-      price: 5,
+      price: 2,
       description: "Perfect for personal websites and small blogs",
       features: [
         "1 Website",
@@ -80,7 +80,7 @@ export default function HostingPage() {
         <div className="pricing-container">
           <div className="section-header">
             <h2>Choose Your Hosting Plan</h2>
-            <p>All plans include a free domain and SSL certificate.</p>
+            <p>All plans include a FREE domain — yours forever! Just keep your plan active.</p>
           </div>
           
           <div className="pricing-grid">

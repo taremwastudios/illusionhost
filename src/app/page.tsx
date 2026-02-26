@@ -40,11 +40,11 @@ export default function Home() {
       <section className="hero">
         <div className="hero-content">
           <h1>
-            Find Your Perfect <span>Domain Name</span>
+            Get Your <span>Domain FREE</span>
           </h1>
           <p className="hero-subtitle">
-            Launch your online presence with premium domain names and lightning-fast web hosting. 
-            Trusted by over 50,000 businesses worldwide.
+            That&apos;s right — we GIVE domains away for FREE! The catch? Just get any hosting plan starting at $2/month. 
+            Simple, affordable, and transparent.
           </p>
           
           <div className="domain-search">
@@ -61,12 +61,13 @@ export default function Home() {
           </div>
 
           <div className="tld-tags">
-            <span className="tld-tag">.com $12.99</span>
-            <span className="tld-tag">.net $9.99</span>
-            <span className="tld-tag">.org $11.99</span>
-            <span className="tld-tag">.io $49.99</span>
-            <span className="tld-tag premium">.ai $79.99</span>
-            <span className="tld-tag">.app $14.99</span>
+            <span className="tld-tag free">.com FREE</span>
+            <span className="tld-tag free">.net FREE</span>
+            <span className="tld-tag free">.org FREE</span>
+            <span className="tld-tag free">.io FREE</span>
+            <span className="tld-tag free">.app FREE</span>
+            <span className="tld-tag free">.xyz FREE</span>
+            <span style={{ color: "var(--text-light)", fontSize: "0.875rem" }}>with any hosting plan</span>
           </div>
         </div>
       </section>
@@ -76,8 +77,34 @@ export default function Home() {
         <section className="container">
           <div className="domain-results">
             <h2 style={{ textAlign: "center", marginBottom: "1.5rem", color: "var(--dark)" }}>
-              Domain Search Results
+              🎉 Available Domains for &quot;{searchQuery}&quot;
             </h2>
+            
+            <div style={{
+              background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+              color: "white",
+              padding: "1.5rem",
+              borderRadius: "1rem",
+              marginBottom: "2rem",
+              textAlign: "center"
+            }}>
+              <h3 style={{ marginBottom: "0.5rem" }}>🚀 Your Domain is FREE!</h3>
+              <p style={{ marginBottom: "1rem", opacity: 0.9 }}>
+                Simply activate any hosting plan starting at $2/month and this domain is yours for FREE!
+              </p>
+              <a href="/hosting" style={{
+                background: "white",
+                color: "#10b981",
+                padding: "0.75rem 2rem",
+                borderRadius: "0.5rem",
+                textDecoration: "none",
+                fontWeight: "600",
+                display: "inline-block"
+              }}>
+                Get Started from $2/month
+              </a>
+            </div>
+
             {results.map((result, index) => (
               <div key={index} className="domain-result-item">
                 <span className="domain-name">{result.name}</span>
@@ -85,8 +112,8 @@ export default function Home() {
                   {result.available ? (
                     <>
                       <span className="domain-status available">✓ Available</span>
-                      <span className="domain-price">${result.price}/yr</span>
-                      <button className="domain-action-btn">Add to Cart</button>
+                      <span className="domain-price" style={{ color: "#10b981", fontWeight: "700" }}>FREE</span>
+                      <a href="/hosting" className="domain-action-btn">Claim Domain</a>
                     </>
                   ) : (
                     <span className="domain-status taken">✗ Taken</span>
@@ -149,7 +176,7 @@ export default function Home() {
         <div className="pricing-container">
           <div className="section-header">
             <h2>Simple, Transparent Pricing</h2>
-            <p>Choose the perfect plan for your needs. All plans include a free domain.</p>
+            <p>Your domain is FREE with any hosting plan — just keep your plan active!</p>
           </div>
           
           <div className="pricing-grid">
@@ -158,7 +185,7 @@ export default function Home() {
                 <h3 className="pricing-name">Starter</h3>
                 <div className="pricing-price">
                   <span className="pricing-currency">$</span>
-                  <span className="pricing-amount">5</span>
+                  <span className="pricing-amount">2</span>
                   <span className="pricing-period">/month</span>
                 </div>
               </div>
