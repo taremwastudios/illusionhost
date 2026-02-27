@@ -8,12 +8,12 @@ export default function PricingPage() {
     {
       name: "Professional",
       price: 12,
-      features: ["Unlimited Websites", "50 GB SSD", "Unlimited Bandwidth", "3 Free Domains (1 .ai)", "Free SSL", "Priority Support", "Daily Backups"],
+      features: ["Unlimited Websites", "50 GB SSD", "Unlimited Bandwidth", "3 Free Domains (.com/.net/.io)", "Free SSL", "Priority Support", "Daily Backups"],
     },
     {
       name: "Business",
       price: 25,
-      features: ["Unlimited Websites", "200 GB SSD", "Unlimited Bandwidth", "5 Free Domains (2 .ai)", "Free SSL", "24/7 Phone Support", "Hourly Backups", "CDN"],
+      features: ["Unlimited Websites", "200 GB SSD", "Unlimited Bandwidth", "5 Free Domains (.com/.net/.io/.app)", "Free SSL", "24/7 Phone Support", "Hourly Backups", "CDN"],
     },
   ];
 
@@ -39,7 +39,7 @@ export default function PricingPage() {
         <div className="pricing-container">
           <div className="section-header">
             <h2>Web Hosting Plans</h2>
-            <p>Get FREE domains with your hosting! Starter: .com/.net only | Professional: 3 domains (1 .ai) | Business: 5 domains (2 .ai)</p>
+            <p>Get FREE domains with your hosting! Starter: .com/.net | Professional: 3 domains | Business: 5 domains</p>
           </div>
           
           <div className="pricing-grid">
@@ -115,8 +115,7 @@ export default function PricingPage() {
               <ul style={{ marginTop: "1rem", listStyle: "none", padding: 0 }}>
                 <li style={{ padding: "0.5rem 0", borderBottom: "1px solid #e5e7eb" }}>✓ 3 Free Domains</li>
                 <li style={{ padding: "0.5rem 0", borderBottom: "1px solid #e5e7eb" }}>✓ Any TLD (.com, .net, .io, etc.)</li>
-                <li style={{ padding: "0.5rem 0", borderBottom: "1px solid #e5e7eb" }}>✓ <strong>1 Free .ai domain</strong></li>
-                <li style={{ padding: "0.5rem 0", color: "#6b7280" }}>Great for startups!</li>
+                <li style={{ padding: "0.5rem 0", color: "#6b7280" }}>Add .ai separately</li>
               </ul>
             </div>
             
@@ -130,9 +129,8 @@ export default function PricingPage() {
               <p style={{ fontSize: "2rem", fontWeight: "700", color: "var(--primary)" }}>$25<span style={{ fontSize: "1rem", fontWeight: "400" }}>/month</span></p>
               <ul style={{ marginTop: "1rem", listStyle: "none", padding: 0 }}>
                 <li style={{ padding: "0.5rem 0", borderBottom: "1px solid #e5e7eb" }}>✓ 5 Free Domains</li>
-                <li style={{ padding: "0.5rem 0", borderBottom: "1px solid #e5e7eb" }}>✓ Any TLD (.com, .net, .io, etc.)</li>
-                <li style={{ padding: "0.5rem 0", borderBottom: "1px solid #e5e7eb" }}>✓ <strong>2 Free .ai domains</strong></li>
-                <li style={{ padding: "0.5rem 0", color: "#6b7280" }}>Perfect for agencies!</li>
+                <li style={{ padding: "0.5rem 0", borderBottom: "1px solid #e5e7eb" }}>✓ Any TLD (.com, .net, .io, .app, etc.)</li>
+                <li style={{ padding: "0.5rem 0", color: "#6b7280" }}>Add .ai separately</li>
               </ul>
             </div>
           </div>
@@ -141,6 +139,89 @@ export default function PricingPage() {
             <a href="/domains" className="nav-btn-primary" style={{ display: "inline-block", textDecoration: "none" }}>
               Search Your Free Domain
             </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="container">
+        <div className="section-header">
+          <h2>.ai Domain Package</h2>
+          <p>Get your .ai domain for free for 2 years with this standalone package. No hosting required!</p>
+        </div>
+        
+        <div style={{ 
+          display: "flex", 
+          justifyContent: "center",
+          marginTop: "2rem"
+        }}>
+          <div style={{ 
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            borderRadius: "1.5rem", 
+            padding: "3rem",
+            maxWidth: "400px",
+            width: "100%",
+            boxShadow: "0 20px 60px -12px rgba(102, 126, 234, 0.4)",
+          }}>
+            <div style={{ textAlign: "center" }}>
+              <span style={{ 
+                background: "rgba(255,255,255,0.2)", 
+                color: "white", 
+                padding: "0.5rem 1rem", 
+                borderRadius: "2rem", 
+                fontSize: "0.875rem", 
+                fontWeight: "600" 
+              }}>
+                .AI DOMAIN
+              </span>
+              <h3 style={{ fontSize: "2rem", marginTop: "1rem", marginBottom: "0.5rem", color: "white", fontWeight: "700" }}>
+                .ai Domain
+              </h3>
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: "0.25rem" }}>
+                <span style={{ fontSize: "3.5rem", fontWeight: "800", color: "white" }}>$18</span>
+                <span style={{ fontSize: "1.25rem", color: "rgba(255,255,255,0.8)" }}>/month</span>
+              </div>
+              <p style={{ color: "rgba(255,255,255,0.9)", marginTop: "0.5rem", fontSize: "0.875rem" }}>
+                billed monthly
+              </p>
+            </div>
+            
+            <div style={{ marginTop: "2rem" }}>
+              <ul style={{ listStyle: "none", padding: 0, textAlign: "left" }}>
+                <li style={{ padding: "0.75rem 0", borderBottom: "1px solid rgba(255,255,255,0.2)", color: "white", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span style={{ color: "#4ade80", fontWeight: "700" }}>✓</span> 1 Free .ai Domain
+                </li>
+                <li style={{ padding: "0.75rem 0", borderBottom: "1px solid rgba(255,255,255,0.2)", color: "white", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span style={{ color: "#4ade80", fontWeight: "700" }}>✓</span> Free for 2 Years
+                </li>
+                <li style={{ padding: "0.75rem 0", borderBottom: "1px solid rgba(255,255,255,0.2)", color: "white", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span style={{ color: "#4ade80", fontWeight: "700" }}>✓</span> Domain Registration
+                </li>
+                <li style={{ padding: "0.75rem 0", borderBottom: "1px solid rgba(255,255,255,0.2)", color: "white", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span style={{ color: "#4ade80", fontWeight: "700" }}>✓</span> Free DNS Management
+                </li>
+                <li style={{ padding: "0.75rem 0", borderBottom: "1px solid rgba(255,255,255,0.2)", color: "white", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span style={{ color: "#4ade80", fontWeight: "700" }}>✓</span> Domain Transfer Available
+                </li>
+                <li style={{ padding: "0.75rem 0", color: "white", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span style={{ color: "#4ade80", fontWeight: "700" }}>✓</span> 24/7 Support
+                </li>
+              </ul>
+            </div>
+            
+            <div style={{ textAlign: "center", marginTop: "2rem" }}>
+              <a href="/domains" style={{ 
+                display: "inline-block",
+                background: "white",
+                color: "#764ba2",
+                padding: "1rem 2rem",
+                borderRadius: "2rem",
+                fontWeight: "700",
+                textDecoration: "none",
+                transition: "transform 0.2s",
+              }}>
+                Get Your .ai Domain
+              </a>
+            </div>
           </div>
         </div>
       </section>
