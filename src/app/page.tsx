@@ -150,19 +150,6 @@ export default function Home() {
                           ${result.domainPrice}/yr
                         </span>
                         
-                        {result.isHybridEligible && (
-                          <span style={{ 
-                            background: "#d1fae5",
-                            color: "#065f46",
-                            padding: "0.25rem 0.75rem",
-                            borderRadius: "1rem",
-                            fontSize: "0.75rem",
-                            fontWeight: "600"
-                          }}>
-                            💎 Hybrid Eligible
-                          </span>
-                        )}
-                        
                         <a 
                           href="/hosting" 
                           style={{ 
