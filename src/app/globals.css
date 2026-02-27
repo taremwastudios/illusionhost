@@ -357,7 +357,7 @@ body {
 .feature-icon {
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%);
+  background: #374151;
   border-radius: 1rem;
   display: flex;
   align-items: center;
@@ -391,9 +391,10 @@ body {
 
 .pricing-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 200px));
   gap: 0.75rem;
   margin-top: 2rem;
+  justify-content: center;
 }
 
 .pricing-card {
@@ -619,7 +620,7 @@ body {
 .hosting-feature-icon {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%);
+  background: #374151;
   border-radius: 50%;
   display: flex;
   align-items: center;
