@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useSyncExternalStore, useMemo } from "react";
+import { useState, useEffect } from "react";
 
 interface User {
   id: number;
@@ -9,8 +9,7 @@ interface User {
   email: string;
 }
 
-// External store for auth state
-function getUserFromStorage() {
+function getStoredUser(): User | null {
   if (typeof window === "undefined") return null;
   const storedUser = localStorage.getItem("user");
   if (storedUser) {
@@ -23,39 +22,40 @@ function getUserFromStorage() {
   return null;
 }
 
-// Create a stable snapshot using useMemo
-function useUserSnapshot() {
-  return useSyncExternalStore(
-    (callback) => {
-      window.addEventListener("storage", callback);
-      window.addEventListener("login", callback);
-      window.addEventListener("logout", callback);
-      return () => {
-        window.removeEventListener("storage", callback);
-        window.removeEventListener("login", callback);
-        window.removeEventListener("logout", callback);
-      };
-    },
-    () => {
-      // Cache the result to avoid infinite loop
-      if (typeof window === "undefined") return null;
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        try {
-          return JSON.parse(storedUser) as User;
-        } catch {
-          return null;
-        }
-      }
-      return null;
-    },
-    () => null
-  );
+function useUser() {
+  // Use lazy initializer to read from localStorage only on client-side mount
+  const [user, setUser] = useState<User | null>(() => {
+    if (typeof window === "undefined") return null;
+    return getStoredUser();
+  });
+
+  useEffect(() => {
+    // Listen for storage changes from other tabs
+    const handleStorage = () => {
+      setUser(getStoredUser());
+    };
+
+    // Listen for custom login/logout events
+    const handleLogin = () => setUser(getStoredUser());
+    const handleLogout = () => setUser(null);
+
+    window.addEventListener("storage", handleStorage);
+    window.addEventListener("login", handleLogin);
+    window.addEventListener("logout", handleLogout);
+
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener("login", handleLogin);
+      window.removeEventListener("logout", handleLogout);
+    };
+  }, []);
+
+  return user;
 }
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const user = useUserSnapshot();
+  const user = useUser();
   const isLoggedIn = user !== null;
 
   return (
