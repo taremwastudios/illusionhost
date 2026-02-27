@@ -13,6 +13,7 @@ export default function HostingPage() {
         "Free SSL Certificate",
         "99.9% Uptime",
         "Email Support",
+        "VPS Included (2 GB RAM, 1 vCPU)",
       ],
       popular: false,
       domains: { count: 1, premium: 0, tlds: [".com", ".net"] },
@@ -26,15 +27,16 @@ export default function HostingPage() {
         "50 GB SSD Storage",
         "Unlimited Bandwidth",
         "Free Domain (any TLD)",
-        "3 Free Domains (1 .ai incl.)",
+        "3 Free Domains",
         "Free SSL Certificate",
         "99.9% Uptime",
         "Priority Support",
         "Daily Backups",
         "Malware Protection",
+        "VPS Included (4 GB RAM, 2 vCPUs)",
       ],
       popular: true,
-      domains: { count: 3, premium: 1, tlds: ["Any TLD", "1 .ai included"] },
+      domains: { count: 3, premium: 1, tlds: ["Any TLD"] },
     },
     {
       name: "Business Hosting",
@@ -45,16 +47,17 @@ export default function HostingPage() {
         "200 GB SSD Storage",
         "Unlimited Bandwidth",
         "Free Domain (any TLD)",
-        "5 Free Domains (2 .ai incl.)",
+        "5 Free Domains",
         "Free SSL Certificate",
         "99.99% Uptime",
         "24/7 Phone Support",
         "Hourly Backups",
         "CDN Included",
         "Advanced DDoS Protection",
+        "VPS Included (8 GB RAM, 4 vCPUs)",
       ],
       popular: false,
-      domains: { count: 5, premium: 2, tlds: ["Any TLD", "2 .ai included"] },
+      domains: { count: 5, premium: 2, tlds: ["Any TLD"] },
     },
     {
       name: "WordPress Hosting",
@@ -65,15 +68,16 @@ export default function HostingPage() {
         "50 GB SSD Storage",
         "Unlimited Bandwidth",
         "Free Domain (any TLD)",
-        "3 Free Domains (1 .ai incl.)",
+        "3 Free Domains",
         "Free SSL Certificate",
         "WordPress Pre-installed",
         "WP-CLI Access",
         "Staging Environment",
         "Priority Support",
+        "VPS Included (4 GB RAM, 2 vCPUs)",
       ],
       popular: false,
-      domains: { count: 3, premium: 1, tlds: ["Any TLD", "1 .ai included"] },
+      domains: { count: 3, premium: 1, tlds: ["Any TLD"] },
     },
   ];
 
@@ -88,7 +92,7 @@ export default function HostingPage() {
         <div className="pricing-container">
           <div className="section-header">
             <h2>Choose Your Hosting Plan</h2>
-            <p>Get FREE domains with your hosting! Starter: .com/.net only | Professional: 3 domains (1 .ai) | Business: 5 domains (2 .ai)</p>
+            <p>All plans include FREE VPS hosting! Starter: 2 GB RAM | Professional: 4 GB RAM | Business: 8 GB RAM</p>
           </div>
           
           <div className="pricing-grid">
@@ -119,8 +123,8 @@ export default function HostingPage() {
 
       <section className="container">
         <div className="section-header">
-          <h2>VPS Hosting</h2>
-          <p>Need more power? Our VPS plans give you dedicated resources.</p>
+          <h2>Standalone VPS Hosting</h2>
+          <p>Need more power? Upgrade to a dedicated VPS with more resources.</p>
         </div>
         
         <div className="pricing-grid">
