@@ -3,17 +3,17 @@ export default function PricingPage() {
     {
       name: "Starter",
       price: 2,
-      features: ["1 Website", "10 GB SSD", "Unlimited Bandwidth", "1 Free Domain (.com/.net)", "Free SSL", "Email Support"],
+      features: ["1 Website", "10 GB SSD", "Unlimited Bandwidth", "Free SSL", "Email Support"],
     },
     {
       name: "Professional",
       price: 12,
-      features: ["Unlimited Websites", "50 GB SSD", "Unlimited Bandwidth", "3 Free Domains (.com/.net/.io)", "Free SSL", "Priority Support", "Daily Backups"],
+      features: ["Unlimited Websites", "50 GB SSD", "Unlimited Bandwidth", "Free SSL", "Priority Support", "Daily Backups"],
     },
     {
       name: "Business",
       price: 25,
-      features: ["Unlimited Websites", "200 GB SSD", "Unlimited Bandwidth", "5 Free Domains (.com/.net/.io/.app)", "Free SSL", "24/7 Phone Support", "Hourly Backups", "CDN"],
+      features: ["Unlimited Websites", "200 GB SSD", "Unlimited Bandwidth", "Free SSL", "24/7 Phone Support", "Hourly Backups", "CDN"],
     },
   ];
 
@@ -39,7 +39,7 @@ export default function PricingPage() {
         <div className="pricing-container">
           <div className="section-header">
             <h2>Web Hosting Plans</h2>
-            <p>Get FREE domains with your hosting! Starter: .com/.net | Professional: 3 domains | Business: 5 domains</p>
+            <p>High-performance hosting at affordable prices. All plans include free SSL!</p>
           </div>
           
           <div className="pricing-grid">
@@ -67,86 +67,11 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="container">
+      {/* Hybrid Package Section */}
+      <section className="container" style={{ padding: "4rem 2rem" }}>
         <div className="section-header">
-          <h2>Domain Benefits by Plan</h2>
-          <p>Your domain is FREE with any active hosting plan! Domain allowances vary by plan.</p>
-        </div>
-        
-        <div style={{ 
-          background: "white", 
-          borderRadius: "1rem", 
-          padding: "2rem",
-          boxShadow: "0 10px 40px -12px rgba(0, 0, 0, 0.1)",
-        }}>
-          <div style={{ 
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "1.5rem",
-            marginTop: "1.5rem"
-          }}>
-            <div style={{ 
-              padding: "1.5rem", 
-              background: "var(--light)",
-              borderRadius: "0.75rem",
-              border: "2px solid transparent"
-            }}>
-              <h3 style={{ fontSize: "1.25rem", marginBottom: "0.5rem", color: "var(--dark)" }}>Starter Plan</h3>
-              <p style={{ fontSize: "2rem", fontWeight: "700", color: "var(--primary)" }}>$2<span style={{ fontSize: "1rem", fontWeight: "400" }}>/month</span></p>
-              <ul style={{ marginTop: "1rem", listStyle: "none", padding: 0 }}>
-                <li style={{ padding: "0.5rem 0", borderBottom: "1px solid #e5e7eb" }}>✓ 1 Free Domain</li>
-                <li style={{ padding: "0.5rem 0", borderBottom: "1px solid #e5e7eb" }}>✓ .com extension</li>
-                <li style={{ padding: "0.5rem 0", borderBottom: "1px solid #e5e7eb" }}>✓ .net extension</li>
-                <li style={{ padding: "0.5rem 0", color: "#6b7280" }}>✗ No .ai domains</li>
-              </ul>
-            </div>
-            
-            <div style={{ 
-              padding: "1.5rem", 
-              background: "#f0fdf4",
-              borderRadius: "0.75rem",
-              border: "2px solid #22c55e"
-            }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
-                <span style={{ background: "#22c55e", color: "white", padding: "0.25rem 0.75rem", borderRadius: "1rem", fontSize: "0.75rem", fontWeight: "600" }}>POPULAR</span>
-              </div>
-              <h3 style={{ fontSize: "1.25rem", marginBottom: "0.5rem", color: "var(--dark)" }}>Professional Plan</h3>
-              <p style={{ fontSize: "2rem", fontWeight: "700", color: "var(--primary)" }}>$12<span style={{ fontSize: "1rem", fontWeight: "400" }}>/month</span></p>
-              <ul style={{ marginTop: "1rem", listStyle: "none", padding: 0 }}>
-                <li style={{ padding: "0.5rem 0", borderBottom: "1px solid #e5e7eb" }}>✓ 3 Free Domains</li>
-                <li style={{ padding: "0.5rem 0", borderBottom: "1px solid #e5e7eb" }}>✓ Any TLD (.com, .net, .io, etc.)</li>
-                <li style={{ padding: "0.5rem 0", color: "#6b7280" }}>Add .ai separately</li>
-              </ul>
-            </div>
-            
-            <div style={{ 
-              padding: "1.5rem", 
-              background: "#fef3c7",
-              borderRadius: "0.75rem",
-              border: "2px solid #f59e0b"
-            }}>
-              <h3 style={{ fontSize: "1.25rem", marginBottom: "0.5rem", color: "var(--dark)" }}>Business Plan</h3>
-              <p style={{ fontSize: "2rem", fontWeight: "700", color: "var(--primary)" }}>$25<span style={{ fontSize: "1rem", fontWeight: "400" }}>/month</span></p>
-              <ul style={{ marginTop: "1rem", listStyle: "none", padding: 0 }}>
-                <li style={{ padding: "0.5rem 0", borderBottom: "1px solid #e5e7eb" }}>✓ 5 Free Domains</li>
-                <li style={{ padding: "0.5rem 0", borderBottom: "1px solid #e5e7eb" }}>✓ Any TLD (.com, .net, .io, .app, etc.)</li>
-                <li style={{ padding: "0.5rem 0", color: "#6b7280" }}>Add .ai separately</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div style={{ textAlign: "center", marginTop: "2rem" }}>
-            <a href="/domains" className="nav-btn-primary" style={{ display: "inline-block", textDecoration: "none" }}>
-              Search Your Free Domain
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section className="container">
-        <div className="section-header">
-          <h2>.ai Domain Package</h2>
-          <p>Get your .ai domain for free for 2 years with this standalone package. No hosting required!</p>
+          <h2>💎 Hybrid Package — Best Value!</h2>
+          <p>Buy a domain first and get 50% off any hosting plan. Available for .com, .net, and .co domains.</p>
         </div>
         
         <div style={{ 
@@ -155,12 +80,12 @@ export default function PricingPage() {
           marginTop: "2rem"
         }}>
           <div style={{ 
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
             borderRadius: "1.5rem", 
             padding: "3rem",
-            maxWidth: "400px",
+            maxWidth: "500px",
             width: "100%",
-            boxShadow: "0 20px 60px -12px rgba(102, 126, 234, 0.4)",
+            boxShadow: "0 20px 60px -12px rgba(16, 185, 129, 0.4)",
           }}>
             <div style={{ textAlign: "center" }}>
               <span style={{ 
@@ -171,36 +96,29 @@ export default function PricingPage() {
                 fontSize: "0.875rem", 
                 fontWeight: "600" 
               }}>
-                .AI DOMAIN
+                HYBRID PACKAGE
               </span>
               <h3 style={{ fontSize: "2rem", marginTop: "1rem", marginBottom: "0.5rem", color: "white", fontWeight: "700" }}>
-                .ai Domain
+                Domain + Hosting
               </h3>
-              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: "0.25rem" }}>
-                <span style={{ fontSize: "3.5rem", fontWeight: "800", color: "white" }}>$18</span>
-                <span style={{ fontSize: "1.25rem", color: "rgba(255,255,255,0.8)" }}>/month</span>
-              </div>
-              <p style={{ color: "rgba(255,255,255,0.9)", marginTop: "0.5rem", fontSize: "0.875rem" }}>
-                billed monthly
+              <p style={{ color: "rgba(255,255,255,0.9)", marginBottom: "1rem" }}>
+                Pay for domain first, get 50% off hosting!
               </p>
             </div>
             
             <div style={{ marginTop: "2rem" }}>
               <ul style={{ listStyle: "none", padding: 0, textAlign: "left" }}>
                 <li style={{ padding: "0.75rem 0", borderBottom: "1px solid rgba(255,255,255,0.2)", color: "white", display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                  <span style={{ color: "#4ade80", fontWeight: "700" }}>✓</span> 1 Free .ai Domain
+                  <span style={{ color: "#4ade80", fontWeight: "700" }}>✓</span> Domain Registration (.com/.net/.co)
                 </li>
                 <li style={{ padding: "0.75rem 0", borderBottom: "1px solid rgba(255,255,255,0.2)", color: "white", display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                  <span style={{ color: "#4ade80", fontWeight: "700" }}>✓</span> Free for 2 Years
-                </li>
-                <li style={{ padding: "0.75rem 0", borderBottom: "1px solid rgba(255,255,255,0.2)", color: "white", display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                  <span style={{ color: "#4ade80", fontWeight: "700" }}>✓</span> Domain Registration
+                  <span style={{ color: "#4ade80", fontWeight: "700" }}>✓</span> 50% Off Any Hosting Plan
                 </li>
                 <li style={{ padding: "0.75rem 0", borderBottom: "1px solid rgba(255,255,255,0.2)", color: "white", display: "flex", alignItems: "center", gap: "0.75rem" }}>
                   <span style={{ color: "#4ade80", fontWeight: "700" }}>✓</span> Free DNS Management
                 </li>
                 <li style={{ padding: "0.75rem 0", borderBottom: "1px solid rgba(255,255,255,0.2)", color: "white", display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                  <span style={{ color: "#4ade80", fontWeight: "700" }}>✓</span> Domain Transfer Available
+                  <span style={{ color: "#4ade80", fontWeight: "700" }}>✓</span> Free SSL Certificate
                 </li>
                 <li style={{ padding: "0.75rem 0", color: "white", display: "flex", alignItems: "center", gap: "0.75rem" }}>
                   <span style={{ color: "#4ade80", fontWeight: "700" }}>✓</span> 24/7 Support
@@ -212,16 +130,74 @@ export default function PricingPage() {
               <a href="/domains" style={{ 
                 display: "inline-block",
                 background: "white",
-                color: "#764ba2",
+                color: "#059669",
                 padding: "1rem 2rem",
                 borderRadius: "2rem",
                 fontWeight: "700",
                 textDecoration: "none",
-                transition: "transform 0.2s",
               }}>
-                Get Your .ai Domain
+                Search Domains →
               </a>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Domain Pricing Section */}
+      <section className="container">
+        <div className="section-header">
+          <h2>Domain Pricing</h2>
+          <p>Popular domain extensions at great prices. Search for your perfect domain!</p>
+        </div>
+        
+        <div style={{ 
+          background: "white", 
+          borderRadius: "1rem", 
+          padding: "2rem",
+          boxShadow: "0 10px 40px -12px rgba(0, 0, 0, 0.1)",
+          marginTop: "2rem"
+        }}>
+          <div style={{ 
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "1rem"
+          }}>
+            {[
+              { tld: ".com", price: 12.99, popular: true },
+              { tld: ".net", price: 14.99 },
+              { tld: ".org", price: 14.99 },
+              { tld: ".co", price: 29.99, hybrid: true },
+              { tld: ".io", price: 55.00, premium: true },
+              { tld: ".app", price: 19.99 },
+              { tld: ".dev", price: 19.99 },
+              { tld: ".xyz", price: 12.99 },
+            ].map((domain, idx) => (
+              <div key={idx} style={{
+                padding: "1.5rem",
+                background: domain.popular ? "#f0fdf4" : "var(--light)",
+                borderRadius: "0.75rem",
+                border: domain.popular ? "2px solid #22c55e" : "1px solid var(--border)"
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+                  <span style={{ fontWeight: "700", fontSize: "1.25rem" }}>{domain.tld}</span>
+                  {domain.hybrid && (
+                    <span style={{ background: "#d1fae5", color: "#065f46", padding: "0.125rem 0.5rem", borderRadius: "1rem", fontSize: "0.625rem", fontWeight: "600" }}>HYBRID</span>
+                  )}
+                  {domain.premium && (
+                    <span style={{ background: "#fef3c7", color: "#92400e", padding: "0.125rem 0.5rem", borderRadius: "1rem", fontSize: "0.625rem", fontWeight: "600" }}>PREMIUM</span>
+                  )}
+                </div>
+                <div style={{ fontSize: "1.5rem", fontWeight: "700", color: "var(--primary)" }}>
+                  ${domain.price}<span style={{ fontSize: "0.875rem", fontWeight: "400", color: "var(--text-light)" }}>/yr</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div style={{ textAlign: "center", marginTop: "2rem" }}>
+            <a href="/domains" className="nav-btn-primary" style={{ display: "inline-block", textDecoration: "none" }}>
+              Search Your Domain
+            </a>
           </div>
         </div>
       </section>
@@ -229,7 +205,7 @@ export default function PricingPage() {
       <section className="pricing-section" style={{ background: "var(--light)" }}>
         <div className="pricing-container">
           <div className="section-header">
-            <h2>Add-ons & Addons</h2>
+            <h2>Add-ons</h2>
             <p>Enhance your hosting with these optional add-ons.</p>
           </div>
           
