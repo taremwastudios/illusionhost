@@ -49,7 +49,7 @@ export default function Home() {
       <section className="hero">
         <div className="hero-content">
           <h1>
-            Get Your <span>Domain FREE</span>
+            Get Your Domain Today
           </h1>
           <p className="hero-subtitle">
             That&apos;s right — we GIVE domains away for FREE! The catch? Just get any hosting plan. 
@@ -92,8 +92,8 @@ export default function Home() {
             </div>
           </div>
 
-          <p style={{ marginTop: "1rem", background: "linear-gradient(135deg, #a78bfa 0%, #f59e0b 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", fontSize: "1.1rem", fontWeight: "600" }}>
-            Get your domain for free
+          <p style={{ marginTop: "1rem", fontSize: "1rem", color: "#9ca3af", maxWidth: "600px", margin: "1rem auto 0", lineHeight: "1.6" }}>
+            We are a dedicated community that hopes to solve your business troubles, with a domain, hosting, multiple websites, dedicated website builder, large uptime, auto backup and a lot more, come join the illusion family trusted by thousands of users
           </p>
         </div>
       </section>
