@@ -117,9 +117,10 @@ export default function TransferPage() {
           
           <div style={{ 
             display: "grid", 
-            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", 
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 250px))", 
             gap: "2rem",
-            marginTop: "3rem"
+            marginTop: "3rem",
+            justifyContent: "center"
           }}>
             <div style={{ textAlign: "center", padding: "2rem" }}>
               <div style={{ 
