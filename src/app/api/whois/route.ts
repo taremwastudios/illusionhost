@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 
+// Supported TLDs
+const supportedTLDs = [".com", ".net", ".org", ".io", ".co", ".app", ".dev", ".xyz", ".online", ".site", ".store", ".ai"];
+
 // Common TLDs to check
-const tlds = [".com", ".net", ".org", ".io", ".co", ".app", ".dev", ".xyz", ".online", ".site", ".store", ".ai"];
+const tlds = ["com", "net", "org", "io", "co", "app", "dev", "xyz", "online", "site", "store", "ai"];
 
 // Domain prices
 const domainPrices: Record<string, number> = {
@@ -230,6 +233,13 @@ export async function POST(request: Request) {
       // User provided just domain name, use provided tld or default to .com
       cleanDomain = input.replace(/[^a-z0-9-]/g, "");
       userTld = tld || ".com";
+    }
+    
+    // Validate TLD
+    if (userTld && !supportedTLDs.includes(userTld)) {
+      return NextResponse.json({ 
+        error: `Invalid domain extension '${userTld}'. Supported extensions: ${supportedTLDs.join(", ")}` 
+      }, { status: 400 });
     }
     
     // Build results

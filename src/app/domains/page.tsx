@@ -18,6 +18,7 @@ export default function DomainsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<DomainResult[] | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
@@ -39,6 +40,13 @@ export default function DomainsPage() {
 
       const data = await response.json();
       
+      if (data.error) {
+        setError(data.error);
+        setResults(null);
+        return;
+      }
+      
+      setError(null);
       if (data.results) {
         setResults(data.results);
       }
@@ -161,6 +169,22 @@ export default function DomainsPage() {
             </button>
           </div>
         </div>
+
+        {error && (
+          <div style={{
+            maxWidth: "900px",
+            margin: "0 auto",
+            padding: "1.5rem",
+            background: "#fef2f2",
+            border: "2px solid #ef4444",
+            borderRadius: "0.75rem",
+            textAlign: "center"
+          }}>
+            <p style={{ color: "#dc2626", fontSize: "1.1rem", fontWeight: "600", margin: 0 }}>
+              {error}
+            </p>
+          </div>
+        )}
 
         {results && (
           <div className="domain-results" style={{ maxWidth: "900px", margin: "0 auto" }}>
