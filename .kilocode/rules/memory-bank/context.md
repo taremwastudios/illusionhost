@@ -42,7 +42,7 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 - [x] **Centered Transfer Page Cards** - Fixed grid layout to center cards in "How Domain Transfer Works" section
 - [x] **Mock Payment System** - Added cart functionality with add-to-cart on domains and hosting pages
 - [x] **User Dashboard** - Complete account page with domain management, DNS settings, site builder, and VPS management
-- [x] **Koyeb Deployment** - Added Procfile and .koyeb.yaml for Bun-based deployment
+- [x] **Koyeb Deployment** - Added Procfile, .koyeb.yaml, and package-lock.json for npm-based deployment
 
 ## Current Structure
 
