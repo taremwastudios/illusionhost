@@ -5,7 +5,13 @@ import { useState } from "react";
 interface DomainResult {
   name: string;
   available: boolean;
-  price: number;
+  tld: string;
+  requiredPlan: string;
+  isPremium: boolean;
+  isHybridEligible: boolean;
+  domainPrice: number;
+  isExactMatch: boolean;
+  isRecommendation: boolean;
 }
 
 export default function Home() {
@@ -100,52 +106,85 @@ export default function Home() {
       {/* Domain Results */}
       {results && (
         <section className="container">
-          <div className="domain-results">
+          <div className="domain-results" style={{ maxWidth: "900px", margin: "0 auto" }}>
             <h2 style={{ textAlign: "center", marginBottom: "1.5rem", color: "var(--dark)" }}>
               Domain Search Results for &quot;{searchQuery}&quot;
             </h2>
             
-            <div style={{
-              background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-              color: "white",
-              padding: "1.5rem",
-              borderRadius: "1rem",
-              marginBottom: "2rem",
-              textAlign: "center"
-            }}>
-              <h3 style={{ marginBottom: "0.5rem" }}>🚀 Your Domain is FREE!</h3>
-              <p style={{ marginBottom: "1rem", opacity: 0.9 }}>
-                Simply activate any hosting plan starting at $24/year and this domain is yours for FREE!
-              </p>
-              <a href="/hosting" style={{
-                background: "white",
-                color: "#10b981",
-                padding: "0.75rem 2rem",
-                borderRadius: "0.5rem",
-                textDecoration: "none",
-                fontWeight: "600",
-                display: "inline-block"
-              }}>
-                Get Started from $24/year
-              </a>
-            </div>
-
-            {results.map((result, index) => (
-              <div key={index} className="domain-result-item">
-                <span className="domain-name">{result.name}</span>
-                <div className="domain-status">
-                  {result.available ? (
-                    <>
-                      <span className="domain-status available">✓ Available</span>
-                      <span className="domain-price" style={{ color: "#10b981", fontWeight: "700" }}>FREE</span>
-                      <a href="/hosting" className="domain-action-btn">Claim Domain</a>
-                    </>
-                  ) : (
-                    <span className="domain-status taken">✗ Taken</span>
-                  )}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {results.map((result, index) => (
+                <div key={index} style={{
+                  background: result.isExactMatch ? "linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)" : "white",
+                  padding: "1.5rem",
+                  borderRadius: "0.75rem",
+                  border: result.isPremium ? "2px solid #f59e0b" : result.isExactMatch ? "2px solid #f59e0b" : "2px solid var(--border)",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  flexWrap: "wrap",
+                  gap: "1rem"
+                }}>
+                  <div style={{ flex: "1", minWidth: "200px" }}>
+                    <span style={{ fontSize: "1.25rem", fontWeight: "700", color: "var(--dark)" }}>
+                      {result.name}
+                    </span>
+                  </div>
+                  
+                  <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
+                    <span style={{ 
+                      color: result.available ? "#10b981" : "#ef4444", 
+                      fontSize: "1.25rem", 
+                      fontWeight: "700" 
+                    }}>
+                      {result.available ? "✅ Available" : "❌ Taken"}
+                    </span>
+                    
+                    {result.available && (
+                      <>
+                        <span style={{ 
+                          fontSize: "1.25rem", 
+                          fontWeight: "600",
+                          color: "var(--dark)"
+                        }}>
+                          ${result.domainPrice}/yr
+                        </span>
+                        
+                        {result.isHybridEligible && (
+                          <span style={{ 
+                            background: "#d1fae5",
+                            color: "#065f46",
+                            padding: "0.25rem 0.75rem",
+                            borderRadius: "1rem",
+                            fontSize: "0.75rem",
+                            fontWeight: "600"
+                          }}>
+                            💎 Hybrid Eligible
+                          </span>
+                        )}
+                        
+                        <a 
+                          href="/hosting" 
+                          style={{ 
+                            padding: "0.75rem 1.5rem",
+                            background: "var(--primary)",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "0.5rem",
+                            fontWeight: "600",
+                            cursor: "pointer",
+                            textDecoration: "none",
+                            textAlign: "center"
+                          }}
+                        >
+                          Buy Domain
+                        </a>
+                      </>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </section>
       )}
