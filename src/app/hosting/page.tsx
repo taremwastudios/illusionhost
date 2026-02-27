@@ -71,7 +71,6 @@ export default function HostingPage() {
         "WP-CLI Access",
         "Staging Environment",
         "Priority Support",
-        "VPS Included (4 GB RAM, 2 vCPUs)",
       ],
       popular: false,
       domains: { count: 3, premium: 1, tlds: ["Any TLD"] },
