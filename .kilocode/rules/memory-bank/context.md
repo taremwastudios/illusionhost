@@ -32,6 +32,8 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 - [x] **Fixed Hydration Mismatch** - Navigation component now uses setTimeout to defer localStorage read until after hydration
 - [x] **Reduced Pricing Card Sizes** - Changed grid minmax from 320px to 240px, reduced padding and border-radius
 - [x] **Updated Home Page Domain Search** - Matched styling to domains page, replaced TLD tags with descriptive statement
+- [x] **Added Gradient Branding** - Updated logo in Navigation and Footer with gradient "host" text and half-purple/half-gradient icon
+- [x] **Updated Home Page Text** - Changed main banner to "Get Your Domain Today" and added community description text
 
 ## Current Structure
 
@@ -116,3 +118,5 @@ Optional integrations (for production):
 | 2026-02-26 | Built Illusionhost domain selling service with all pages |
 | 2026-02-27 | Added database support and user authentication |
 | 2026-02-27 | Enhanced domain search with vertical display, exact match first, and real-looking results |
+| 2026-02-27 | Updated branding with gradient logos and home page text |
+| 2026-02-27 | Updated home page banner to "Get Your Domain Today" with community description |
