@@ -2,7 +2,7 @@ export default function HostingPage() {
   const hostingPlans = [
     {
       name: "Starter Hosting",
-      price: 2,
+      price: 24,
       description: "Perfect for personal websites and small blogs",
       features: [
         "1 Website",
@@ -19,7 +19,7 @@ export default function HostingPage() {
     },
     {
       name: "Professional Hosting",
-      price: 12,
+      price: 144,
       description: "Ideal for growing businesses and e-commerce",
       features: [
         "Unlimited Websites",
@@ -38,7 +38,7 @@ export default function HostingPage() {
     },
     {
       name: "Business Hosting",
-      price: 25,
+      price: 300,
       description: "For high-traffic websites and online stores",
       features: [
         "Unlimited Websites",
@@ -58,7 +58,7 @@ export default function HostingPage() {
     },
     {
       name: "WordPress Hosting",
-      price: 15,
+      price: 180,
       description: "Optimized specifically for WordPress sites",
       features: [
         "Unlimited Websites",

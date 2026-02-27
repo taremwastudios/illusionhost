@@ -115,7 +115,7 @@ export default function Home() {
             }}>
               <h3 style={{ marginBottom: "0.5rem" }}>🚀 Your Domain is FREE!</h3>
               <p style={{ marginBottom: "1rem", opacity: 0.9 }}>
-                Simply activate any hosting plan starting at $2/month and this domain is yours for FREE!
+                Simply activate any hosting plan starting at $24/year and this domain is yours for FREE!
               </p>
               <a href="/hosting" style={{
                 background: "white",
@@ -126,7 +126,7 @@ export default function Home() {
                 fontWeight: "600",
                 display: "inline-block"
               }}>
-                Get Started from $2/month
+                Get Started from $24/year
               </a>
             </div>
 
@@ -210,8 +210,8 @@ export default function Home() {
                 <h3 className="pricing-name">Starter</h3>
                 <div className="pricing-price">
                   <span className="pricing-currency">$</span>
-                  <span className="pricing-amount">2</span>
-                  <span className="pricing-period">/month</span>
+                  <span className="pricing-amount">24</span>
+                  <span className="pricing-period">/year</span>
                 </div>
               </div>
               <ul className="pricing-features">
@@ -230,8 +230,8 @@ export default function Home() {
                 <h3 className="pricing-name">Professional</h3>
                 <div className="pricing-price">
                   <span className="pricing-currency">$</span>
-                  <span className="pricing-amount">12</span>
-                  <span className="pricing-period">/month</span>
+                  <span className="pricing-amount">144</span>
+                  <span className="pricing-period">/year</span>
                 </div>
               </div>
               <ul className="pricing-features">
@@ -251,8 +251,8 @@ export default function Home() {
                 <h3 className="pricing-name">Business</h3>
                 <div className="pricing-price">
                   <span className="pricing-currency">$</span>
-                  <span className="pricing-amount">25</span>
-                  <span className="pricing-period">/month</span>
+                  <span className="pricing-amount">300</span>
+                  <span className="pricing-period">/year</span>
                 </div>
               </div>
               <ul className="pricing-features">
@@ -268,16 +268,6 @@ export default function Home() {
               <a href="/pricing" className="pricing-btn secondary">View Details</a>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="container" style={{ textAlign: "center", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1.5rem", padding: "4rem 2rem", color: "white" }}>
-        <h2 style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>Ready to Get Started?</h2>
-        <p style={{ fontSize: "1.125rem", marginBottom: "2rem", opacity: 0.9 }}>Join thousands of satisfied customers who trust Illusionhost for their online presence.</p>
-        <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-          <a href="/domains" style={{ background: "white", color: "var(--primary)", padding: "1rem 2rem", borderRadius: "0.75rem", fontWeight: "600", textDecoration: "none" }}>Search Domains</a>
-          <a href="/pricing" style={{ background: "transparent", color: "white", padding: "1rem 2rem", borderRadius: "0.75rem", fontWeight: "600", textDecoration: "none", border: "2px solid white" }}>View Pricing</a>
         </div>
       </section>
     </>

@@ -405,6 +405,22 @@ body {
   border: 2px solid var(--border);
   transition: all 0.3s;
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.pricing-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 .pricing-card.featured {
@@ -412,7 +428,7 @@ body {
   box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.25);
 }
 
-.pricing-card.featured::before {
+.pricing-card.featured::after {
   content: 'Most Popular';
   position: absolute;
   top: -10px;
@@ -424,6 +440,7 @@ body {
   border-radius: 9999px;
   font-size: 0.625rem;
   font-weight: 600;
+  z-index: 1;
 }
 
 .pricing-card:hover {
@@ -479,6 +496,7 @@ body {
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
+  font-weight: 700;
 }
 
 .pricing-features li::before {
@@ -497,6 +515,7 @@ body {
   text-decoration: none;
   transition: all 0.2s;
   font-size: 0.875rem;
+  margin-top: auto;
 }
 
 .pricing-btn.primary {
