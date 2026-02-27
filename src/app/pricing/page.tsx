@@ -1,6 +1,13 @@
 export default function PricingPage() {
   const hostingPlans = [
     {
+      name: "Student",
+      price: 0,
+      period: "1 year",
+      features: [".illusionhost.co Domain", "2 GB SSD", "Free SSL Certificate", "Unlimited Bandwidth", "Custom Email", "Student Support"],
+      featured: false,
+    },
+    {
       name: "Starter",
       price: 25,
       features: ["1 Website", "10 GB SSD", "Unlimited Bandwidth", "Free SSL", "Email Support"],
@@ -34,13 +41,13 @@ export default function PricingPage() {
           
           <div className="pricing-grid">
             {hostingPlans.map((plan, index) => (
-              <div key={index} className={`pricing-card ${index === 1 ? 'featured' : ''}`}>
+              <div key={index} className={`pricing-card ${index === 2 ? 'featured' : ''}`}>
                 <div className="pricing-header">
                   <h3 className="pricing-name">{plan.name}</h3>
                   <div className="pricing-price">
                     <span className="pricing-currency">$</span>
                     <span className="pricing-amount">{plan.price}</span>
-                    <span className="pricing-period">/year</span>
+                    <span className="pricing-period">/{plan.period || 'year'}</span>
                   </div>
                 </div>
                 <ul className="pricing-features">
@@ -48,7 +55,7 @@ export default function PricingPage() {
                     <li key={i}>{feature}</li>
                   ))}
                 </ul>
-                <a href="/signup" className={`pricing-btn ${index === 1 ? 'primary' : 'secondary'}`}>
+                <a href="/signup" className={`pricing-btn ${index === 2 ? 'primary' : 'secondary'}`}>
                   Get Started
                 </a>
               </div>

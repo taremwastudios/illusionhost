@@ -49,11 +49,10 @@ export default function Home() {
       <section className="hero">
         <div className="hero-content">
           <h1>
-            Get Your Domain Today
+            Free Domains for Students
           </h1>
           <p className="hero-subtitle">
-            That&apos;s right — we GIVE domains away for FREE! The catch? Just get any hosting plan. 
-            Starter ($2): .com/.net | Professional ($12): 3 domains | Business ($25): 5 domains
+            That&apos;s right — we GIVE domains away for FREE! The catch? Just get any hosting plan. All plans are suitable for any business but differ by standard and the firepower we give you. Are you a student? There&apos;s a package especially for you! That&apos;s right, you get a custom &quot;yourdomain.illusionhost.co&quot; for a whole year! What are you waiting for? Just make sure to read our Terms of Service and Privacy Policy on usage to make sure you are within our limits.
           </p>
           
           <div className="domain-search" style={{ maxWidth: "100%", width: "100%" }}>
