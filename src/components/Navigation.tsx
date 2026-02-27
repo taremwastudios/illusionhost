@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface User {
   id: number;
@@ -23,13 +23,25 @@ function getStoredUser(): User | null {
 }
 
 function useUser() {
-  // Use lazy initializer to read from localStorage only on client-side mount
+  // Use ref to track if component has mounted
+  const mountedRef = useRef(false);
+  
+  // Use lazy initializer to read from localStorage only after mount (prevents hydration mismatch)
   const [user, setUser] = useState<User | null>(() => {
-    if (typeof window === "undefined") return null;
-    return getStoredUser();
+    // During SSR, always return null
+    return null;
   });
 
   useEffect(() => {
+    // Mark as mounted
+    mountedRef.current = true;
+    
+    // Use setTimeout to defer the localStorage read until after hydration
+    // This avoids calling setState synchronously in the effect body
+    const timer = setTimeout(() => {
+      setUser(getStoredUser());
+    }, 0);
+    
     // Listen for storage changes from other tabs
     const handleStorage = () => {
       setUser(getStoredUser());
@@ -44,6 +56,7 @@ function useUser() {
     window.addEventListener("logout", handleLogout);
 
     return () => {
+      clearTimeout(timer);
       window.removeEventListener("storage", handleStorage);
       window.removeEventListener("login", handleLogin);
       window.removeEventListener("logout", handleLogout);
