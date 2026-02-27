@@ -34,6 +34,7 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 - [x] **Updated Home Page Domain Search** - Matched styling to domains page, replaced TLD tags with descriptive statement
 - [x] **Added Gradient Branding** - Updated logo in Navigation and Footer with gradient "host" text and half-purple/half-gradient icon
 - [x] **Updated Home Page Text** - Changed main banner to "Get Your Domain Today" and added community description text
+- [x] **Updated Pricing Page** - Changed prices to annual ($25, $144, $300/year), removed hybrid package and add-ons, made cards smaller
 
 ## Current Structure
 
