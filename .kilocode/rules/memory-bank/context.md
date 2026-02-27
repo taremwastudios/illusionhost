@@ -29,6 +29,7 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 - [x] **Database Support** - SQLite with Drizzle ORM
 - [x] **User Authentication** - Working signup/login with password hashing (bcryptjs)
 - [x] **Auth-Aware Navigation** - Login/Get Started buttons hidden when user is logged in, shows user name instead
+- [x] **Fixed Hydration Mismatch** - Navigation component now uses setTimeout to defer localStorage read until after hydration
 
 ## Current Structure
 
