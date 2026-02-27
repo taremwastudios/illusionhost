@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { login } from "@/lib/auth";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const registered = searchParams.get("registered");
@@ -109,10 +109,34 @@ export default function LoginPage() {
           </form>
           
           <p style={{ textAlign: "center", marginTop: "1.5rem", color: "var(--text-light)" }}>
-            Don&apos;t have an account? <Link href="/signup" style={{ color: "var(--primary)", textDecoration: "none" }}>Sign up</Link>
+            Don't have an account? <Link href="/signup" style={{ color: "var(--primary)", textDecoration: "none" }}>Sign up</Link>
           </p>
         </div>
       </section>
     </>
+  );
+}
+
+function LoginLoading() {
+  return (
+    <>
+      <section className="page-header">
+        <h1>Login</h1>
+        <p>Access your Illusionhost account.</p>
+      </section>
+      <section className="contact-section">
+        <div style={{ textAlign: "center", padding: "2rem" }}>
+          Loading...
+        </div>
+      </section>
+    </>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<LoginLoading />}>
+      <LoginForm />
+    </Suspense>
   );
 }
