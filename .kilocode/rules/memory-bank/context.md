@@ -18,12 +18,13 @@ Illusionhost is a full-featured domain selling service website similar to Namech
   - Home page with domain search
   - Domains page with TLD pricing
   - Hosting page with plans
-  - Pricing page
+  - Pricing page with .ai domain package ($18/mo for free .ai domain)
   - Domain transfer page
   - Contact page with form
   - Login/Signup pages
   - Shopping cart page
-  - **Email page with MX Records configuration** - new page showing DNS records for custom email
+  - Email page with MX Records configuration
+  - **Separate .ai Domain Package** - $18/month with free .ai domain for 2 years
 
 ## Current Structure
 
