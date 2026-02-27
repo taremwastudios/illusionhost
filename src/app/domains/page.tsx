@@ -190,11 +190,11 @@ export default function DomainsPage() {
                 </div>
                 <div style={{ background: "rgba(255,255,255,0.15)", padding: "1rem", borderRadius: "0.5rem" }}>
                   <div style={{ fontWeight: "700" }}>Professional — $12/mo</div>
-                  <div style={{ fontSize: "0.875rem", opacity: 0.9 }}>3 domains (any + 1 .ai)</div>
+                  <div style={{ fontSize: "0.875rem", opacity: 0.9 }}>3 domains (.com/.net/.io)</div>
                 </div>
                 <div style={{ background: "rgba(255,255,255,0.15)", padding: "1rem", borderRadius: "0.5rem" }}>
                   <div style={{ fontWeight: "700" }}>Business — $25/mo</div>
-                  <div style={{ fontSize: "0.875rem", opacity: 0.9 }}>5 domains (any + 2 .ai)</div>
+                  <div style={{ fontSize: "0.875rem", opacity: 0.9 }}>5 domains (.com/.net/.io/.app)</div>
                 </div>
               </div>
             </div>
@@ -250,7 +250,7 @@ export default function DomainsPage() {
         <div className="pricing-container">
           <div className="section-header">
             <h2>Choose Your Plan — Get FREE Domains</h2>
-            <p>The more you pay, the more premium domains you get! .ai domains are premium — only on Professional+ plans.</p>
+            <p>The more you pay, the more premium domains you get!</p>
           </div>
           
           <div className="pricing-grid">
@@ -291,7 +291,7 @@ export default function DomainsPage() {
                 <li>50 GB SSD Storage</li>
                 <li>Unlimited Bandwidth</li>
                 <li>🎁 <strong>3 Free Domains</strong></li>
-                <li style={{ color: "#059669", fontWeight: "600" }}>⭐ Includes 1 .ai domain!</li>
+                <li style={{ color: "#059669", fontWeight: "600" }}>⭐ Any TLD (.io, .app, etc.)</li>
                 <li>Any TLD (.io, .app, etc.)</li>
                 <li>Free SSL Certificate</li>
                 <li>Priority Support</li>
@@ -316,8 +316,9 @@ export default function DomainsPage() {
                 <li>200 GB SSD Storage</li>
                 <li>Unlimited Bandwidth</li>
                 <li>🎁 <strong>5 Free Domains</strong></li>
-                <li style={{ color: "#059669", fontWeight: "600" }}>⭐ Includes 2 .ai domains!</li>
-                <li>Any TLD (.io, .app, etc.)</li>
+                <li style={{ color: "#059669", fontWeight: "600" }}>⭐ Any TLD (.io, .app, etc.)</li>
+                <li>Free SSL Certificate</li>
+                <li>Priority Support</li>
                 <li>Free SSL Certificate</li>
                 <li>24/7 Phone Support</li>
                 <li>Hourly Backups</li>
@@ -351,14 +352,14 @@ export default function DomainsPage() {
           
           <div className="feature-card">
             <h3>Can I get a .ai domain for free?</h3>
-            <p>Yes! .ai domains are premium but available on Professional ($12/mo) and Business ($25/mo) plans. Professional includes 1 .ai domain, Business includes 2 .ai domains.</p>
+            <p>.ai domains are available as a separate package at $18/month with free domain for 2 years. Check our <a href="/pricing">pricing page</a> for details.</p>
           </div>
           
           <div className="feature-card">
             <h3>How many free domains can I get?</h3>
             <p><strong>Starter ($2/mo)</strong>: 1 domain (.com/.net only)<br/>
-            <strong>Professional ($12/mo)</strong>: 3 domains (any TLD + 1 .ai)<br/>
-            <strong>Business ($25/mo)</strong>: 5 domains (any TLD + 2 .ai)</p>
+            <strong>Professional ($12/mo)</strong>: 3 domains (.com/.net/.io)<br/>
+            <strong>Business ($25/mo)</strong>: 5 domains (.com/.net/.io/.app)</p>
           </div>
           
           <div className="feature-card">
