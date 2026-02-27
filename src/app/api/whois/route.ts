@@ -276,9 +276,10 @@ export async function POST(request: Request) {
     });
     
     // Check all major TLDs for recommendations (excluding user's TLD)
+    const userTldWithoutDot = userTld.replace('.', '');
     for (const t of tlds) {
       // Skip the user's TLD since we already added it
-      if (t === userTld) continue;
+      if (t === userTldWithoutDot) continue;
       
       const domainWithTld = `${cleanDomain}${t}`;
       const isTaken = isDomainLikelyTaken(cleanDomain, t);
