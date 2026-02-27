@@ -1,7 +1,5 @@
 build:
   builder: heroku/builder:22
-  buildpacks:
-    - https://github.com/oven-sh/buildpack-bun.git
 
 run:
-  command: "bun run start"
+  command: "npm run start"
