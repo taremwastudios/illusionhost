@@ -37,7 +37,6 @@ export default function Footer() {
             <ul className="footer-links">
               <li><Link href="/hosting">Web Hosting</Link></li>
               <li><Link href="/hosting">WordPress Hosting</Link></li>
-              <li><Link href="/hosting">VPS Hosting</Link></li>
               <li><Link href="/hosting">Dedicated Servers</Link></li>
               <li><Link href="/hosting">Cloud Hosting</Link></li>
             </ul>

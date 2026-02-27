@@ -13,7 +13,6 @@ export default function HostingPage() {
         "Free SSL Certificate",
         "99.9% Uptime",
         "Email Support",
-        "VPS Included (2 GB RAM, 1 vCPU)",
       ],
       popular: false,
       domains: { count: 1, premium: 0, tlds: [".com", ".net"] },
@@ -33,7 +32,6 @@ export default function HostingPage() {
         "Priority Support",
         "Daily Backups",
         "Malware Protection",
-        "VPS Included (4 GB RAM, 2 vCPUs)",
       ],
       popular: true,
       domains: { count: 3, premium: 1, tlds: ["Any TLD"] },
@@ -54,7 +52,6 @@ export default function HostingPage() {
         "Hourly Backups",
         "CDN Included",
         "Advanced DDoS Protection",
-        "VPS Included (8 GB RAM, 4 vCPUs)",
       ],
       popular: false,
       domains: { count: 5, premium: 2, tlds: ["Any TLD"] },
@@ -92,7 +89,7 @@ export default function HostingPage() {
         <div className="pricing-container">
           <div className="section-header">
             <h2>Choose Your Hosting Plan</h2>
-            <p>All plans include FREE VPS hosting! Starter: 2 GB RAM | Professional: 4 GB RAM | Business: 8 GB RAM</p>
+            <p>All plans include free domain, SSL, and 99.9% uptime guarantee.</p>
           </div>
           
           <div className="pricing-grid">
