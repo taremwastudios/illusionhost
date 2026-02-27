@@ -152,12 +152,13 @@ export default function Home() {
 
       {/* Features Section */}
       <section className="features">
-        <div className="section-header">
-          <h2>Why Choose Illusionhost?</h2>
-          <p>We provide everything you need to build and grow your online presence.</p>
-        </div>
-        
-        <div className="features-grid">
+        <div className="features-container">
+          <div className="section-header">
+            <h2>Why Choose Illusionhost?</h2>
+            <p>We provide everything you need to build and grow your online presence.</p>
+          </div>
+          
+          <div className="features-grid">
           <div className="feature-card">
             <div className="feature-icon">🚀</div>
             <h3>Lightning Fast</h3>
@@ -193,6 +194,7 @@ export default function Home() {
             <h3>Best Price Guarantee</h3>
             <p>Found a better price? We&apos;ll match it. Plus, enjoy transparent pricing with no hidden fees.</p>
           </div>
+        </div>
         </div>
       </section>
 

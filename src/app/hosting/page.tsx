@@ -118,12 +118,13 @@ export default function HostingPage() {
       </section>
 
       <section className="features">
-        <div className="section-header">
-          <h2>Why Choose Our Hosting?</h2>
-          <p>Industry-leading features and performance.</p>
-        </div>
-        
-        <div className="hosting-features">
+        <div className="features-container">
+          <div className="section-header">
+            <h2>Why Choose Our Hosting?</h2>
+            <p>Industry-leading features and performance.</p>
+          </div>
+          
+          <div className="hosting-features">
           <div className="hosting-feature">
             <div className="hosting-feature-icon">⚡</div>
             <h3>Lightning Fast</h3>
@@ -147,6 +148,7 @@ export default function HostingPage() {
             <h3>Managed</h3>
             <p>Our team handles server maintenance so you can focus on your website.</p>
           </div>
+        </div>
         </div>
       </section>
     </>
