@@ -90,7 +90,7 @@ const hybridEligibleTLDs = [".com", ".net", ".co"];
 function isDomainLikelyTaken(domain: string, tld: string): boolean {
   const fullDomain = `${domain}${tld}`.toLowerCase();
   
-  // Check known taken domains
+  // Check known taken domains - MUST include the full domain with TLD
   if (knownTakenDomains.has(fullDomain)) return true;
   
   // Check known taken .ai domains
@@ -229,96 +229,53 @@ export async function POST(request: Request) {
       isRecommendation: boolean;
     }[] = [];
     
-    // 1. First, add the exact match (user's domain + their TLD or .com)
-    const exactMatchDomain = `${cleanDomain}${targetTld}`;
-    const exactMatchTaken = isDomainLikelyTaken(cleanDomain, targetTld);
-    const exactTldInfo = tldInfo[targetTld] || { plan: "Professional ($12/mo)", premium: false };
+    // 1. Check the exact domain searched (user types: "google" - we check google.com, google.net, etc.)
+    // The search results should show the domain with ALL extensions the user might want
+    
+    // Add the primary target TLD (.com by default)
+    const primaryTld = ".com";
+    const primaryDomain = `${cleanDomain}${primaryTld}`;
+    const primaryTaken = isDomainLikelyTaken(cleanDomain, primaryTld);
     
     results.push({
-      name: exactMatchDomain,
-      available: !exactMatchTaken,
-      tld: targetTld,
-      requiredPlan: exactTldInfo.plan,
-      isPremium: exactTldInfo.premium,
-      isHybridEligible: hybridEligibleTLDs.includes(targetTld),
-      domainPrice: domainPrices[targetTld] || 19.99,
+      name: primaryDomain,
+      available: !primaryTaken,
+      tld: primaryTld,
+      requiredPlan: tldInfo[primaryTld].plan,
+      isPremium: tldInfo[primaryTld].premium,
+      isHybridEligible: hybridEligibleTLDs.includes(primaryTld),
+      domainPrice: domainPrices[primaryTld] || 12.99,
       isExactMatch: true,
       isRecommendation: false,
     });
     
-    // 2. Add the exact match with .com if different from target TLD
-    if (targetTld !== ".com") {
-      const comDomain = `${cleanDomain}.com`;
-      const comTaken = isDomainLikelyTaken(cleanDomain, ".com");
-      const comTldInfo = tldInfo[".com"] || { plan: "Starter ($2/mo)", premium: false };
+    // Check all major TLDs for the searched domain
+    for (const t of tlds) {
+      // Skip .com since we already added it
+      if (t === primaryTld) continue;
+      
+      const domainWithTld = `${cleanDomain}${t}`;
+      const isTaken = isDomainLikelyTaken(cleanDomain, t);
       
       results.push({
-        name: comDomain,
-        available: !comTaken,
-        tld: ".com",
-        requiredPlan: comTldInfo.plan,
-        isPremium: false,
-        isHybridEligible: true,
-        domainPrice: domainPrices[".com"] || 12.99,
-        isExactMatch: true,
-        isRecommendation: false,
-      });
-    }
-    
-    // 3. Generate and check recommendations
-    const recommendations = generateRecommendations(cleanDomain);
-    
-    for (const rec of recommendations) {
-      // Skip if it's already in results
-      if (results.some(r => r.name === rec)) continue;
-      
-      // Find the TLD
-      let recTld = ".com";
-      for (const t of tlds) {
-        if (rec.endsWith(t)) {
-          recTld = t;
-          break;
-        }
-      }
-      
-      const recTaken = isDomainLikelyTaken(rec.replace(recTld, ""), recTld);
-      const recTldInfo = tldInfo[recTld] || { plan: "Professional ($12/mo)", premium: false };
-      
-      results.push({
-        name: rec,
-        available: !recTaken,
-        tld: recTld,
-        requiredPlan: recTldInfo.plan,
-        isPremium: recTldInfo.premium,
-        isHybridEligible: hybridEligibleTLDs.includes(recTld),
-        domainPrice: domainPrices[recTld] || 19.99,
-        isExactMatch: false,
-        isRecommendation: true,
-      });
-    }
-    
-    // 4. Add a few more popular TLDs if not already included
-    const popularTlds = [".net", ".org", ".io", ".ai", ".app", ".dev"];
-    for (const t of popularTlds) {
-      // Skip if already in results
-      if (results.some(r => r.name === `${cleanDomain}${t}`)) continue;
-      if (results.length >= 15) break; // Limit total results
-      
-      const tldTaken = isDomainLikelyTaken(cleanDomain, t);
-      const tldInfo2 = tldInfo[t] || { plan: "Professional ($12/mo)", premium: false };
-      
-      results.push({
-        name: `${cleanDomain}${t}`,
-        available: !tldTaken,
+        name: domainWithTld,
+        available: !isTaken,
         tld: t,
-        requiredPlan: tldInfo2.plan,
-        isPremium: tldInfo2.premium,
+        requiredPlan: tldInfo[t].plan,
+        isPremium: tldInfo[t].premium,
         isHybridEligible: hybridEligibleTLDs.includes(t),
         domainPrice: domainPrices[t] || 19.99,
-        isExactMatch: false,
+        isExactMatch: t === targetTld, // Mark user's selected TLD as exact match
         isRecommendation: false,
       });
     }
+    
+    // Return all results - sorted with exact match first
+    results.sort((a, b) => {
+      if (a.isExactMatch && !b.isExactMatch) return -1;
+      if (!a.isExactMatch && b.isExactMatch) return 1;
+      return 0;
+    });
     
     return NextResponse.json({ results });
   } catch (error) {

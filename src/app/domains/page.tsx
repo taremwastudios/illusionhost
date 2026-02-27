@@ -16,7 +16,6 @@ interface DomainResult {
 
 export default function DomainsPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedTld, setSelectedTld] = useState(".com");
   const [results, setResults] = useState<DomainResult[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [showHybridModal, setShowHybridModal] = useState(false);
@@ -36,7 +35,7 @@ export default function DomainsPage() {
         },
         body: JSON.stringify({
           domain: searchQuery.trim(),
-          tld: selectedTld,
+          tld: ".com", // Default - we check all TLDs anyway
         }),
       });
 
@@ -141,9 +140,9 @@ export default function DomainsPage() {
 
       {/* Domain Search */}
       <section className="container">
-        <div className="domain-search" style={{ maxWidth: "900px", margin: "0 auto 3rem" }}>
-          <div style={{ display: "flex", gap: "0", flexWrap: "wrap" }}>
-            <div style={{ flex: "1", minWidth: "200px", position: "relative" }}>
+        <div className="domain-search" style={{ maxWidth: "100%", margin: "0 auto 3rem", padding: "0 1rem" }}>
+          <div style={{ display: "flex", gap: "0", flexWrap: "wrap", width: "100%" }}>
+            <div style={{ flex: "1", minWidth: "300px", position: "relative" }}>
               <input
                 type="text"
                 placeholder="Enter your desired domain name..."
@@ -155,39 +154,10 @@ export default function DomainsPage() {
                   borderRadius: "0",
                   height: "60px",
                   fontSize: "1.1rem",
-                  paddingRight: "140px"
+                  padding: "0 1.5rem",
+                  width: "100%"
                 }}
               />
-              <select
-                value={selectedTld}
-                onChange={(e) => setSelectedTld(e.target.value)}
-                style={{
-                  position: "absolute",
-                  right: "10px",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  border: "none",
-                  background: "transparent",
-                  fontSize: "1rem",
-                  fontWeight: "600",
-                  color: "var(--primary)",
-                  cursor: "pointer",
-                  outline: "none"
-                }}
-              >
-                <option value=".com">.com</option>
-                <option value=".net">.net</option>
-                <option value=".org">.org</option>
-                <option value=".io">.io</option>
-                <option value=".co">.co</option>
-                <option value=".ai">.ai</option>
-                <option value=".app">.app</option>
-                <option value=".dev">.dev</option>
-                <option value=".xyz">.xyz</option>
-                <option value=".online">.online</option>
-                <option value=".site">.site</option>
-                <option value=".store">.store</option>
-              </select>
             </div>
             <button 
               className="search-btn" 
@@ -195,7 +165,7 @@ export default function DomainsPage() {
               style={{ 
                 borderRadius: "0",
                 height: "60px",
-                padding: "0 2rem",
+                padding: "0 3rem",
                 fontSize: "1.1rem"
               }}
             >
@@ -207,7 +177,7 @@ export default function DomainsPage() {
         {results && (
           <div className="domain-results" style={{ maxWidth: "900px", margin: "0 auto" }}>
             <h2 style={{ textAlign: "center", marginBottom: "1.5rem", color: "var(--dark)" }}>
-              {exactMatch.some(r => r.available) ? "🎉 " : "😞 "}Domain Search Results for &quot;{searchQuery}{selectedTld}&quot;
+              Domain Search Results for &quot;{searchQuery}&quot;
             </h2>
             
             {/* Hybrid Package Info */}

@@ -19,19 +19,28 @@ export default function Home() {
     setLoading(true);
     setResults(null);
 
-    // Simulate domain search - in production this would call a domain API
-    setTimeout(() => {
-      const domain = searchQuery.toLowerCase().replace(/[^a-z0-9-]/g, "");
-      const mockResults: DomainResult[] = [
-        { name: `${domain}.com`, available: Math.random() > 0.3, price: 12.99 },
-        { name: `${domain}.net`, available: Math.random() > 0.4, price: 9.99 },
-        { name: `${domain}.org`, available: Math.random() > 0.5, price: 11.99 },
-        { name: `${domain}.io`, available: Math.random() > 0.6, price: 49.99 },
-        { name: `${domain}.app`, available: Math.random() > 0.4, price: 14.99 },
-      ];
-      setResults(mockResults);
+    try {
+      const response = await fetch("/api/whois", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          domain: searchQuery.trim(),
+          tld: ".com",
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (data.results) {
+        setResults(data.results);
+      }
+    } catch (error) {
+      console.error("Search failed:", error);
+    } finally {
       setLoading(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -47,13 +56,14 @@ export default function Home() {
             Starter ($2): .com/.net | Professional ($12): 3 domains | Business ($25): 5 domains
           </p>
           
-          <div className="domain-search">
+          <div className="domain-search" style={{ maxWidth: "100%", width: "100%" }}>
             <input
               type="text"
               placeholder="Enter your domain name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              style={{ flex: "1", minWidth: "300px" }}
             />
             <button className="search-btn" onClick={handleSearch}>
               {loading ? "Searching..." : "Search"}
@@ -77,7 +87,7 @@ export default function Home() {
         <section className="container">
           <div className="domain-results">
             <h2 style={{ textAlign: "center", marginBottom: "1.5rem", color: "var(--dark)" }}>
-              🎉 Available Domains for &quot;{searchQuery}&quot;
+              Domain Search Results for &quot;{searchQuery}&quot;
             </h2>
             
             <div style={{

@@ -109,7 +109,7 @@ function LoginForm() {
           </form>
           
           <p style={{ textAlign: "center", marginTop: "1.5rem", color: "var(--text-light)" }}>
-            Don't have an account? <Link href="/signup" style={{ color: "var(--primary)", textDecoration: "none" }}>Sign up</Link>
+            Don&apos;t have an account? <Link href="/signup" style={{ color: "var(--primary)", textDecoration: "none" }}>Sign up</Link>
           </p>
         </div>
       </section>
