@@ -60,7 +60,7 @@ export default function Home() {
               <div style={{ flex: "1", minWidth: "300px", position: "relative" }}>
                 <input
                   type="text"
-                  placeholder="Enter your domain name..."
+                  placeholder="Enter domain (e.g., mrush.net)..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSearch()}

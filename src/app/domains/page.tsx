@@ -145,7 +145,7 @@ export default function DomainsPage() {
             <div style={{ flex: "1", minWidth: "300px", position: "relative" }}>
               <input
                 type="text"
-                placeholder="Enter your desired domain name..."
+                placeholder="Enter domain (e.g., mrush.net)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}

@@ -207,14 +207,30 @@ function generateRecommendations(baseDomain: string): string[] {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { domain, tld } = body;
+    let { domain, tld } = body;
     
     if (!domain) {
       return NextResponse.json({ error: "Domain is required" }, { status: 400 });
     }
     
-    const cleanDomain = domain.toLowerCase().replace(/[^a-z0-9-]/g, "");
-    const targetTld = tld || ".com";
+    // Parse the full domain to extract name and extension
+    // User can input: "mrush.net" or just "mrush"
+    const input = domain.toLowerCase().trim();
+    
+    // Check if user included a TLD in their input
+    let cleanDomain: string;
+    let userTld: string;
+    
+    const tldMatch = input.match(/^([a-z0-9-]+)(\.([a-z]+))$/);
+    if (tldMatch) {
+      // User provided full domain like "mrush.net"
+      cleanDomain = tldMatch[1];
+      userTld = "." + tldMatch[3];
+    } else {
+      // User provided just domain name, use provided tld or default to .com
+      cleanDomain = input.replace(/[^a-z0-9-]/g, "");
+      userTld = tld || ".com";
+    }
     
     // Build results
     const results: {
@@ -229,30 +245,30 @@ export async function POST(request: Request) {
       isRecommendation: boolean;
     }[] = [];
     
-    // 1. Check the exact domain searched (user types: "google" - we check google.com, google.net, etc.)
-    // The search results should show the domain with ALL extensions the user might want
+    // Check the user's exact domain first
+    const userDomainFull = `${cleanDomain}${userTld}`;
+    const userDomainTaken = isDomainLikelyTaken(cleanDomain, userTld);
     
-    // Add the primary target TLD (.com by default)
-    const primaryTld = ".com";
-    const primaryDomain = `${cleanDomain}${primaryTld}`;
-    const primaryTaken = isDomainLikelyTaken(cleanDomain, primaryTld);
+    // Determine price - if TLD is unknown, use a default price
+    const userPrice = domainPrices[userTld] || 19.99;
+    const userTldInfo = tldInfo[userTld] || { plan: "Professional ($12/mo)", premium: false };
     
     results.push({
-      name: primaryDomain,
-      available: !primaryTaken,
-      tld: primaryTld,
-      requiredPlan: tldInfo[primaryTld].plan,
-      isPremium: tldInfo[primaryTld].premium,
-      isHybridEligible: hybridEligibleTLDs.includes(primaryTld),
-      domainPrice: domainPrices[primaryTld] || 12.99,
+      name: userDomainFull,
+      available: !userDomainTaken,
+      tld: userTld,
+      requiredPlan: userTldInfo.plan,
+      isPremium: userTldInfo.premium,
+      isHybridEligible: hybridEligibleTLDs.includes(userTld),
+      domainPrice: userPrice,
       isExactMatch: true,
       isRecommendation: false,
     });
     
-    // Check all major TLDs for the searched domain
+    // Check all major TLDs for recommendations (excluding user's TLD)
     for (const t of tlds) {
-      // Skip .com since we already added it
-      if (t === primaryTld) continue;
+      // Skip the user's TLD since we already added it
+      if (t === userTld) continue;
       
       const domainWithTld = `${cleanDomain}${t}`;
       const isTaken = isDomainLikelyTaken(cleanDomain, t);
@@ -265,17 +281,10 @@ export async function POST(request: Request) {
         isPremium: tldInfo[t].premium,
         isHybridEligible: hybridEligibleTLDs.includes(t),
         domainPrice: domainPrices[t] || 19.99,
-        isExactMatch: t === targetTld, // Mark user's selected TLD as exact match
-        isRecommendation: false,
+        isExactMatch: false,
+        isRecommendation: true,
       });
     }
-    
-    // Return all results - sorted with exact match first
-    results.sort((a, b) => {
-      if (a.isExactMatch && !b.isExactMatch) return -1;
-      if (!a.isExactMatch && b.isExactMatch) return 1;
-      return 0;
-    });
     
     return NextResponse.json({ results });
   } catch (error) {
