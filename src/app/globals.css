@@ -411,6 +411,7 @@ body {
   transition: all 0.3s;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .pricing-card.featured {
