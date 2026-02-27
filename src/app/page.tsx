@@ -92,8 +92,8 @@ export default function Home() {
             </div>
           </div>
 
-          <p style={{ marginTop: "1rem", color: "var(--text-light)", fontSize: "1rem" }}>
-            Quickly type your desired domain and we&apos;ll find it for you
+          <p style={{ marginTop: "1rem", background: "linear-gradient(135deg, #a78bfa 0%, #f59e0b 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", fontSize: "1.1rem", fontWeight: "600" }}>
+            Get your domain for free
           </p>
         </div>
       </section>

@@ -7,8 +7,18 @@ export default function Footer() {
         <div className="footer-grid">
           <div className="footer-brand">
             <Link href="/" className="footer-logo">
-              <span className="logo-icon">◇</span>
-              <span className="logo-text">Illusionhost</span>
+              <span 
+                className="logo-icon" 
+                style={{
+                  background: "linear-gradient(135deg, #8b5cf6 50%, #f59e0b 50%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text"
+                }}
+              >◇</span>
+              <span className="logo-text">
+                Illusion<span style={{ background: "linear-gradient(135deg, #a78bfa 0%, #f59e0b 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>host</span>
+              </span>
             </Link>
             <p className="footer-desc">
               Premium domain names and web hosting services. Build your online presence with confidence.

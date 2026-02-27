@@ -75,8 +75,18 @@ export default function Navigation() {
     <nav className="navbar">
       <div className="nav-container">
         <Link href="/" className="logo">
-          <span className="logo-icon">◇</span>
-          <span className="logo-text">Illusionhost</span>
+          <span 
+            className="logo-icon" 
+            style={{
+              background: "linear-gradient(135deg, #8b5cf6 50%, #f59e0b 50%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text"
+            }}
+          >◇</span>
+          <span className="logo-text">
+            Illusion<span style={{ background: "linear-gradient(135deg, #a78bfa 0%, #f59e0b 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>host</span>
+          </span>
         </Link>
 
         <button 
