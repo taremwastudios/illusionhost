@@ -19,6 +19,7 @@ export default function SignupPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    console.log("Submitting form with:", { name: formData.name, email: formData.email });
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
@@ -32,12 +33,20 @@ export default function SignupPage() {
 
     setLoading(true);
 
-    const result = await signup(formData.name, formData.email, formData.password);
+    try {
+      console.log("Calling signup server action...");
+      const result = await signup(formData.name, formData.email, formData.password);
+      console.log("Signup result:", result);
 
-    if (result.success) {
-      router.push("/login?registered=true");
-    } else {
-      setError(result.error || "Failed to create account");
+      if (result.success) {
+        router.push("/login?registered=true");
+      } else {
+        setError(result.error || "Failed to create account");
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error("Signup exception:", err);
+      setError("An unexpected error occurred. Check console for details.");
       setLoading(false);
     }
   };

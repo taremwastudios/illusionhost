@@ -15,6 +15,7 @@ export async function signup(
   email: string,
   password: string
 ): Promise<AuthResult> {
+  console.log("[signup] Received request for:", email);
   try {
     // Check if user already exists
     const existingUser = await db
@@ -23,12 +24,15 @@ export async function signup(
       .where(eq(users.email, email))
       .limit(1);
 
+    console.log("[signup] Existing user check:", existingUser.length > 0 ? "found" : "none");
+
     if (existingUser.length > 0) {
       return { success: false, error: "An account with this email already exists" };
     }
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log("[signup] Password hashed successfully");
 
     // Create the user
     await db.insert(users).values({
@@ -37,9 +41,10 @@ export async function signup(
       password: hashedPassword,
     });
 
+    console.log("[signup] User created successfully!");
     return { success: true };
   } catch (error) {
-    console.error("Signup error:", error);
+    console.error("[signup] Error:", error);
     return { success: false, error: "Failed to create account" };
   }
 }
