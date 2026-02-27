@@ -30,6 +30,8 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 - [x] **User Authentication** - Working signup/login with password hashing (bcryptjs)
 - [x] **Auth-Aware Navigation** - Login/Get Started buttons hidden when user is logged in, shows user name instead
 - [x] **Fixed Hydration Mismatch** - Navigation component now uses setTimeout to defer localStorage read until after hydration
+- [x] **Reduced Pricing Card Sizes** - Changed grid minmax from 320px to 240px, reduced padding and border-radius
+- [x] **Updated Home Page Domain Search** - Matched styling to domains page, replaced TLD tags with descriptive statement
 
 ## Current Structure
 
