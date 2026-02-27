@@ -42,6 +42,7 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 - [x] **Centered Transfer Page Cards** - Fixed grid layout to center cards in "How Domain Transfer Works" section
 - [x] **Mock Payment System** - Added cart functionality with add-to-cart on domains and hosting pages
 - [x] **User Dashboard** - Complete account page with domain management, DNS settings, site builder, and VPS management
+- [x] **Koyeb Deployment** - Added Procfile and .koyeb.yaml for Bun-based deployment
 
 ## Current Structure
 
@@ -66,10 +67,12 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 | `src/components/Navigation.tsx` | Navigation component | ✅ Complete |
 | `src/components/Footer.tsx` | Footer component | ✅ Complete |
 | `.env.example` | Environment variables template | ✅ Complete |
+| `Procfile` | Koyeb deployment entry point | ✅ Complete |
+| `.koyeb.yaml` | Koyeb build configuration | ✅ Complete |
 
 ## Current Focus
 
-The Illusionhost domain selling service website is complete. The website includes:
+The Illusionhost domain selling service website is complete and configured for deployment on Koyeb with Bun support.
 
 1. **Domain Search** - Interactive domain availability checker with vertical display, exact match first, real-looking results
 2. **Domain Pricing** - Table showing registration and renewal prices for various TLDs
