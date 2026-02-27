@@ -26,6 +26,8 @@ Illusionhost is a full-featured domain selling service website similar to Namech
   - Email page with MX Records configuration
   - **Separate .ai Domain Package** - $18/month with free .ai domain for 2 years
   - **VPS Hosting Included** - All 3 plans (Starter/Professional/Business) now include VPS by default
+- [x] **Database Support** - SQLite with Drizzle ORM
+- [x] **User Authentication** - Working signup/login with password hashing (bcryptjs)
 
 ## Current Structure
 
@@ -98,8 +100,6 @@ Optional integrations (for production):
 
 - [ ] Connect to real domain registration API
 - [ ] Add payment processing
-- [ ] Add user authentication system
-- [ ] Add database for orders/customers
 - [ ] Add email notifications
 
 ## Session History
@@ -108,3 +108,4 @@ Optional integrations (for production):
 |------|---------|
 | Initial | Template created with base setup |
 | 2026-02-26 | Built Illusionhost domain selling service with all pages |
+| 2026-02-27 | Added database support and user authentication |
