@@ -1,4 +1,26 @@
+"use client";
+
+import { useState } from "react";
+import { useCart, CartItemType } from "@/lib/cart";
+import Link from "next/link";
+
 export default function HostingPage() {
+  const [addedPlans, setAddedPlans] = useState<Set<string>>(new Set());
+  const { addItem } = useCart();
+
+  const handleAddToCart = (plan: { name: string; price: number; description: string }) => {
+    const item: CartItemType = {
+      id: `hosting-${plan.name.toLowerCase().replace(/\s+/g, "-")}`,
+      name: plan.name,
+      type: "hosting",
+      price: plan.price,
+      period: "per year",
+      details: plan.description
+    };
+    addItem(item);
+    setAddedPlans(prev => new Set(prev).add(plan.name));
+  };
+
   const hostingPlans = [
     {
       name: "Starter Hosting",
@@ -94,6 +116,7 @@ export default function HostingPage() {
           <div className="pricing-grid">
             {hostingPlans.map((plan, index) => (
               <div key={index} className={`pricing-card ${plan.popular ? 'featured' : ''}`}>
+                {plan.popular && <div className="popular-badge">Most Popular</div>}
                 <div className="pricing-header">
                   <h3 className="pricing-name">{plan.name}</h3>
                   <p style={{ color: "var(--text-light)", marginBottom: "1rem" }}>{plan.description}</p>
@@ -108,9 +131,19 @@ export default function HostingPage() {
                     <li key={i}>{feature}</li>
                   ))}
                 </ul>
-                <a href="/signup" className={`pricing-btn ${plan.popular ? 'primary' : 'secondary'}`}>
-                  Get Started
-                </a>
+                {addedPlans.has(plan.name) ? (
+                  <Link href="/cart" className={`pricing-btn ${plan.popular ? 'primary' : 'secondary'}`}>
+                    ✓ View in Cart
+                  </Link>
+                ) : (
+                  <button 
+                    onClick={() => handleAddToCart(plan)}
+                    className={`pricing-btn ${plan.popular ? 'primary' : 'secondary'}`}
+                    style={{ width: "100%", textAlign: "center" }}
+                  >
+                    Add to Cart
+                  </button>
+                )}
               </div>
             ))}
           </div>

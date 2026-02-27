@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import CartButton from "@/components/CartButton";
 
 interface User {
   id: number;
@@ -103,13 +104,10 @@ export default function Navigation() {
           <Link href="/pricing" className="nav-link">Pricing</Link>
           <Link href="/transfer" className="nav-link">Transfer</Link>
           <Link href="/contact" className="nav-link">Contact</Link>
-          <Link href="/cart" className="nav-link cart-link">
-            <span className="cart-icon">🛒</span>
-            <span className="cart-badge">0</span>
-          </Link>
+          <CartButton />
           {isLoggedIn && user ? (
             <Link href="/account" className="nav-btn-secondary">
-              {user.name || user.email}
+              Dashboard
             </Link>
           ) : (
             <>

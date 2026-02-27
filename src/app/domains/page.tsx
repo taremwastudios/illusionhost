@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useCart, CartItemType } from "@/lib/cart";
 
 interface DomainResult {
   name: string;
@@ -19,6 +20,21 @@ export default function DomainsPage() {
   const [results, setResults] = useState<DomainResult[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { addItem } = useCart();
+  const [addedDomains, setAddedDomains] = useState<Set<string>>(new Set());
+
+  const handleAddToCart = (result: DomainResult) => {
+    const item: CartItemType = {
+      id: `domain-${result.name}`,
+      name: result.name,
+      type: "domain",
+      price: result.domainPrice,
+      period: "per year",
+      details: "Domain Registration"
+    };
+    addItem(item);
+    setAddedDomains(prev => new Set(prev).add(result.name));
+  };
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
@@ -231,22 +247,41 @@ export default function DomainsPage() {
                           ${result.domainPrice}/yr
                         </span>
                         
-                        <a 
-                          href="/hosting" 
-                          style={{ 
-                            padding: "0.75rem 1.5rem",
-                            background: "var(--primary)",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "0.5rem",
-                            fontWeight: "600",
-                            cursor: "pointer",
-                            textDecoration: "none",
-                            textAlign: "center"
-                          }}
-                        >
-                          Buy Domain
-                        </a>
+                        {addedDomains.has(result.name) ? (
+                          <button 
+                            style={{ 
+                              padding: "0.75rem 1.5rem",
+                              background: "#10b981",
+                              color: "white",
+                              border: "none",
+                              borderRadius: "0.5rem",
+                              fontWeight: "600",
+                              cursor: "pointer",
+                              textDecoration: "none",
+                              textAlign: "center"
+                            }}
+                            onClick={() => {}}
+                          >
+                            ✓ Added to Cart
+                          </button>
+                        ) : (
+                          <button 
+                            style={{ 
+                              padding: "0.75rem 1.5rem",
+                              background: "var(--primary)",
+                              color: "white",
+                              border: "none",
+                              borderRadius: "0.5rem",
+                              fontWeight: "600",
+                              cursor: "pointer",
+                              textDecoration: "none",
+                              textAlign: "center"
+                            }}
+                            onClick={() => handleAddToCart(result)}
+                          >
+                            Add to Cart
+                          </button>
+                        )}
                       </>
                     )}
                   </div>

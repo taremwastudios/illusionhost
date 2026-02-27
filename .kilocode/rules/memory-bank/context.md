@@ -39,6 +39,9 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 - [x] **Removed Email from Navigation** - Email link removed from navbar (will add after domain purchase)
 - [x] **Added TLD Validation** - Invalid domain extensions now show error message with supported list (.com, .net, .org, .io, .co, .app, .dev, .xyz, .online, .site, .store, .ai)
 - [x] **Updated Home Page Headline** - Changed "Free Domains for Students" to "The Domain Powerhouse" with gradient on "Powerhouse"
+- [x] **Centered Transfer Page Cards** - Fixed grid layout to center cards in "How Domain Transfer Works" section
+- [x] **Mock Payment System** - Added cart functionality with add-to-cart on domains and hosting pages
+- [x] **User Dashboard** - Complete account page with domain management, DNS settings, site builder, and VPS management
 
 ## Current Structure
 
@@ -55,7 +58,11 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 | `src/app/contact/page.tsx` | Contact form | ✅ Complete |
 | `src/app/login/page.tsx` | Login page | ✅ Complete |
 | `src/app/signup/page.tsx` | Signup page | ✅ Complete |
-| `src/app/cart/page.tsx` | Shopping cart | ✅ Complete |
+| `src/app/cart/page.tsx` | Shopping cart with checkout | ✅ Complete |
+| `src/app/account/page.tsx` | User dashboard with DNS, site builder, VPS | ✅ Complete |
+| `src/lib/cart.tsx` | Cart state management | ✅ Complete |
+| `src/components/Providers.tsx` | React context providers | ✅ Complete |
+| `src/components/CartButton.tsx` | Cart icon with badge | ✅ Complete |
 | `src/components/Navigation.tsx` | Navigation component | ✅ Complete |
 | `src/components/Footer.tsx` | Footer component | ✅ Complete |
 | `.env.example` | Environment variables template | ✅ Complete |
@@ -71,6 +78,11 @@ The Illusionhost domain selling service website is complete. The website include
 5. **Domain Transfer** - Transfer eligibility checker
 6. **Contact Form** - Working contact form with submission state
 7. **User Authentication** - Login and signup pages
+8. **Shopping Cart** - Add domains/hosting to cart, checkout flow with mock payment
+9. **User Dashboard** - Manage purchased domains and services
+10. **DNS Management** - Add/edit A, AAAA, CNAME, MX, TXT, NS records
+11. **Site Builder** - 50+ templates preview (mock)
+12. **VPS Management** - Provision and manage VPS (mock)
 
 ## Quick Start Guide
 
@@ -111,8 +123,10 @@ Optional integrations (for production):
 ## Pending Improvements
 
 - [x] Enhanced Domain Search - Vertical display with exact match first, real-looking WHOIS results via API
+- [x] Mock Payment System - Add to cart, checkout flow, save purchased items
+- [x] User Dashboard - Domain/hosting management, DNS settings, site builder, VPS
 - [ ] Add real WHOIS API integration
-- [ ] Add payment processing
+- [ ] Add real payment processing
 - [ ] Add email notifications
 
 ## Session History
@@ -125,3 +139,4 @@ Optional integrations (for production):
 | 2026-02-27 | Enhanced domain search with vertical display, exact match first, and real-looking results |
 | 2026-02-27 | Updated branding with gradient logos and home page text |
 | 2026-02-27 | Updated home page banner to "Get Your Domain Today" with community description |
+| 2026-02-27 | Added mock payment system and user dashboard with DNS, site builder, VPS |
