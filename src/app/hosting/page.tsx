@@ -100,7 +100,7 @@ export default function HostingPage() {
                   <div className="pricing-price">
                     <span className="pricing-currency">$</span>
                     <span className="pricing-amount">{plan.price}</span>
-                    <span className="pricing-period">/month</span>
+                    <span className="pricing-period">/year</span>
                   </div>
                 </div>
                 <ul className="pricing-features">
