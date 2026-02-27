@@ -2,18 +2,44 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { signup } from "@/lib/auth";
 
 export default function SignupPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle signup
+    setError("");
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+
+    setLoading(true);
+
+    const result = await signup(formData.name, formData.email, formData.password);
+
+    if (result.success) {
+      router.push("/login?registered=true");
+    } else {
+      setError(result.error || "Failed to create account");
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +59,20 @@ export default function SignupPage() {
       <section className="contact-section">
         <div className="contact-form">
           <form onSubmit={handleSubmit}>
+            {error && (
+              <div style={{
+                padding: "0.75rem",
+                marginBottom: "1rem",
+                backgroundColor: "rgba(239, 68, 68, 0.1)",
+                border: "1px solid #ef4444",
+                borderRadius: "0.5rem",
+                color: "#ef4444",
+                fontSize: "0.875rem"
+              }}>
+                {error}
+              </div>
+            )}
+            
             <div className="form-group">
               <label htmlFor="name">Full Name</label>
               <input
@@ -94,8 +134,8 @@ export default function SignupPage() {
               </label>
             </div>
             
-            <button type="submit" className="submit-btn">
-              Create Account
+            <button type="submit" className="submit-btn" disabled={loading}>
+              {loading ? "Creating Account..." : "Create Account"}
             </button>
           </form>
           
