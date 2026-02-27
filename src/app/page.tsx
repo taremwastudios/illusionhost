@@ -57,17 +57,39 @@ export default function Home() {
           </p>
           
           <div className="domain-search" style={{ maxWidth: "100%", width: "100%" }}>
-            <input
-              type="text"
-              placeholder="Enter your domain name..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              style={{ flex: "1", minWidth: "300px" }}
-            />
-            <button className="search-btn" onClick={handleSearch}>
-              {loading ? "Searching..." : "Search"}
-            </button>
+            <div style={{ display: "flex", gap: "0", flexWrap: "wrap", width: "100%" }}>
+              <div style={{ flex: "1", minWidth: "300px", position: "relative" }}>
+                <input
+                  type="text"
+                  placeholder="Enter your domain name..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                  style={{ 
+                    flex: "1", 
+                    minWidth: "300px",
+                    border: "none", 
+                    borderRadius: "0",
+                    height: "60px",
+                    fontSize: "1.1rem",
+                    padding: "0 1.5rem",
+                    width: "100%"
+                  }}
+                />
+              </div>
+              <button 
+                className="search-btn" 
+                onClick={handleSearch}
+                style={{ 
+                  borderRadius: "0",
+                  height: "60px",
+                  padding: "0 3rem",
+                  fontSize: "1.1rem"
+                }}
+              >
+                {loading ? "Searching..." : "Search"}
+              </button>
+            </div>
           </div>
 
           <div className="tld-tags">
