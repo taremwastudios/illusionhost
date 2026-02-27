@@ -102,7 +102,6 @@ export default function Navigation() {
           <Link href="/hosting" className="nav-link">Hosting</Link>
           <Link href="/pricing" className="nav-link">Pricing</Link>
           <Link href="/transfer" className="nav-link">Transfer</Link>
-          <Link href="/email" className="nav-link">Email</Link>
           <Link href="/contact" className="nav-link">Contact</Link>
           <Link href="/cart" className="nav-link cart-link">
             <span className="cart-icon">🛒</span>
