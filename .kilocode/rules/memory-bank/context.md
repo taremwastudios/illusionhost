@@ -28,6 +28,7 @@ Illusionhost is a full-featured domain selling service website similar to Namech
   - **VPS Hosting Included** - All 3 plans (Starter/Professional/Business) now include VPS by default
 - [x] **Database Support** - SQLite with Drizzle ORM
 - [x] **User Authentication** - Working signup/login with password hashing (bcryptjs)
+- [x] **Auth-Aware Navigation** - Login/Get Started buttons hidden when user is logged in, shows user name instead
 
 ## Current Structure
 
