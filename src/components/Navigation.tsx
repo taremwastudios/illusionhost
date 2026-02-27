@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore, useMemo } from "react";
 
 interface User {
   id: number;
@@ -23,24 +23,39 @@ function getUserFromStorage() {
   return null;
 }
 
-const userStore = {
-  getSnapshot: () => getUserFromStorage(),
-  getServerSnapshot: () => null,
-  subscribe: (callback: () => void) => {
-    window.addEventListener("storage", callback);
-    window.addEventListener("login", callback);
-    window.addEventListener("logout", callback);
-    return () => {
-      window.removeEventListener("storage", callback);
-      window.removeEventListener("login", callback);
-      window.removeEventListener("logout", callback);
-    };
-  },
-};
+// Create a stable snapshot using useMemo
+function useUserSnapshot() {
+  return useSyncExternalStore(
+    (callback) => {
+      window.addEventListener("storage", callback);
+      window.addEventListener("login", callback);
+      window.addEventListener("logout", callback);
+      return () => {
+        window.removeEventListener("storage", callback);
+        window.removeEventListener("login", callback);
+        window.removeEventListener("logout", callback);
+      };
+    },
+    () => {
+      // Cache the result to avoid infinite loop
+      if (typeof window === "undefined") return null;
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        try {
+          return JSON.parse(storedUser) as User;
+        } catch {
+          return null;
+        }
+      }
+      return null;
+    },
+    () => null
+  );
+}
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const user = useSyncExternalStore(userStore.subscribe, userStore.getSnapshot, userStore.getServerSnapshot);
+  const user = useUserSnapshot();
   const isLoggedIn = user !== null;
 
   return (
