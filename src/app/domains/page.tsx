@@ -200,15 +200,15 @@ export default function DomainsPage() {
                 }}>
                   <div style={{ background: "rgba(255,255,255,0.15)", padding: "1rem", borderRadius: "0.5rem" }}>
                     <div style={{ fontWeight: "700" }}>Domain + Starter</div>
-                    <div style={{ fontSize: "0.875rem", opacity: 0.9 }}>$12.99/mo (save $6)</div>
+                    <div style={{ fontSize: "0.875rem", opacity: 0.9 }}>$36/year (save $12)</div>
                   </div>
                   <div style={{ background: "rgba(255,255,255,0.15)", padding: "1rem", borderRadius: "0.5rem" }}>
                     <div style={{ fontWeight: "700" }}>Domain + Professional</div>
-                    <div style={{ fontSize: "0.875rem", opacity: 0.9 }}>$24.99/mo (save $12)</div>
+                    <div style={{ fontSize: "0.875rem", opacity: 0.9 }}>$169/year (save $24)</div>
                   </div>
                   <div style={{ background: "rgba(255,255,255,0.15)", padding: "1rem", borderRadius: "0.5rem" }}>
                     <div style={{ fontWeight: "700" }}>Domain + Business</div>
-                    <div style={{ fontSize: "0.875rem", opacity: 0.9 }}>$32.49/mo (save $12.50)</div>
+                    <div style={{ fontSize: "0.875rem", opacity: 0.9 }}>$425/year (save $25)</div>
                   </div>
                 </div>
               </div>

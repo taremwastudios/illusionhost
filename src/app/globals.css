@@ -50,7 +50,7 @@ body {
 }
 
 .nav-container {
-  max-width: 1400px;
+  width: 100%;
   margin: 0 auto;
   padding: 1rem 2rem;
   display: flex;
@@ -404,12 +404,16 @@ body {
   padding: 1rem;
   border: 2px solid var(--border);
   transition: all 0.3s;
-  position: relative;
   display: flex;
   flex-direction: column;
 }
 
-.pricing-card::before {
+.pricing-card.featured {
+  border-color: var(--primary);
+  box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.25);
+}
+
+.pricing-card.featured::before {
   content: '';
   position: absolute;
   inset: -2px;
@@ -421,11 +425,6 @@ body {
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
-}
-
-.pricing-card.featured {
-  border-color: var(--primary);
-  box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.25);
 }
 
 .pricing-card.featured::after {
@@ -717,7 +716,7 @@ body {
 }
 
 .footer-container {
-  max-width: 1400px;
+  width: 100%;
   margin: 0 auto;
 }
 
