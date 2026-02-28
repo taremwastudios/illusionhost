@@ -281,7 +281,7 @@ export async function POST(request: Request) {
       // Skip the user's TLD since we already added it
       if (t === userTldWithoutDot) continue;
       
-      const domainWithTld = `${cleanDomain}${t}`;
+      const domainWithTld = `${cleanDomain}.${t}`;
       const isTaken = isDomainLikelyTaken(cleanDomain, t);
       
       const tldWithDot = "." + t;
