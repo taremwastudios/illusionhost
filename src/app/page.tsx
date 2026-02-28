@@ -18,12 +18,14 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<DomainResult[] | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
     
     setLoading(true);
     setResults(null);
+    setError(null);
 
     try {
       const response = await fetch("/api/whois", {
@@ -39,11 +41,17 @@ export default function Home() {
 
       const data = await response.json();
       
+      if (data.error) {
+        setError(data.error);
+        return;
+      }
+      
       if (data.results) {
         setResults(data.results);
       }
     } catch (error) {
       console.error("Search failed:", error);
+      setError("Failed to search. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -96,6 +104,20 @@ export default function Home() {
               </button>
             </div>
           </div>
+
+          {error && (
+            <div style={{
+              maxWidth: "600px",
+              margin: "1rem auto",
+              padding: "1rem",
+              background: "#fef2f2",
+              border: "2px solid #ef4444",
+              borderRadius: "0.5rem",
+              textAlign: "center"
+            }}>
+              <p style={{ color: "#dc2626", margin: 0 }}>{error}</p>
+            </div>
+          )}
 
           <p style={{ marginTop: "1rem", fontSize: "1rem", color: "#9ca3af", maxWidth: "600px", margin: "1rem auto 0", lineHeight: "1.6" }}>
             We are a dedicated community that hopes to solve your business troubles, with a domain, hosting, multiple websites, dedicated website builder, large uptime, auto backup and a lot more, come join the illusion family trusted by thousands of users
