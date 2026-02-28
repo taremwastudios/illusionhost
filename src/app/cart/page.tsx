@@ -10,6 +10,8 @@ interface User {
   email: string;
 }
 
+type PaymentMethod = "card" | "crypto";
+
 // Hosting plan free domain quotas
 const HOSTING_QUOTAS: Record<string, number> = {
   "Starter Hosting": 1,
@@ -25,6 +27,8 @@ export default function CartPage() {
   const [user, setUser] = useState<User | null>(null);
   const [hostingPlan, setHostingPlan] = useState<string | null>(null);
   const [domainError, setDomainError] = useState<string | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   // Get user's purchased items to check for hosting plan
   useEffect(() => {
@@ -86,7 +90,54 @@ export default function CartPage() {
     
     setIsProcessing(true);
     setDomainError(null);
+    setPaymentError(null);
     
+    // If paying with crypto, use NOWPayments
+    if (paymentMethod === "crypto") {
+      try {
+        const orderTotal = domainsWithHosting ? totalWithFreeDomains : total;
+        
+        if (orderTotal <= 0) {
+          // Free order - process immediately
+          await processFreeOrder();
+          return;
+        }
+        
+        const response = await fetch("/api/payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ items, user }),
+        });
+        
+        const paymentData = await response.json();
+        
+        if (paymentData.mockPayment) {
+          // Mock payment for demo
+          console.log("Mock crypto payment:", paymentData);
+          await processFreeOrder();
+          return;
+        }
+        
+        if (paymentData.success && paymentData.payUrl) {
+          // Redirect to crypto payment
+          window.location.href = paymentData.payUrl;
+          return;
+        } else {
+          throw new Error(paymentData.error || "Failed to create payment");
+        }
+      } catch (error: any) {
+        console.error("Crypto payment error:", error);
+        setPaymentError(error.message || "Payment failed. Please try again.");
+        setIsProcessing(false);
+        return;
+      }
+    }
+    
+    // Credit card payment (original flow)
+    await processFreeOrder();
+  };
+  
+  const processFreeOrder = async () => {
     // Simulate payment processing
     await new Promise(resolve => setTimeout(resolve, 2000));
     
@@ -245,7 +296,7 @@ export default function CartPage() {
                   <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
                     <div style={{ textAlign: "right" }}>
                       <div style={{ fontWeight: "600", color: isWithinQuota ? "#10b981" : "var(--dark)" }}>
-                        {isWithinQuota ? "FREE" : `${item.price}`}
+                        {isWithinQuota ? "FREE" : `$${item.price}`}
                       </div>
                       <div style={{ fontSize: "0.75rem", color: "var(--text-light)" }}>{item.period}</div>
                     </div>
@@ -358,13 +409,81 @@ export default function CartPage() {
               </div>
             )}
 
+            {/* Payment Method Selection */}
+            <div style={{ marginBottom: "1.5rem", paddingBottom: "1.5rem", borderBottom: "1px solid #eee" }}>
+              <p style={{ fontSize: "0.875rem", fontWeight: "600", color: "var(--dark)", marginBottom: "0.75rem" }}>
+                Payment Method:
+              </p>
+              <div style={{ display: "flex", gap: "0.75rem" }}>
+                <button
+                  onClick={() => setPaymentMethod("card")}
+                  style={{
+                    flex: 1,
+                    padding: "0.75rem",
+                    border: paymentMethod === "card" ? "2px solid var(--primary)" : "2px solid #e5e7eb",
+                    borderRadius: "0.5rem",
+                    background: paymentMethod === "card" ? "#f0f9ff" : "white",
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                  }}
+                >
+                  <div style={{ fontSize: "1.5rem", marginBottom: "0.25rem" }}>💳</div>
+                  <div style={{ fontSize: "0.75rem", fontWeight: "600", color: paymentMethod === "card" ? "var(--primary)" : "var(--dark)" }}>Credit Card</div>
+                </button>
+                <button
+                  onClick={() => setPaymentMethod("crypto")}
+                  style={{
+                    flex: 1,
+                    padding: "0.75rem",
+                    border: paymentMethod === "crypto" ? "2px solid #f97316" : "2px solid #e5e7eb",
+                    borderRadius: "0.5rem",
+                    background: paymentMethod === "crypto" ? "#fff7ed" : "white",
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                  }}
+                >
+                  <div style={{ fontSize: "1.5rem", marginBottom: "0.25rem" }}>₿</div>
+                  <div style={{ fontSize: "0.75rem", fontWeight: "600", color: paymentMethod === "crypto" ? "#f97316" : "var(--dark)" }}>Crypto</div>
+                </button>
+              </div>
+              
+              {/* Crypto payment info */}
+              {paymentMethod === "crypto" && (
+                <div style={{ 
+                  background: "#fff7ed", 
+                  padding: "0.75rem", 
+                  borderRadius: "0.5rem", 
+                  marginTop: "0.75rem",
+                  fontSize: "0.75rem",
+                  color: "#9a3412"
+                }}>
+                  <div style={{ fontWeight: "600", marginBottom: "0.25rem" }}>Pay with Cryptocurrency</div>
+                  <div>Pay with USDT, BTC, ETH, and 50+ other cryptocurrencies via NOWPayments</div>
+                </div>
+              )}
+              
+              {/* Payment error */}
+              {paymentError && (
+                <div style={{ 
+                  background: "#fef2f2", 
+                  padding: "0.75rem", 
+                  borderRadius: "0.5rem", 
+                  marginTop: "0.75rem",
+                  fontSize: "0.875rem",
+                  color: "#dc2626"
+                }}>
+                  ⚠️ {paymentError}
+                </div>
+              )}
+            </div>
+
             <button
               onClick={handleCheckout}
               disabled={isProcessing || !user}
               style={{
                 width: "100%",
                 padding: "1rem",
-                background: user ? "var(--primary)" : "#9ca3af",
+                background: user ? (paymentMethod === "crypto" ? "#f97316" : "var(--primary)") : "#9ca3af",
                 color: "white",
                 border: "none",
                 borderRadius: "0.5rem",
@@ -381,16 +500,16 @@ export default function CartPage() {
               {isProcessing ? (
                 <>
                   <span style={{ animation: "spin 1s linear infinite" }}>⏳</span>
-                  Processing...
+                  {paymentMethod === "crypto" ? "Processing Crypto Payment..." : "Processing..."}
                 </>
               ) : (
-                "Complete Purchase"
+                paymentMethod === "crypto" ? "Pay with Crypto" : "Complete Purchase"
               )}
             </button>
 
             <div style={{ marginTop: "1rem", textAlign: "center" }}>
               <p style={{ fontSize: "0.75rem", color: "var(--text-light)" }}>
-                🔒 Secure checkout - 30-day money back guarantee
+                {paymentMethod === "crypto" ? "🔒 Secure crypto payment via NOWPayments" : "🔒 Secure checkout - 30-day money back guarantee"}
               </p>
             </div>
 
@@ -399,7 +518,18 @@ export default function CartPage() {
                 Accepted payment methods:
               </p>
               <div style={{ display: "flex", gap: "0.5rem", fontSize: "1.5rem" }}>
-                💳 💵 🏦
+                {paymentMethod === "crypto" ? (
+                  <>
+                    <span title="Bitcoin">₿</span>
+                    <span title="Ethereum">Ξ</span>
+                    <span title="USDT">₮</span>
+                    <span style={{ fontSize: "0.75rem", color: "var(--text-light)", alignSelf: "center" }}>+ more</span>
+                  </>
+                ) : (
+                  <>
+                    💳 💵 🏦
+                  </>
+                )}
               </div>
             </div>
           </div>

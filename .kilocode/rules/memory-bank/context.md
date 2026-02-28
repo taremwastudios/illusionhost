@@ -47,6 +47,7 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 - [x] **Demo Mode Auth** - Auth works without DB credentials using in-memory storage when DB_URL is not set
 - [x] **Fixed Login Event** - Navigation now updates immediately after login to show Dashboard button
 - [x] **Hosting-Required Domain Checkout** - Domains require a hosting plan; free domains based on plan (Starter=1, Professional=3, Business=5)
+- [x] **NOWPayments Integration** - Added cryptocurrency payment option via NOWPayments (USDT, BTC, ETH, and 50+ more)
 
 ## Current Structure
 
@@ -70,7 +71,9 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 | `src/components/CartButton.tsx` | Cart icon with badge | ✅ Complete |
 | `src/components/Navigation.tsx` | Navigation component | ✅ Complete |
 | `src/components/Footer.tsx` | Footer component | ✅ Complete |
-| `.env.example` | Environment variables template | ✅ Complete |
+| `.env.nowpayments.example` | NOWPayments API keys template | ✅ Complete |
+| `src/app/api/payment/route.ts` | NOWPayments payment API | ✅ Complete |
+| `src/app/api/payment/webhook/route.ts` | NOWPayments webhook handler | ✅ Complete |
 | `Procfile` | Koyeb deployment entry point | ✅ Complete |
 | `.koyeb.yaml` | Koyeb build configuration | ✅ Complete |
 
@@ -133,7 +136,7 @@ Optional integrations (for production):
 - [x] Mock Payment System - Add to cart, checkout flow, save purchased items
 - [x] User Dashboard - Domain/hosting management, DNS settings, site builder, VPS
 - [ ] Add real WHOIS API integration
-- [ ] Add real payment processing
+- [x] Add real payment processing
 - [ ] Add email notifications
 
 ## Session History
@@ -148,3 +151,4 @@ Optional integrations (for production):
 | 2026-02-27 | Updated home page banner to "Get Your Domain Today" with community description |
 | 2026-02-27 | Added mock payment system and user dashboard with DNS, site builder, VPS |
 | 2026-02-28 | Added hosting-required domain checkout - domains require hosting plan, free domains based on plan (Starter=1, Professional=3, Business=5) |
+| 2026-02-28 | Added NOWPayments cryptocurrency payment integration (USDT, BTC, ETH, 50+ cryptos) |
