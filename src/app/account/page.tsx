@@ -191,20 +191,20 @@ export default function AccountPage() {
         {/* Domains Tab */}
         {activeTab === "domains" && (
           <div>
-            <h2 style={{ marginBottom: "1.5rem", color: "var(--dark)" }}>My Domains</h2>
+            <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>My Domains</h2>
             {domainItems.length === 0 ? (
-              <div style={{ background: "white", padding: "3rem", borderRadius: "1rem", boxShadow: "0 4px 20px rgba(0,0,0,0.08)", textAlign: "center" }}>
+              <div style={{ background: "var(--dark-secondary)", padding: "3rem", borderRadius: "1rem", border: "1px solid var(--border)", textAlign: "center" }}>
                 <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🌐</div>
-                <h3 style={{ color: "var(--dark)", marginBottom: "0.5rem" }}>No domains yet</h3>
+                <h3 style={{ color: "var(--text-white)", marginBottom: "0.5rem" }}>No domains yet</h3>
                 <p style={{ color: "var(--text-light)", marginBottom: "1.5rem" }}>Register your first domain to get started</p>
                 <Link href="/domains" className="domain-action-btn">Search Domains</Link>
               </div>
             ) : (
               <div style={{ display: "grid", gap: "1rem" }}>
                 {domainItems.map((item, index) => (
-                  <div key={index} style={{ background: "white", padding: "1.5rem", borderRadius: "0.75rem", boxShadow: "0 2px 10px rgba(0,0,0,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
+                  <div key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
                     <div>
-                      <div style={{ fontSize: "1.25rem", fontWeight: "600", color: "var(--dark)" }}>{item.name}</div>
+                      <div style={{ fontSize: "1.25rem", fontWeight: "600", color: "var(--text-white)" }}>{item.name}</div>
                       <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>
                         Registered: {new Date(item.purchaseDate).toLocaleDateString()} • 
                         Expires: {new Date(item.expirationDate).toLocaleDateString()}
@@ -213,8 +213,8 @@ export default function AccountPage() {
                     <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                       <span style={{ 
                         padding: "0.25rem 0.75rem", 
-                        background: item.status === "active" ? "#d1fae5" : "#fee2e2",
-                        color: item.status === "active" ? "#065f46" : "#991b1b",
+                        background: item.status === "active" ? "#065f46" : "#991b1b",
+                        color: "white",
                         borderRadius: "1rem",
                         fontSize: "0.875rem",
                         fontWeight: "600"
@@ -238,20 +238,20 @@ export default function AccountPage() {
         {/* Hosting Tab */}
         {activeTab === "hosting" && (
           <div>
-            <h2 style={{ marginBottom: "1.5rem", color: "var(--dark)" }}>My Hosting Plans</h2>
+            <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>My Hosting Plans</h2>
             {hostingItems.length === 0 ? (
-              <div style={{ background: "white", padding: "3rem", borderRadius: "1rem", boxShadow: "0 4px 20px rgba(0,0,0,0.08)", textAlign: "center" }}>
+              <div style={{ background: "var(--dark-secondary)", padding: "3rem", borderRadius: "1rem", border: "1px solid var(--border)", textAlign: "center" }}>
                 <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🖥️</div>
-                <h3 style={{ color: "var(--dark)", marginBottom: "0.5rem" }}>No hosting plans yet</h3>
+                <h3 style={{ color: "var(--text-white)", marginBottom: "0.5rem" }}>No hosting plans yet</h3>
                 <p style={{ color: "var(--text-light)", marginBottom: "1.5rem" }}>Get hosting to power your websites</p>
                 <Link href="/hosting" className="domain-action-btn">View Hosting Plans</Link>
               </div>
             ) : (
               <div style={{ display: "grid", gap: "1rem" }}>
                 {hostingItems.map((item, index) => (
-                  <div key={index} style={{ background: "white", padding: "1.5rem", borderRadius: "0.75rem", boxShadow: "0 2px 10px rgba(0,0,0,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
+                  <div key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
                     <div>
-                      <div style={{ fontSize: "1.25rem", fontWeight: "600", color: "var(--dark)" }}>{item.name}</div>
+                      <div style={{ fontSize: "1.25rem", fontWeight: "600", color: "var(--text-white)" }}>{item.name}</div>
                       <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>
                         {item.details} • ${item.price}/{item.period}
                       </div>
@@ -259,8 +259,8 @@ export default function AccountPage() {
                     <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                       <span style={{ 
                         padding: "0.25rem 0.75rem", 
-                        background: "#d1fae5",
-                        color: "#065f46",
+                        background: "#065f46",
+                        color: "white",
                         borderRadius: "1rem",
                         fontSize: "0.875rem",
                         fontWeight: "600"
@@ -282,7 +282,7 @@ export default function AccountPage() {
         {activeTab === "dns" && (
           <div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: "1rem" }}>
-              <h2 style={{ color: "var(--dark)", margin: 0 }}>DNS Management</h2>
+              <h2 style={{ color: "var(--text-white)", margin: 0 }}>DNS Management</h2>
               <button 
                 onClick={() => setIsEditingDNS(true)}
                 style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}
@@ -292,9 +292,9 @@ export default function AccountPage() {
             </div>
 
             {dnsRecords.length === 0 ? (
-              <div style={{ background: "white", padding: "3rem", borderRadius: "1rem", boxShadow: "0 4px 20px rgba(0,0,0,0.08)", textAlign: "center" }}>
+              <div style={{ background: "var(--dark-secondary)", padding: "3rem", borderRadius: "1rem", border: "1px solid var(--border)", textAlign: "center" }}>
                 <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🌍</div>
-                <h3 style={{ color: "var(--dark)", marginBottom: "0.5rem" }}>No DNS records</h3>
+                <h3 style={{ color: "var(--text-white)", marginBottom: "0.5rem" }}>No DNS records</h3>
                 <p style={{ color: "var(--text-light)", marginBottom: "1rem" }}>Add DNS records to point your domain to your website or services</p>
                 <button 
                   onClick={() => setIsEditingDNS(true)}
@@ -304,25 +304,25 @@ export default function AccountPage() {
                 </button>
               </div>
             ) : (
-              <div style={{ background: "white", borderRadius: "0.75rem", boxShadow: "0 2px 10px rgba(0,0,0,0.08)", overflow: "hidden" }}>
+              <div style={{ background: "var(--dark-secondary)", borderRadius: "0.75rem", border: "1px solid var(--border)", overflow: "hidden" }}>
                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                   <thead>
-                    <tr style={{ background: "#f9fafb", borderBottom: "2px solid #eee" }}>
-                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "var(--dark)" }}>Type</th>
-                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "var(--dark)" }}>Name</th>
-                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "var(--dark)" }}>Value</th>
-                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "var(--dark)" }}>TTL</th>
-                      <th style={{ padding: "1rem", textAlign: "right", fontWeight: "600", color: "var(--dark)" }}>Actions</th>
+                    <tr style={{ background: "var(--primary)", borderBottom: "2px solid var(--border)" }}>
+                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>Type</th>
+                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>Name</th>
+                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>Value</th>
+                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>TTL</th>
+                      <th style={{ padding: "1rem", textAlign: "right", fontWeight: "600", color: "white" }}>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {dnsRecords.map((record) => (
-                      <tr key={record.id} style={{ borderBottom: "1px solid #eee" }}>
+                      <tr key={record.id} style={{ borderBottom: "1px solid var(--border)" }}>
                         <td style={{ padding: "1rem" }}>
                           <span style={{ 
                             padding: "0.25rem 0.5rem", 
-                            background: record.type === "A" ? "#dbeafe" : record.type === "MX" ? "#fef3c7" : "#e0e7ff",
-                            color: "var(--dark)",
+                            background: record.type === "A" ? "#1e3a8a" : record.type === "MX" ? "#854d0e" : "#3730a3",
+                            color: "white",
                             borderRadius: "0.25rem",
                             fontSize: "0.75rem",
                             fontWeight: "700"
@@ -330,13 +330,13 @@ export default function AccountPage() {
                             {record.type}
                           </span>
                         </td>
-                        <td style={{ padding: "1rem", fontFamily: "monospace", color: "var(--dark)" }}>{record.name}</td>
+                        <td style={{ padding: "1rem", fontFamily: "monospace", color: "var(--text-white)" }}>{record.name}</td>
                         <td style={{ padding: "1rem", fontFamily: "monospace", fontSize: "0.875rem", color: "var(--text-light)" }}>{record.value}</td>
                         <td style={{ padding: "1rem", color: "var(--text-light)" }}>{record.ttl}s</td>
                         <td style={{ padding: "1rem", textAlign: "right" }}>
                           <button 
                             onClick={() => deleteDNSRecord(record.id)}
-                            style={{ background: "#fee2e2", color: "#991b1b", border: "none", padding: "0.25rem 0.5rem", borderRadius: "0.25rem", cursor: "pointer" }}
+                            style={{ background: "#991b1b", color: "white", border: "none", padding: "0.25rem 0.5rem", borderRadius: "0.25rem", cursor: "pointer" }}
                           >
                             Delete
                           </button>
@@ -356,21 +356,21 @@ export default function AccountPage() {
                 left: 0, 
                 right: 0, 
                 bottom: 0, 
-                background: "rgba(0,0,0,0.5)", 
+                background: "rgba(0,0,0,0.7)", 
                 display: "flex", 
                 alignItems: "center", 
                 justifyContent: "center",
                 zIndex: 1000
               }}>
-                <div style={{ background: "white", padding: "2rem", borderRadius: "1rem", maxWidth: "500px", width: "90%" }}>
-                  <h3 style={{ marginBottom: "1.5rem", color: "var(--dark)" }}>Add DNS Record</h3>
+                <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", maxWidth: "500px", width: "90%" }}>
+                  <h3 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>Add DNS Record</h3>
                   
                   <div style={{ marginBottom: "1rem" }}>
-                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--dark)" }}>Record Type</label>
+                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Record Type</label>
                     <select 
                       value={newDNSRecord.type}
                       onChange={(e) => setNewDNSRecord({ ...newDNSRecord, type: e.target.value as DNSRecord["type"] })}
-                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid #ddd", fontSize: "1rem" }}
+                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
                     >
                       <option value="A">A</option>
                       <option value="AAAA">AAAA</option>
@@ -382,45 +382,45 @@ export default function AccountPage() {
                   </div>
 
                   <div style={{ marginBottom: "1rem" }}>
-                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--dark)" }}>Name</label>
+                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Name</label>
                     <input 
                       type="text"
                       value={newDNSRecord.name || ""}
                       onChange={(e) => setNewDNSRecord({ ...newDNSRecord, name: e.target.value })}
                       placeholder="@ or subdomain"
-                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid #ddd", fontSize: "1rem" }}
+                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
                     />
                   </div>
 
                   <div style={{ marginBottom: "1rem" }}>
-                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--dark)" }}>Value</label>
+                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Value</label>
                     <input 
                       type="text"
                       value={newDNSRecord.value || ""}
                       onChange={(e) => setNewDNSRecord({ ...newDNSRecord, value: e.target.value })}
                       placeholder="IP address or hostname"
-                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid #ddd", fontSize: "1rem" }}
+                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
                     />
                   </div>
 
                   {newDNSRecord.type === "MX" && (
                     <div style={{ marginBottom: "1rem" }}>
-                      <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--dark)" }}>Priority</label>
+                      <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Priority</label>
                       <input 
                         type="number"
                         value={newDNSRecord.priority || 10}
                         onChange={(e) => setNewDNSRecord({ ...newDNSRecord, priority: parseInt(e.target.value) })}
-                        style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid #ddd", fontSize: "1rem" }}
+                        style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
                       />
                     </div>
                   )}
 
                   <div style={{ marginBottom: "1.5rem" }}>
-                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--dark)" }}>TTL</label>
+                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>TTL</label>
                     <select 
                       value={newDNSRecord.ttl}
                       onChange={(e) => setNewDNSRecord({ ...newDNSRecord, ttl: parseInt(e.target.value) })}
-                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid #ddd", fontSize: "1rem" }}
+                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
                     >
                       <option value={300}>5 minutes</option>
                       <option value={900}>15 minutes</option>
@@ -434,7 +434,7 @@ export default function AccountPage() {
                   <div style={{ display: "flex", gap: "1rem", justifyContent: "flex-end" }}>
                     <button 
                       onClick={() => setIsEditingDNS(false)}
-                      style={{ padding: "0.75rem 1.5rem", background: "#e5e7eb", color: "var(--dark)", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}
+                      style={{ padding: "0.75rem 1.5rem", background: "var(--border)", color: "var(--text-white)", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}
                     >
                       Cancel
                     </button>
@@ -454,12 +454,12 @@ export default function AccountPage() {
         {/* Site Builder Tab */}
         {activeTab === "builder" && (
           <div>
-            <h2 style={{ marginBottom: "1.5rem", color: "var(--dark)" }}>Site Builder</h2>
-            <div style={{ background: "white", padding: "2rem", borderRadius: "1rem", boxShadow: "0 4px 20px rgba(0,0,0,0.08)", marginBottom: "1.5rem" }}>
+            <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>Site Builder</h2>
+            <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
-                <div style={{ fontSize: "3rem" }}>🎨</div>
+                <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.75rem" }}>🎨</div>
                 <div>
-                  <h3 style={{ color: "var(--dark)", marginBottom: "0.25rem" }}>Create Your Website</h3>
+                  <h3 style={{ color: "var(--text-white)", marginBottom: "0.25rem" }}>Create Your Website</h3>
                   <p style={{ color: "var(--text-light)", margin: 0 }}>Choose from 50+ professionally designed templates or start from scratch</p>
                 </div>
               </div>
@@ -467,13 +467,13 @@ export default function AccountPage() {
                 <button style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>
                   Browse Templates
                 </button>
-                <button style={{ padding: "0.75rem 1.5rem", background: "white", color: "var(--dark)", border: "2px solid #ddd", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>
+                <button style={{ padding: "0.75rem 1.5rem", background: "transparent", color: "var(--text-white)", border: "2px solid var(--border)", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>
                   Start from Scratch
                 </button>
               </div>
             </div>
 
-            <h3 style={{ marginBottom: "1rem", color: "var(--dark)" }}>Popular Templates</h3>
+            <h3 style={{ marginBottom: "1rem", color: "var(--text-white)" }}>Popular Templates</h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "1rem" }}>
               {[
                 { name: "Business", emoji: "🏢" },
@@ -489,9 +489,9 @@ export default function AccountPage() {
                 { name: "Travel", emoji: "✈️" },
                 { name: "Music", emoji: "🎵" },
               ].map((template, index) => (
-                <div key={index} style={{ background: "white", padding: "1.5rem", borderRadius: "0.75rem", boxShadow: "0 2px 10px rgba(0,0,0,0.08)", textAlign: "center", cursor: "pointer", transition: "transform 0.2s" }}>
+                <div key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "center", cursor: "pointer", transition: "transform 0.2s" }}>
                   <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>{template.emoji}</div>
-                  <div style={{ fontWeight: "600", color: "var(--dark)" }}>{template.name}</div>
+                  <div style={{ fontWeight: "600", color: "var(--text-white)" }}>{template.name}</div>
                 </div>
               ))}
             </div>
