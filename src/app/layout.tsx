@@ -8,7 +8,10 @@ export const metadata: Metadata = {
   title: "Illusionhost - Premium Domain Names & Web Hosting",
   description: "Find your perfect domain name and professional web hosting services at Illusionhost. Secure, fast, and affordable.",
   icons: {
-    icon: "/icon.svg",
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" }
+    ],
   },
 };
 
