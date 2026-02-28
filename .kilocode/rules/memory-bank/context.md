@@ -51,6 +51,7 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 - [x] **NOWPayments Dynamic Invoice API** - Crypto payments now use dynamic invoice API with cart total amount instead of static button
 - [x] **NOWPayments crypto2crypto UI** - Shows payment address and amount for crypto2crypto payments instead of trying to redirect to hosted checkout
 - [x] **NOWPayments Hosted Checkout** - Using NOWPayments button redirect (iid: 6118248419) instead of manual crypto2crypto
+- [x] **NOWPayments pay_currency Fix** - Removed hardcoded pay_currency to allow NOWPayments to handle USD to crypto conversion
 
 ## Current Structure
 
