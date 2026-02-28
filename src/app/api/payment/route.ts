@@ -121,10 +121,10 @@ export async function POST(request: NextRequest) {
     
     // Create payment with NOWPayments - simpler payload for hosted checkout
     // This creates a payment that redirects to a hosted checkout page with the dynamic amount
+    // Note: NOT specifying pay_currency allows NOWPayments to handle the USD to crypto conversion
     const paymentData = {
       price_amount: orderTotal,
       price_currency: "usd",
-      pay_currency: "usdt",
       order_id: orderId,
       order_description: `Illusionhost - Domain and Hosting Purchase`,
       success_url: `${siteUrl}/cart?payment=success&orderId=${orderId}`,
