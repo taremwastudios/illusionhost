@@ -9,7 +9,8 @@ import {
   Database, Rocket, Building2, Image, FileText, Utensils,
   Camera, GraduationCap, Home, Dumbbell, Plane, Music,
   Sparkles, CheckCircle, AlertCircle, RefreshCcw, BarChart3,
-  Terminal, Flame, Link2, CreditCard, Settings, Upload
+  Terminal, Flame, Link2, CreditCard, Settings, Upload, Wallet,
+  ArrowUpRight, ArrowDownRight, Send, HelpCircle, Clock, DollarSign
 } from "lucide-react";
 
 interface User {
@@ -47,6 +48,21 @@ export default function AccountPage() {
   const [dnsRecords, setDnsRecords] = useState<DNSRecord[]>([]);
   const [isEditingDNS, setIsEditingDNS] = useState(false);
   const [newDNSRecord, setNewDNSRecord] = useState<Partial<DNSRecord>>({ type: "A", ttl: 3600 });
+  
+  // Wallet state
+  const [walletBalance, setWalletBalance] = useState(1250.00);
+  const [transactions, setTransactions] = useState([
+    { id: "1", type: "deposit", amount: 500, description: "Funds added via bank transfer", date: "2026-02-25", status: "completed" },
+    { id: "2", type: "payment", amount: -45.99, description: "Domain renewal - example.com", date: "2026-02-24", status: "completed" },
+    { id: "3", type: "deposit", amount: 1000, description: "Initial wallet funding", date: "2026-02-20", status: "completed" },
+    { id: "4", type: "payment", amount: -199.99, description: "Hosting plan - Starter", date: "2026-02-18", status: "completed" },
+    { id: "5", type: "refund", amount: 25.00, description: "Unused service refund", date: "2026-02-15", status: "completed" },
+  ]);
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+  const [showInquiryModal, setShowInquiryModal] = useState(false);
+  const [withdrawAmount, setWithdrawAmount] = useState("");
+  const [withdrawMethod, setWithdrawMethod] = useState("bank");
+  const [inquiryMessage, setInquiryMessage] = useState("");
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -170,6 +186,7 @@ export default function AccountPage() {
             { id: "domains", label: "Domains", icon: Globe, count: domainItems.length },
             { id: "hosting", label: "Hosting", icon: Monitor, count: hostingItems.length },
             { id: "dns", label: "DNS", icon: Network, count: dnsRecords.length },
+            { id: "wallet", label: "Wallet", icon: Wallet, count: 0 },
             { id: "builder", label: "Site Builder", icon: Palette, count: 0 },
             { id: "vps", label: "VPS", icon: Cloud, count: 0 },
             { id: "mxrecords", label: "MX Records", icon: Mail, count: 0 },
@@ -452,6 +469,294 @@ export default function AccountPage() {
                       style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}
                     >
                       Save Record
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Wallet Tab */}
+        {activeTab === "wallet" && (
+          <div>
+            <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>My Wallet</h2>
+            
+            {/* Balance Card */}
+            <div style={{ background: "linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%)", padding: "2rem", borderRadius: "1rem", marginBottom: "2rem", color: "white" }}>
+              <div style={{ fontSize: "0.875rem", opacity: 0.9, marginBottom: "0.5rem" }}>Available Balance</div>
+              <div style={{ fontSize: "3rem", fontWeight: "700", marginBottom: "1rem" }}>
+                ${walletBalance.toFixed(2)}
+              </div>
+              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+                <button 
+                  onClick={() => setShowWithdrawModal(true)}
+                  style={{ padding: "0.75rem 1.5rem", background: "white", color: "var(--primary)", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600", display: "flex", alignItems: "center", gap: "0.5rem" }}
+                >
+                  <ArrowUpRight size={18} /> Withdraw
+                </button>
+                <button 
+                  onClick={() => setShowInquiryModal(true)}
+                  style={{ padding: "0.75rem 1.5rem", background: "rgba(255,255,255,0.2)", color: "white", border: "2px solid white", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600", display: "flex", alignItems: "center", gap: "0.5rem" }}
+                >
+                  <HelpCircle size={18} /> Make Inquiry
+                </button>
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem", marginBottom: "2rem" }}>
+              <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.5rem" }}>
+                  <ArrowDownRight size={20} color="#10b981" />
+                  <span style={{ color: "var(--text-light)", fontSize: "0.875rem" }}>Total Deposits</span>
+                </div>
+                <div style={{ fontSize: "1.5rem", fontWeight: "700", color: "var(--text-white)" }}>$1,500.00</div>
+              </div>
+              <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.5rem" }}>
+                  <ArrowUpRight size={20} color="#ef4444" />
+                  <span style={{ color: "var(--text-light)", fontSize: "0.875rem" }}>Total Payments</span>
+                </div>
+                <div style={{ fontSize: "1.5rem", fontWeight: "700", color: "var(--text-white)" }}>$244.98</div>
+              </div>
+              <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.5rem" }}>
+                  <RefreshCcw size={20} color="#f59e0b" />
+                  <span style={{ color: "var(--text-light)", fontSize: "0.875rem" }}>Refunds</span>
+                </div>
+                <div style={{ fontSize: "1.5rem", fontWeight: "700", color: "var(--text-white)" }}>$25.00</div>
+              </div>
+            </div>
+
+            {/* Transaction History */}
+            <h3 style={{ marginBottom: "1rem", color: "var(--text-white)" }}>Transaction History</h3>
+            <div style={{ background: "var(--dark-secondary)", borderRadius: "0.75rem", border: "1px solid var(--border)", overflow: "hidden" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ background: "var(--primary)" }}>
+                    <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>Date</th>
+                    <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>Description</th>
+                    <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>Type</th>
+                    <th style={{ padding: "1rem", textAlign: "right", fontWeight: "600", color: "white" }}>Amount</th>
+                    <th style={{ padding: "1rem", textAlign: "center", fontWeight: "600", color: "white" }}>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {transactions.map((tx) => (
+                    <tr key={tx.id} style={{ borderBottom: "1px solid var(--border)" }}>
+                      <td style={{ padding: "1rem", color: "var(--text-light)" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                          <Clock size={14} />
+                          {tx.date}
+                        </div>
+                      </td>
+                      <td style={{ padding: "1rem", color: "var(--text-white)" }}>{tx.description}</td>
+                      <td style={{ padding: "1rem" }}>
+                        <span style={{ 
+                          padding: "0.25rem 0.75rem", 
+                          borderRadius: "1rem", 
+                          fontSize: "0.75rem", 
+                          fontWeight: "600",
+                          background: tx.type === "deposit" ? "#065f46" : tx.type === "payment" ? "#991b1b" : "#1e3a8a",
+                          color: "white",
+                          textTransform: "capitalize"
+                        }}>
+                          {tx.type}
+                        </span>
+                      </td>
+                      <td style={{ padding: "1rem", textAlign: "right", fontWeight: "600", color: tx.amount >= 0 ? "#10b981" : "#ef4444" }}>
+                        {tx.amount >= 0 ? "+" : ""}${Math.abs(tx.amount).toFixed(2)}
+                      </td>
+                      <td style={{ padding: "1rem", textAlign: "center" }}>
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: "0.25rem", color: "#10b981", fontSize: "0.875rem" }}>
+                          <CheckCircle size={14} /> {tx.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Withdraw Modal */}
+            {showWithdrawModal && (
+              <div style={{ 
+                position: "fixed", 
+                top: 0, 
+                left: 0, 
+                right: 0, 
+                bottom: 0, 
+                background: "rgba(0,0,0,0.7)", 
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center",
+                zIndex: 1000
+              }}>
+                <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", maxWidth: "450px", width: "90%" }}>
+                  <h3 style={{ marginBottom: "1.5rem", color: "var(--text-white)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    <ArrowUpRight size={24} color="var(--primary)" /> Withdraw Funds
+                  </h3>
+                  
+                  <div style={{ marginBottom: "1.5rem" }}>
+                    <div style={{ background: "var(--dark)", padding: "1rem", borderRadius: "0.5rem", marginBottom: "1rem" }}>
+                      <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>Available Balance</div>
+                      <div style={{ fontSize: "1.5rem", fontWeight: "700", color: "var(--text-white)" }}>${walletBalance.toFixed(2)}</div>
+                    </div>
+                    
+                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Amount</label>
+                    <div style={{ position: "relative" }}>
+                      <span style={{ position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-light)" }}>$</span>
+                      <input 
+                        type="number"
+                        value={withdrawAmount}
+                        onChange={(e) => setWithdrawAmount(e.target.value)}
+                        placeholder="0.00"
+                        max={walletBalance}
+                        style={{ width: "100%", padding: "0.75rem 0.75rem 0.75rem 2rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: "1.5rem" }}>
+                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Withdraw Method</label>
+                    <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+                      <button 
+                        onClick={() => setWithdrawMethod("bank")}
+                        style={{ 
+                          flex: "1",
+                          padding: "1rem", 
+                          background: withdrawMethod === "bank" ? "var(--primary)" : "var(--dark)", 
+                          color: "white", 
+                          border: `2px solid ${withdrawMethod === "bank" ? "var(--primary)" : "var(--border)"}`,
+                          borderRadius: "0.5rem", 
+                          cursor: "pointer",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          gap: "0.5rem"
+                        }}
+                      >
+                        <CreditCard size={24} />
+                        <span style={{ fontWeight: "600" }}>Bank Transfer</span>
+                      </button>
+                      <button 
+                        onClick={() => setWithdrawMethod("paypal")}
+                        style={{ 
+                          flex: "1",
+                          padding: "1rem", 
+                          background: withdrawMethod === "paypal" ? "var(--primary)" : "var(--dark)", 
+                          color: "white", 
+                          border: `2px solid ${withdrawMethod === "paypal" ? "var(--primary)" : "var(--border)"}`,
+                          borderRadius: "0.5rem", 
+                          cursor: "pointer",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          gap: "0.5rem"
+                        }}
+                      >
+                        <Send size={24} />
+                        <span style={{ fontWeight: "600" }}>PayPal</span>
+                      </button>
+                      <button 
+                        onClick={() => setWithdrawMethod("crypto")}
+                        style={{ 
+                          flex: "1",
+                          padding: "1rem", 
+                          background: withdrawMethod === "crypto" ? "var(--primary)" : "var(--dark)", 
+                          color: "white", 
+                          border: `2px solid ${withdrawMethod === "crypto" ? "var(--primary)" : "var(--border)"}`,
+                          borderRadius: "0.5rem", 
+                          cursor: "pointer",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          gap: "0.5rem"
+                        }}
+                      >
+                        <DollarSign size={24} />
+                        <span style={{ fontWeight: "600" }}>Crypto</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", gap: "1rem", justifyContent: "flex-end" }}>
+                    <button 
+                      onClick={() => { setShowWithdrawModal(false); setWithdrawAmount(""); }}
+                      style={{ padding: "0.75rem 1.5rem", background: "var(--border)", color: "var(--text-white)", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      onClick={() => { alert("Withdrawal request submitted! Funds will arrive in 3-5 business days."); setShowWithdrawModal(false); setWithdrawAmount(""); }}
+                      disabled={!withdrawAmount || parseFloat(withdrawAmount) <= 0 || parseFloat(withdrawAmount) > walletBalance}
+                      style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600", opacity: (!withdrawAmount || parseFloat(withdrawAmount) <= 0 || parseFloat(withdrawAmount) > walletBalance) ? 0.5 : 1 }}
+                    >
+                      Request Withdrawal
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Inquiry Modal */}
+            {showInquiryModal && (
+              <div style={{ 
+                position: "fixed", 
+                top: 0, 
+                left: 0, 
+                right: 0, 
+                bottom: 0, 
+                background: "rgba(0,0,0,0.7)", 
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center",
+                zIndex: 1000
+              }}>
+                <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", maxWidth: "500px", width: "90%" }}>
+                  <h3 style={{ marginBottom: "1.5rem", color: "var(--text-white)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    <HelpCircle size={24} color="var(--primary)" /> Make an Inquiry
+                  </h3>
+                  
+                  <div style={{ marginBottom: "1rem" }}>
+                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Inquiry Type</label>
+                    <select 
+                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
+                    >
+                      <option>General Question</option>
+                      <option>Payment Issue</option>
+                      <option>Transaction Dispute</option>
+                      <option>Account Balance</option>
+                      <option>Refund Request</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+
+                  <div style={{ marginBottom: "1.5rem" }}>
+                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Your Message</label>
+                    <textarea 
+                      value={inquiryMessage}
+                      onChange={(e) => setInquiryMessage(e.target.value)}
+                      placeholder="Describe your question or concern..."
+                      rows={5}
+                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white", resize: "vertical" }}
+                    />
+                  </div>
+
+                  <div style={{ display: "flex", gap: "1rem", justifyContent: "flex-end" }}>
+                    <button 
+                      onClick={() => { setShowInquiryModal(false); setInquiryMessage(""); }}
+                      style={{ padding: "0.75rem 1.5rem", background: "var(--border)", color: "var(--text-white)", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      onClick={() => { alert("Your inquiry has been submitted. Our team will respond within 24-48 hours."); setShowInquiryModal(false); setInquiryMessage(""); }}
+                      disabled={!inquiryMessage.trim()}
+                      style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600", opacity: !inquiryMessage.trim() ? 0.5 : 1 }}
+                    >
+                      Submit Inquiry
                     </button>
                   </div>
                 </div>
