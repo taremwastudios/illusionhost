@@ -120,11 +120,11 @@ export async function POST(request: NextRequest) {
     const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://illusionhost.koyeb.app").replace(/\/$/, '');
     
     // Create payment invoice with NOWPayments
-    // Use USDT as the payment currency
+    // Don't specify pay_currency - let user choose on payment page
+    // This avoids "Can not get estimate from USD to USDT" errors
     const paymentData = {
       price_amount: orderTotal,
       price_currency: "usd",
-      pay_currency: "usdt", // Specify USDT as the cryptocurrency to receive
       order_id: orderId,
       order_description: `Illusionhost - Domain and Hosting Purchase`,
       ipn_callback_url: `${siteUrl}/api/payment/webhook`,
