@@ -44,6 +44,7 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 - [x] **User Dashboard** - Complete account page with domain management, DNS settings, site builder, and VPS management
 - [x] **Koyeb Deployment** - Added Procfile, .koyeb.yaml, and package-lock.json for npm-based deployment
 - [x] **Custom Favicon** - Added SVG favicon matching the Illusionhost logo (diamond with gradient, "Ih" text)
+- [x] **Demo Mode Auth** - Auth works without DB credentials using in-memory storage when DB_URL is not set
 
 ## Current Structure
 
