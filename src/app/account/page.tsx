@@ -3,6 +3,14 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { 
+  Globe, Monitor, ShoppingCart, LogOut, Network, 
+  Palette, Cloud, Mail, Package, Bot, Lock, Shield,
+  Database, Rocket, Building2, Image, FileText, Utensils,
+  Camera, GraduationCap, Home, Dumbbell, Plane, Music,
+  Sparkles, CheckCircle, AlertCircle, RefreshCcw, BarChart3,
+  Terminal, Flame, Link2, CreditCard, Settings, Upload
+} from "lucide-react";
 
 interface User {
   id: number;
@@ -128,28 +136,28 @@ export default function AccountPage() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem", marginBottom: "2rem" }}>
           <Link href="/domains" style={{ textDecoration: "none" }}>
             <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "center", cursor: "pointer", transition: "all 0.3s" }}>
-              <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.75rem", margin: "0 auto 1rem" }}>🌐</div>
+              <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem" }}><Globe size={28} color="white" /></div>
               <div style={{ fontWeight: "600", color: "var(--text-white)" }}>Register Domain</div>
               <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>Find your perfect domain</div>
             </div>
           </Link>
           <Link href="/hosting" style={{ textDecoration: "none" }}>
             <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "center", cursor: "pointer", transition: "all 0.3s" }}>
-              <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.75rem", margin: "0 auto 1rem" }}>🖥️</div>
+              <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem" }}><Monitor size={28} color="white" /></div>
               <div style={{ fontWeight: "600", color: "var(--text-white)" }}>Add Hosting</div>
               <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>Get more services</div>
             </div>
           </Link>
           <Link href="/cart" style={{ textDecoration: "none" }}>
             <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "center", cursor: "pointer", transition: "all 0.3s" }}>
-              <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.75rem", margin: "0 auto 1rem" }}>🛒</div>
+              <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem" }}><ShoppingCart size={28} color="white" /></div>
               <div style={{ fontWeight: "600", color: "var(--text-white)" }}>Shopping Cart</div>
               <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>View your cart</div>
             </div>
           </Link>
           <button onClick={handleLogout} style={{ background: "none", border: "none", cursor: "pointer" }}>
             <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "center", transition: "all 0.3s" }}>
-              <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.75rem", margin: "0 auto 1rem" }}>🚪</div>
+              <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem" }}><LogOut size={28} color="white" /></div>
               <div style={{ fontWeight: "600", color: "var(--text-white)" }}>Logout</div>
               <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>Sign out</div>
             </div>
@@ -159,14 +167,14 @@ export default function AccountPage() {
         {/* Tabs */}
         <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.5rem", borderBottom: "2px solid var(--border)", overflowX: "auto" }}>
           {[
-            { id: "domains", label: "🌐 Domains", count: domainItems.length },
-            { id: "hosting", label: "🖥️ Hosting", count: hostingItems.length },
-            { id: "dns", label: "🌍 DNS", count: dnsRecords.length },
-            { id: "builder", label: "🎨 Site Builder", count: 0 },
-            { id: "vps", label: "☁️ VPS", count: 0 },
-            { id: "mxrecords", label: "📧 MX Records", count: 0 },
-            { id: "more", label: "📦 More", count: 0 },
-            { id: "assistant", label: "🤖 Illusion Assistant", count: 0 },
+            { id: "domains", label: "Domains", icon: Globe, count: domainItems.length },
+            { id: "hosting", label: "Hosting", icon: Monitor, count: hostingItems.length },
+            { id: "dns", label: "DNS", icon: Network, count: dnsRecords.length },
+            { id: "builder", label: "Site Builder", icon: Palette, count: 0 },
+            { id: "vps", label: "VPS", icon: Cloud, count: 0 },
+            { id: "mxrecords", label: "MX Records", icon: Mail, count: 0 },
+            { id: "more", label: "More", icon: Package, count: 0 },
+            { id: "assistant", label: "Illusion Assistant", icon: Sparkles, count: 0 },
           ].map(tab => (
             <button
               key={tab.id}
@@ -194,7 +202,7 @@ export default function AccountPage() {
             <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>My Domains</h2>
             {domainItems.length === 0 ? (
               <div style={{ background: "var(--dark-secondary)", padding: "3rem", borderRadius: "1rem", border: "1px solid var(--border)", textAlign: "center" }}>
-                <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🌐</div>
+                <div style={{ fontSize: "3rem", marginBottom: "1rem" }}><Globe size={64} color="var(--primary)" /></div>
                 <h3 style={{ color: "var(--text-white)", marginBottom: "0.5rem" }}>No domains yet</h3>
                 <p style={{ color: "var(--text-light)", marginBottom: "1.5rem" }}>Register your first domain to get started</p>
                 <Link href="/domains" className="domain-action-btn">Search Domains</Link>
@@ -219,7 +227,7 @@ export default function AccountPage() {
                         fontSize: "0.875rem",
                         fontWeight: "600"
                       }}>
-                        {item.status === "active" ? "✓ Active" : "⚠ Expiring"}
+                        {item.status === "active" ? <><CheckCircle size={14} /> Active</> : <><AlertCircle size={14} /> Expiring</>}
                       </span>
                       <button 
                         onClick={() => setActiveTab("dns")}
@@ -241,7 +249,7 @@ export default function AccountPage() {
             <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>My Hosting Plans</h2>
             {hostingItems.length === 0 ? (
               <div style={{ background: "var(--dark-secondary)", padding: "3rem", borderRadius: "1rem", border: "1px solid var(--border)", textAlign: "center" }}>
-                <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🖥️</div>
+                <div style={{ fontSize: "3rem", marginBottom: "1rem" }}><Monitor size={64} color="var(--primary)" /></div>
                 <h3 style={{ color: "var(--text-white)", marginBottom: "0.5rem" }}>No hosting plans yet</h3>
                 <p style={{ color: "var(--text-light)", marginBottom: "1.5rem" }}>Get hosting to power your websites</p>
                 <Link href="/hosting" className="domain-action-btn">View Hosting Plans</Link>
@@ -265,7 +273,7 @@ export default function AccountPage() {
                         fontSize: "0.875rem",
                         fontWeight: "600"
                       }}>
-                        ✓ Active
+                        <><CheckCircle size={14} /> Active</>
                       </span>
                       <button style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer" }}>
                         Manage
@@ -293,7 +301,7 @@ export default function AccountPage() {
 
             {dnsRecords.length === 0 ? (
               <div style={{ background: "var(--dark-secondary)", padding: "3rem", borderRadius: "1rem", border: "1px solid var(--border)", textAlign: "center" }}>
-                <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🌍</div>
+                <div style={{ fontSize: "3rem", marginBottom: "1rem" }}><Network size={64} color="var(--primary)" /></div>
                 <h3 style={{ color: "var(--text-white)", marginBottom: "0.5rem" }}>No DNS records</h3>
                 <p style={{ color: "var(--text-light)", marginBottom: "1rem" }}>Add DNS records to point your domain to your website or services</p>
                 <button 
@@ -457,7 +465,7 @@ export default function AccountPage() {
             <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>Site Builder</h2>
             <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
-                <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.75rem" }}>🎨</div>
+                <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center" }}><Palette size={28} color="white" /></div>
                 <div>
                   <h3 style={{ color: "var(--text-white)", marginBottom: "0.25rem" }}>Create Your Website</h3>
                   <p style={{ color: "var(--text-light)", margin: 0 }}>Choose from 50+ professionally designed templates or start from scratch</p>
@@ -476,21 +484,21 @@ export default function AccountPage() {
             <h3 style={{ marginBottom: "1rem", color: "var(--text-white)" }}>Popular Templates</h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "1rem" }}>
               {[
-                { name: "Business", emoji: "🏢" },
-                { name: "Portfolio", emoji: "🖼️" },
-                { name: "Blog", emoji: "📝" },
-                { name: "E-Commerce", emoji: "🛒" },
-                { name: "Restaurant", emoji: "🍽️" },
-                { name: "Photography", emoji: "📷" },
-                { name: "Medical", emoji: "🏥" },
-                { name: "Education", emoji: "🎓" },
-                { name: "Real Estate", emoji: "🏠" },
-                { name: "Fitness", emoji: "💪" },
-                { name: "Travel", emoji: "✈️" },
-                { name: "Music", emoji: "🎵" },
+                { name: "Business", icon: Building2 },
+                { name: "Portfolio", icon: Image },
+                { name: "Blog", icon: FileText },
+                { name: "E-Commerce", icon: ShoppingCart },
+                { name: "Restaurant", icon: Utensils },
+                { name: "Photography", icon: Camera },
+                { name: "Medical", icon: Building2 },
+                { name: "Education", icon: GraduationCap },
+                { name: "Real Estate", icon: Home },
+                { name: "Fitness", icon: Dumbbell },
+                { name: "Travel", icon: Plane },
+                { name: "Music", icon: Music },
               ].map((template, index) => (
                 <div key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "center", cursor: "pointer", transition: "transform 0.2s" }}>
-                  <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>{template.emoji}</div>
+                  <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}><template.icon size={48} color="var(--primary)" /></div>
                   <div style={{ fontWeight: "600", color: "var(--text-white)" }}>{template.name}</div>
                 </div>
               ))}
@@ -505,7 +513,7 @@ export default function AccountPage() {
             <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>VPS Management</h2>
             <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
-                <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.75rem" }}>☁️</div>
+                <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center" }}><Cloud size={28} color="white" /></div>
                 <div>
                   <h3 style={{ color: "var(--text-white)", marginBottom: "0.25rem" }}>Virtual Private Server</h3>
                   <p style={{ color: "var(--text-light)", margin: 0 }}>Full root access, scalable resources, and complete control</p>
@@ -538,16 +546,19 @@ export default function AccountPage() {
             <h3 style={{ marginBottom: "1rem", color: "var(--text-white)" }}>Quick Actions</h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
               {[
-                { name: "🔄 Reboot Server", desc: "Restart your VPS" },
-                { name: "📊 View Statistics", desc: "CPU, RAM, Bandwidth" },
-                { name: "🖥️ Console Access", desc: "Web-based terminal" },
-                { name: "💾 Snapshots", desc: "Backup your server" },
-                { name: "🔥 Firewall", desc: "Configure firewall rules" },
-                { name: "📦 Backups", desc: "Manage backups", },
+                { name: "Reboot Server", icon: RefreshCcw, desc: "Restart your VPS" },
+                { name: "View Statistics", icon: BarChart3, desc: "CPU, RAM, Bandwidth" },
+                { name: "Console Access", icon: Terminal, desc: "Web-based terminal" },
+                { name: "Snapshots", icon: Database, desc: "Backup your server" },
+                { name: "Firewall", icon: Flame, desc: "Configure firewall rules" },
+                { name: "Backups", icon: Package, desc: "Manage backups", },
               ].map((action, index) => (
-                <button key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "left", cursor: "pointer" }}>
-                  <div style={{ fontWeight: "600", color: "var(--text-white)", marginBottom: "0.25rem" }}>{action.name}</div>
-                  <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>{action.desc}</div>
+                <button key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "1rem" }}>
+                  <div style={{ width: "48px", height: "48px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "0.75rem", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><action.icon size={24} color="white" /></div>
+                  <div>
+                    <div style={{ fontWeight: "600", color: "var(--text-white)", marginBottom: "0.25rem" }}>{action.name}</div>
+                    <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>{action.desc}</div>
+                  </div>
                 </button>
               ))}
             </div>
@@ -560,7 +571,7 @@ export default function AccountPage() {
             <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>MX Records</h2>
             <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
-                <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.75rem" }}>📧</div>
+                <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center" }}><Mail size={28} color="white" /></div>
                 <div>
                   <h3 style={{ color: "var(--text-white)", marginBottom: "0.25rem" }}>Email Routing</h3>
                   <p style={{ color: "var(--text-light)", margin: 0 }}>Configure MX records for your domain&apos;s email delivery</p>
@@ -598,15 +609,15 @@ export default function AccountPage() {
             <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>More Services</h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1rem" }}>
               {[
-                { name: "SSL Certificates", emoji: "🔒", desc: "Secure your website with premium SSL" },
-                { name: "Domain Privacy", emoji: "🛡️", desc: "Protect your personal information" },
-                { name: "Email Marketing", emoji: "📬", desc: "Reach your customers effectively" },
-                { name: "Website Backup", emoji: "💾", desc: "Automated daily backups" },
-                { name: "CDN Services", emoji: "🚀", desc: "Global content delivery network" },
-                { name: " DDoS Protection", emoji: "🛡️", desc: "Advanced security for your site" },
+                { name: "SSL Certificates", icon: Lock, desc: "Secure your website with premium SSL" },
+                { name: "Domain Privacy", icon: Shield, desc: "Protect your personal information" },
+                { name: "Email Marketing", icon: Mail, desc: "Reach your customers effectively" },
+                { name: "Website Backup", icon: Database, desc: "Automated daily backups" },
+                { name: "CDN Services", icon: Rocket, desc: "Global content delivery network" },
+                { name: "DDoS Protection", icon: Shield, desc: "Advanced security for your site" },
               ].map((service, index) => (
                 <div key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "center" }}>
-                  <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.75rem", margin: "0 auto 1rem" }}>{service.emoji}</div>
+                  <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem" }}>{service.icon && <service.icon size={28} color="white" />}</div>
                   <div style={{ fontWeight: "600", color: "var(--text-white)", marginBottom: "0.5rem" }}>{service.name}</div>
                   <div style={{ fontSize: "0.875rem", color: "var(--text-light)", marginBottom: "1rem" }}>{service.desc}</div>
                   <button style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>Learn More</button>
@@ -621,7 +632,7 @@ export default function AccountPage() {
           <div>
             <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>Illusion Assistant</h2>
             <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", marginBottom: "1.5rem", textAlign: "center" }}>
-              <div style={{ width: "80px", height: "80px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2.5rem", margin: "0 auto 1.5rem" }}>🤖</div>
+              <div style={{ width: "80px", height: "80px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1.5rem" }}><Sparkles size={40} color="white" /></div>
               <h3 style={{ color: "var(--text-white)", marginBottom: "0.5rem", fontSize: "1.5rem" }}>Your AI-Powered Hosting Assistant</h3>
               <p style={{ color: "var(--text-light)", marginBottom: "1.5rem", maxWidth: "500px", margin: "0 auto 1.5rem" }}>Get instant help with domain setup, DNS configuration, troubleshooting, and more. Our AI assistant is available 24/7 to help you.</p>
               <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
@@ -633,18 +644,16 @@ export default function AccountPage() {
             <h3 style={{ marginBottom: "1rem", color: "var(--text-white)" }}>Quick Help Topics</h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
               {[
-                { name: "How to connect domain", emoji: "🔗" },
-                { name: "Set up email", emoji: "📧" },
-                { name: "Install SSL certificate", emoji: "🔒" },
-                { name: "Transfer domain", emoji: "📤" },
-                { name: "Configure DNS", emoji: "⚙️" },
-                { name: "Billing questions", emoji: "💳" },
+                { name: "How to connect domain", icon: Link2 },
+                { name: "Set up email", icon: Mail },
+                { name: "Install SSL certificate", icon: Lock },
+                { name: "Transfer domain", icon: Upload },
+                { name: "Configure DNS", icon: Settings },
+                { name: "Billing questions", icon: CreditCard },
               ].map((topic, index) => (
-                <button key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "left", cursor: "pointer" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                    <span style={{ fontSize: "1.5rem" }}>{topic.emoji}</span>
-                    <span style={{ fontWeight: "600", color: "var(--text-white)" }}>{topic.name}</span>
-                  </div>
+                <button key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <div style={{ width: "40px", height: "40px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "0.5rem", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><topic.icon size={20} color="white" /></div>
+                  <span style={{ fontWeight: "600", color: "var(--text-white)" }}>{topic.name}</span>
                 </button>
               ))}
             </div>
