@@ -136,6 +136,7 @@ export async function POST(request: NextRequest) {
     console.log("Site URL:", siteUrl);
     console.log("API Key:", nowPaymentsConfig.apiKey ? "set" : "missing");
     console.log("Wallet:", nowPaymentsConfig.walletAddress ? "set" : "missing");
+    console.log("Payment data:", JSON.stringify(paymentData));
 
     const response = await fetch(`${NOWPAYMENTS_API_URL}/payment`, {
       method: "POST",
@@ -146,6 +147,8 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify(paymentData),
     });
 
+    console.log("NOWPayments response status:", response.status);
+    
     if (!response.ok) {
       const errorText = await response.text();
       let errorMessage = "Failed to create payment invoice";
@@ -168,6 +171,7 @@ export async function POST(request: NextRequest) {
     }
 
     const paymentResult = await response.json();
+    console.log("NOWPayments payment created successfully:", JSON.stringify(paymentResult));
 
     // Store order details for webhook processing
     const orderDetails: OrderDetails = {
@@ -190,8 +194,8 @@ export async function POST(request: NextRequest) {
       global.paymentOrders = new Map<string, OrderDetails>();
     }
     global.paymentOrders.set(orderId, orderDetails);
-
-    return NextResponse.json({
+    
+    const apiResponse = {
       success: true,
       paymentId: paymentResult.payment_id,
       payAddress: paymentResult.pay_address,
@@ -200,7 +204,10 @@ export async function POST(request: NextRequest) {
       payUrl: paymentResult.pay_url,
       orderId,
       total: orderTotal,
-    });
+    };
+    console.log("Sending to frontend:", JSON.stringify(apiResponse));
+    
+    return NextResponse.json(apiResponse);
   } catch (error) {
     console.error("Payment error:", error);
     return NextResponse.json(
