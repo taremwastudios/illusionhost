@@ -46,6 +46,7 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 - [x] **Custom Favicon** - Added SVG favicon matching the Illusionhost logo (diamond with gradient, "Ih" text)
 - [x] **Demo Mode Auth** - Auth works without DB credentials using in-memory storage when DB_URL is not set
 - [x] **Fixed Login Event** - Navigation now updates immediately after login to show Dashboard button
+- [x] **Hosting-Required Domain Checkout** - Domains require a hosting plan; free domains based on plan (Starter=1, Professional=3, Business=5)
 
 ## Current Structure
 
@@ -146,3 +147,4 @@ Optional integrations (for production):
 | 2026-02-27 | Updated branding with gradient logos and home page text |
 | 2026-02-27 | Updated home page banner to "Get Your Domain Today" with community description |
 | 2026-02-27 | Added mock payment system and user dashboard with DNS, site builder, VPS |
+| 2026-02-28 | Added hosting-required domain checkout - domains require hosting plan, free domains based on plan (Starter=1, Professional=3, Business=5) |
