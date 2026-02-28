@@ -1,9 +1,13 @@
 "use server";
 
-import { db } from "@/db";
-import { users } from "@/db/schema";
-import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
+
+// Demo mode storage (in-memory, works without database)
+const demoUsers: Map<string, { id: number; name: string; email: string; password: string }> = new Map();
+let demoUserIdCounter = 1;
+
+// Check if we're in demo mode (no database)
+const isDemoMode = !process.env.DB_URL;
 
 export interface AuthResult {
   success: boolean;
@@ -16,7 +20,34 @@ export async function signup(
   password: string
 ): Promise<AuthResult> {
   console.log("[signup] Received request for:", email);
+  
+  if (isDemoMode) {
+    // Demo mode - use in-memory storage
+    console.log("[signup] Demo mode - using in-memory storage");
+    
+    if (demoUsers.has(email)) {
+      return { success: false, error: "An account with this email already exists" };
+    }
+    
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = {
+      id: demoUserIdCounter++,
+      name,
+      email,
+      password: hashedPassword,
+    };
+    demoUsers.set(email, user);
+    
+    console.log("[signup] Demo user created:", email);
+    return { success: true };
+  }
+  
+  // Real database mode
   try {
+    const { db } = await import("@/db");
+    const { users } = await import("@/db/schema");
+    const { eq } = await import("drizzle-orm");
+    
     // Check if user already exists
     const existingUser = await db
       .select()
@@ -53,7 +84,39 @@ export async function login(
   email: string,
   password: string
 ): Promise<AuthResult & { user?: { id: number; name: string; email: string } }> {
+  
+  if (isDemoMode) {
+    // Demo mode - use in-memory storage
+    console.log("[login] Demo mode - using in-memory storage");
+    
+    const user = demoUsers.get(email);
+    
+    if (!user) {
+      return { success: false, error: "Invalid email or password" };
+    }
+    
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    
+    if (!isValidPassword) {
+      return { success: false, error: "Invalid email or password" };
+    }
+    
+    return {
+      success: true,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      },
+    };
+  }
+  
+  // Real database mode
   try {
+    const { db } = await import("@/db");
+    const { users } = await import("@/db/schema");
+    const { eq } = await import("drizzle-orm");
+    
     // Find user by email
     const existingUser = await db
       .select()
