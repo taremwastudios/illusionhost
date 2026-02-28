@@ -124,6 +124,7 @@ export async function POST(request: NextRequest) {
     const paymentData = {
       price_amount: orderTotal,
       price_currency: "usd",
+      pay_currency: "usdt",
       order_id: orderId,
       order_description: `Illusionhost - Domain and Hosting Purchase`,
       success_url: `${siteUrl}/cart?payment=success&orderId=${orderId}`,
