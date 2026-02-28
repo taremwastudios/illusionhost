@@ -176,14 +176,15 @@ export default function CartPage() {
 
         <section className="container">
           <div style={{ 
-            background: "white", 
+            background: "var(--dark-secondary)", 
             padding: "3rem", 
             borderRadius: "1rem", 
-            boxShadow: "0 10px 40px -12px rgba(0, 0, 0, 0.1)",
+            boxShadow: "0 10px 40px -12px rgba(139, 92, 246, 0.25)",
+            border: "1px solid var(--border)",
             textAlign: "center"
           }}>
             <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>🎉</div>
-            <h2 style={{ fontSize: "1.5rem", fontWeight: "600", color: "var(--dark)", marginBottom: "0.75rem" }}>
+            <h2 style={{ fontSize: "1.5rem", fontWeight: "600", color: "var(--text-white)", marginBottom: "0.75rem" }}>
               Your order has been placed successfully!
             </h2>
             <p style={{ color: "var(--text-light)", marginBottom: "1rem" }}>
@@ -211,14 +212,15 @@ export default function CartPage() {
 
         <section className="container">
           <div style={{ 
-            background: "white", 
+            background: "var(--dark-secondary)", 
             padding: "3rem", 
             borderRadius: "1rem", 
-            boxShadow: "0 10px 40px -12px rgba(0, 0, 0, 0.1)",
+            boxShadow: "0 10px 40px -12px rgba(139, 92, 246, 0.25)",
+            border: "1px solid var(--border)",
             textAlign: "center"
           }}>
             <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>🛒</div>
-            <h2 style={{ fontSize: "1.5rem", fontWeight: "600", color: "var(--dark)", marginBottom: "0.75rem" }}>
+            <h2 style={{ fontSize: "1.5rem", fontWeight: "600", color: "var(--text-white)", marginBottom: "0.75rem" }}>
               Your cart is empty
             </h2>
             <p style={{ color: "var(--text-light)", marginBottom: "2rem" }}>
@@ -226,7 +228,7 @@ export default function CartPage() {
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <Link href="/domains" className="domain-action-btn">Search Domains</Link>
-              <Link href="/hosting" className="domain-action-btn" style={{ background: "var(--dark-secondary)" }}>View Hosting</Link>
+              <Link href="/hosting" className="domain-action-btn" style={{ background: "var(--dark-tertiary)" }}>View Hosting</Link>
             </div>
           </div>
         </section>
@@ -244,9 +246,9 @@ export default function CartPage() {
       <section className="container">
         <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "2rem" }}>
           {/* Cart Items */}
-          <div style={{ background: "white", borderRadius: "1rem", boxShadow: "0 4px 20px rgba(0,0,0,0.08)", overflow: "hidden" }}>
-            <div style={{ padding: "1.5rem", borderBottom: "1px solid #eee" }}>
-              <h2 style={{ fontSize: "1.25rem", fontWeight: "600", color: "var(--dark)" }}>
+          <div style={{ background: "var(--dark-secondary)", borderRadius: "1rem", boxShadow: "0 4px 20px rgba(139, 92, 246, 0.15)", border: "1px solid var(--border)", overflow: "hidden" }}>
+            <div style={{ padding: "1.5rem", borderBottom: "1px solid var(--border)" }}>
+              <h2 style={{ fontSize: "1.25rem", fontWeight: "600", color: "var(--text-white)" }}>
                 {items.length} {items.length === 1 ? "Item" : "Items"}
               </h2>
             </div>
@@ -266,9 +268,10 @@ export default function CartPage() {
                     justifyContent: "space-between", 
                     alignItems: "center",
                     padding: "1rem",
-                    background: index > 0 ? "#f9fafb" : "white",
+                    background: index > 0 ? "var(--dark)" : "var(--dark-secondary)",
                     borderRadius: "0.5rem",
-                    marginBottom: index < items.length - 1 ? "0.5rem" : 0
+                    marginBottom: index < items.length - 1 ? "0.5rem" : 0,
+                    border: "1px solid var(--border)"
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
@@ -285,7 +288,7 @@ export default function CartPage() {
                       {item.type === "domain" ? "🌐" : item.type === "hosting" ? "🖥️" : "➕"}
                     </div>
                     <div>
-                      <div style={{ fontWeight: "600", color: "var(--dark)" }}>
+                      <div style={{ fontWeight: "600", color: "var(--text-white)" }}>
                         {item.name}
                         {isWithinQuota && <span style={{ marginLeft: "0.5rem", fontSize: "0.75rem", color: "#10b981", background: "#ecfdf5", padding: "0.125rem 0.375rem", borderRadius: "0.25rem" }}>FREE</span>}
                       </div>
@@ -298,8 +301,8 @@ export default function CartPage() {
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
                     <div style={{ textAlign: "right" }}>
-                      <div style={{ fontWeight: "600", color: isWithinQuota ? "#10b981" : "var(--dark)" }}>
-                        {isWithinQuota ? "FREE" : `$${item.price}`}
+                      <div style={{ fontWeight: "600", color: isWithinQuota ? "#10b981" : "var(--text-white)" }}>
+                        {isWithinQuota ? "FREE" : `${item.price}`}
                       </div>
                       <div style={{ fontSize: "0.75rem", color: "var(--text-light)" }}>{item.period}</div>
                     </div>
@@ -323,23 +326,24 @@ export default function CartPage() {
           </div>
 
           {/* Order Summary */}
-          <div style={{ background: "white", borderRadius: "1rem", boxShadow: "0 4px 20px rgba(0,0,0,0.08)", padding: "1.5rem", height: "fit-content" }}>
-            <h2 style={{ fontSize: "1.25rem", fontWeight: "600", color: "var(--dark)", marginBottom: "1.5rem" }}>
+          <div style={{ background: "var(--dark-secondary)", borderRadius: "1rem", boxShadow: "0 4px 20px rgba(139, 92, 246, 0.15)", border: "1px solid var(--border)", padding: "1.5rem", height: "fit-content" }}>
+            <h2 style={{ fontSize: "1.25rem", fontWeight: "600", color: "var(--text-white)", marginBottom: "1.5rem" }}>
               Order Summary
             </h2>
             
             {/* Domain error message */}
             {domainError && (
               <div style={{ 
-                background: "#fef3c7", 
+                background: "rgba(245, 158, 11, 0.15)", 
                 padding: "0.75rem", 
                 borderRadius: "0.5rem", 
                 marginBottom: "1rem",
                 fontSize: "0.875rem",
-                color: "#92400e"
+                color: "#fbbf24",
+                border: "1px solid rgba(245, 158, 11, 0.3)"
               }}>
                 ⚠️ {domainError}
-                <Link href="/hosting" style={{ display: "block", marginTop: "0.5rem", color: "#b45309", fontWeight: "600" }}>
+                <Link href="/hosting" style={{ display: "block", marginTop: "0.5rem", color: "#f59e0b", fontWeight: "600" }}>
                   View Hosting Plans →
                 </Link>
               </div>
@@ -348,12 +352,13 @@ export default function CartPage() {
             {/* Hosting requirement info */}
             {domainItems.length > 0 && !domainsWithHosting && (
               <div style={{ 
-                background: "#eff6ff", 
+                background: "rgba(59, 130, 246, 0.15)", 
                 padding: "0.75rem", 
                 borderRadius: "0.5rem", 
                 marginBottom: "1rem",
                 fontSize: "0.875rem",
-                color: "#1e40af"
+                color: "#60a5fa",
+                border: "1px solid rgba(59, 130, 246, 0.3)"
               }}>
                 🔒 Domains require a hosting plan. Add hosting to get domains for free!
               </div>
@@ -362,12 +367,13 @@ export default function CartPage() {
             {/* Free domains applied */}
             {domainsWithHosting && freeDomainCount > 0 && (
               <div style={{ 
-                background: "#ecfdf5", 
+                background: "rgba(16, 185, 129, 0.15)", 
                 padding: "0.75rem", 
                 borderRadius: "0.5rem", 
                 marginBottom: "1rem",
                 fontSize: "0.875rem",
-                color: "#065f46"
+                color: "#34d399",
+                border: "1px solid rgba(16, 185, 129, 0.3)"
               }}>
                 🎉 {freeDomainCount} {freeDomainCount === 1 ? "domain" : "domains"} free with {effectiveHostingPlan}!
               </div>
@@ -378,7 +384,7 @@ export default function CartPage() {
               <span>${total.toFixed(2)}</span>
             </div>
             {freeDomainCount > 0 && (
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.75rem", color: "#10b981" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.75rem", color: "#34d399" }}>
                 <span>Free Domains ({freeDomainCount} × $9.99)</span>
                 <span>-${(freeDomainCount * 9.99).toFixed(2)}</span>
               </div>
@@ -392,8 +398,8 @@ export default function CartPage() {
               <span>$0.00</span>
             </div>
             
-            <div style={{ borderTop: "1px solid #eee", paddingTop: "1rem", marginBottom: "1.5rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "600", fontSize: "1.25rem", color: "var(--dark)" }}>
+            <div style={{ borderTop: "1px solid var(--border)", paddingTop: "1rem", marginBottom: "1.5rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "600", fontSize: "1.25rem", color: "var(--text-white)" }}>
                 <span>Total</span>
                 <span>${(domainsWithHosting ? totalWithFreeDomains : total).toFixed(2)}</span>
               </div>
@@ -401,20 +407,20 @@ export default function CartPage() {
 
             {!user && (
               <div style={{ 
-                background: "#fef3c7", 
+                background: "rgba(245, 158, 11, 0.15)", 
                 padding: "0.75rem", 
                 borderRadius: "0.5rem", 
                 marginBottom: "1rem",
                 fontSize: "0.875rem",
-                color: "#92400e"
+                color: "#fbbf24"
               }}>
-                Please <Link href="/login" style={{ color: "#b45309", fontWeight: "600" }}>login</Link> to complete your purchase
+                Please <Link href="/login" style={{ color: "#f59e0b", fontWeight: "600" }}>login</Link> to complete your purchase
               </div>
             )}
 
             {/* Payment Method Selection */}
-            <div style={{ marginBottom: "1.5rem", paddingBottom: "1.5rem", borderBottom: "1px solid #eee" }}>
-              <p style={{ fontSize: "0.875rem", fontWeight: "600", color: "var(--dark)", marginBottom: "0.75rem" }}>
+            <div style={{ marginBottom: "1.5rem", paddingBottom: "1.5rem", borderBottom: "1px solid var(--border)" }}>
+              <p style={{ fontSize: "0.875rem", fontWeight: "600", color: "var(--text-white)", marginBottom: "0.75rem" }}>
                 Payment Method:
               </p>
               <div style={{ display: "flex", gap: "0.75rem" }}>
@@ -423,42 +429,43 @@ export default function CartPage() {
                   style={{
                     flex: 1,
                     padding: "0.75rem",
-                    border: paymentMethod === "card" ? "2px solid var(--primary)" : "2px solid #e5e7eb",
+                    border: paymentMethod === "card" ? "2px solid var(--primary)" : "2px solid var(--border)",
                     borderRadius: "0.5rem",
-                    background: paymentMethod === "card" ? "#f0f9ff" : "white",
+                    background: paymentMethod === "card" ? "rgba(139, 92, 246, 0.2)" : "var(--dark)",
                     cursor: "pointer",
                     transition: "all 0.2s",
                   }}
                 >
                   <div style={{ fontSize: "1.5rem", marginBottom: "0.25rem" }}>💳</div>
-                  <div style={{ fontSize: "0.75rem", fontWeight: "600", color: paymentMethod === "card" ? "var(--primary)" : "var(--dark)" }}>Credit Card</div>
+                  <div style={{ fontSize: "0.75rem", fontWeight: "600", color: paymentMethod === "card" ? "var(--primary-light)" : "var(--text-light)" }}>Credit Card</div>
                 </button>
                 <button
                   onClick={() => setPaymentMethod("crypto")}
                   style={{
                     flex: 1,
                     padding: "0.75rem",
-                    border: paymentMethod === "crypto" ? "2px solid #f97316" : "2px solid #e5e7eb",
+                    border: paymentMethod === "crypto" ? "2px solid #f97316" : "2px solid var(--border)",
                     borderRadius: "0.5rem",
-                    background: paymentMethod === "crypto" ? "#fff7ed" : "white",
+                    background: paymentMethod === "crypto" ? "rgba(249, 115, 22, 0.2)" : "var(--dark)",
                     cursor: "pointer",
                     transition: "all 0.2s",
                   }}
                 >
                   <div style={{ fontSize: "1.5rem", marginBottom: "0.25rem" }}>₿</div>
-                  <div style={{ fontSize: "0.75rem", fontWeight: "600", color: paymentMethod === "crypto" ? "#f97316" : "var(--dark)" }}>Crypto</div>
+                  <div style={{ fontSize: "0.75rem", fontWeight: "600", color: paymentMethod === "crypto" ? "#fb923c" : "var(--text-light)" }}>Crypto</div>
                 </button>
               </div>
               
               {/* Crypto payment info */}
               {paymentMethod === "crypto" && (
                 <div style={{ 
-                  background: "#fff7ed", 
+                  background: "rgba(249, 115, 22, 0.15)", 
                   padding: "0.75rem", 
                   borderRadius: "0.5rem", 
                   marginTop: "0.75rem",
                   fontSize: "0.75rem",
-                  color: "#9a3412"
+                  color: "#fb923c",
+                  border: "1px solid rgba(249, 115, 22, 0.3)"
                 }}>
                   <div style={{ fontWeight: "600", marginBottom: "0.25rem" }}>Pay with Cryptocurrency</div>
                   <div>Pay with USDT, BTC, ETH, and 50+ other cryptocurrencies via NOWPayments</div>
@@ -468,12 +475,13 @@ export default function CartPage() {
               {/* Payment error */}
               {paymentError && (
                 <div style={{ 
-                  background: "#fef2f2", 
+                  background: "rgba(239, 68, 68, 0.15)", 
                   padding: "0.75rem", 
                   borderRadius: "0.5rem", 
                   marginTop: "0.75rem",
                   fontSize: "0.875rem",
-                  color: "#dc2626"
+                  color: "#f87171",
+                  border: "1px solid rgba(239, 68, 68, 0.3)"
                 }}>
                   ⚠️ {paymentError}
                 </div>
