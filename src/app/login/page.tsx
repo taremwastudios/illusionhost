@@ -26,6 +26,8 @@ function LoginForm() {
       // Store user info in localStorage for simplicity
       // In production, you'd use proper session management
       localStorage.setItem("user", JSON.stringify(result.user));
+      // Dispatch login event to notify other components
+      window.dispatchEvent(new Event("login"));
       router.push("/");
     } else {
       setError(result.error || "Failed to login");
