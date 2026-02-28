@@ -12,11 +12,6 @@ interface User {
 
 type PaymentMethod = "card" | "crypto";
 
-  // NOWPayments hosted payment button link
-  const getNOWPaymentsUrl = (amount: number) => {
-    return `https://nowpayments.io/payment/?iid=6118248419&amount=${amount.toFixed(2)}&source=button`;
-  };
-
 // Hosting plan free domain quotas
 const HOSTING_QUOTAS: Record<string, number> = {
   "Starter Hosting": 1,
@@ -97,7 +92,7 @@ export default function CartPage() {
     setDomainError(null);
     setPaymentError(null);
     
-    // If paying with crypto, redirect to NOWPayments hosted checkout
+    // If paying with crypto, call the payment API to get the invoice URL
     if (paymentMethod === "crypto") {
       try {
         const orderTotal = domainsWithHosting ? totalWithFreeDomains : total;
@@ -108,13 +103,30 @@ export default function CartPage() {
           return;
         }
         
-        // Redirect to NOWPayments hosted checkout page
-        const nowPaymentsUrl = getNOWPaymentsUrl(orderTotal);
-        window.open(nowPaymentsUrl, "_blank");
+        // Call the payment API to create a dynamic payment invoice
+        const response = await fetch("/api/payment", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            items: items,
+            user: user,
+          }),
+        });
         
-        // Show confirmation that they can complete payment
-        setIsProcessing(false);
-        alert("Please complete your payment in the NOWPayments window. Your order will be processed once payment is confirmed.");
+        const paymentData = await response.json();
+        
+        if (paymentData.url) {
+          // Redirect to the NOWPayments hosted checkout
+          window.location.href = paymentData.url;
+        } else if (paymentData.mockPayment) {
+          // Mock payment for testing without NOWPayments configured
+          alert("Mock payment mode - NOWPayments not configured. Processing as free order.");
+          await processFreeOrder();
+        } else {
+          throw new Error(paymentData.error || "Failed to create payment");
+        }
         return;
       } catch (error: any) {
         console.error("Crypto payment error:", error);

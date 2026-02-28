@@ -119,17 +119,14 @@ export async function POST(request: NextRequest) {
     // Get the site URL - remove trailing slash if present
     const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://illusionhost.koyeb.app").replace(/\/$/, '');
     
-    // Create payment invoice with NOWPayments
-    // Using BTC as pay_currency - it's universally supported for exchange rate estimation
+    // Create payment with NOWPayments - simpler payload for hosted checkout
+    // This creates a payment that redirects to a hosted checkout page with the dynamic amount
     const paymentData = {
       price_amount: orderTotal,
       price_currency: "usd",
-      pay_currency: "btc",
       order_id: orderId,
       order_description: `Illusionhost - Domain and Hosting Purchase`,
-      ipn_callback_url: `${siteUrl}/api/payment/webhook`,
       success_url: `${siteUrl}/cart?payment=success&orderId=${orderId}`,
-      cancel_url: `${siteUrl}/cart?payment=cancelled`,
     };
 
     console.log("Creating NOWPayments invoice...");
@@ -138,6 +135,7 @@ export async function POST(request: NextRequest) {
     console.log("Wallet:", nowPaymentsConfig.walletAddress ? "set" : "missing");
     console.log("Payment data:", JSON.stringify(paymentData));
 
+    // Use /payment endpoint for hosted checkout with dynamic amount
     const response = await fetch(`${NOWPAYMENTS_API_URL}/payment`, {
       method: "POST",
       headers: {
@@ -181,9 +179,6 @@ export async function POST(request: NextRequest) {
       items,
       total: orderTotal,
       paymentId: paymentResult.payment_id,
-      payAddress: paymentResult.pay_address,
-      payAmount: paymentResult.pay_amount,
-      payCurrency: paymentResult.pay_currency,
       status: "pending",
       createdAt: new Date().toISOString(),
     };
@@ -197,11 +192,7 @@ export async function POST(request: NextRequest) {
     
     const apiResponse = {
       success: true,
-      paymentId: paymentResult.payment_id,
-      payAddress: paymentResult.pay_address,
-      payAmount: paymentResult.pay_amount,
-      payCurrency: paymentResult.pay_currency,
-      payUrl: paymentResult.pay_url,
+      url: paymentResult.invoice_url || paymentResult.pay_url,
       orderId,
       total: orderTotal,
     };
