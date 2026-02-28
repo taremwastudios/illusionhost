@@ -4,4 +4,4 @@ build:
     BUN_VERSION: "latest"
 
 run:
-  command: "bun run start"
+  command: "npm start"
