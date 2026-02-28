@@ -116,15 +116,15 @@ export async function POST(request: NextRequest) {
     // Generate order ID
     const orderId = `order_${Date.now()}_${Math.random().toString(36).substring(7)}`;
 
-    // Use Koyeb default URL if not set
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://illusionhost.koyeb.app";
+    // Get the site URL - remove trailing slash if present
+    const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://illusionhost.koyeb.app").replace(/\/$/, '');
     
     // Create payment invoice with NOWPayments
-    // Leave pay_currency empty to let NOWPayments handle the conversion
+    // Use USDT as the payment currency
     const paymentData = {
       price_amount: orderTotal,
       price_currency: "usd",
-      pay_currency: "", // Empty allows NOWPayments to select best currency
+      pay_currency: "usdt", // Specify USDT as the cryptocurrency to receive
       order_id: orderId,
       order_description: `Illusionhost - Domain and Hosting Purchase`,
       ipn_callback_url: `${siteUrl}/api/payment/webhook`,
