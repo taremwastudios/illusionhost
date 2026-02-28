@@ -2,6 +2,7 @@ build:
   builder: heroku/builder:22
   config:
     BUN_VERSION: "latest"
+  build_command: "bun install && bun run build"
 
 run:
   command: "bun run start"
