@@ -147,12 +147,22 @@ export async function POST(request: NextRequest) {
     });
 
     if (!response.ok) {
-      const error = await response.text();
-      console.error("NOWPayments API error:", error);
+      const errorText = await response.text();
+      let errorMessage = "Failed to create payment invoice";
+      
+      try {
+        const errorJson = JSON.parse(errorText);
+        errorMessage = errorJson.message || errorJson.error || errorText;
+        console.error("NOWPayments API error response:", errorJson);
+      } catch (e) {
+        console.error("NOWPayments API error (raw):", errorText);
+      }
+      
       console.error("Response status:", response.status);
-      console.error("Request data:", paymentData);
+      console.error("Request data:", JSON.stringify(paymentData));
+      
       return NextResponse.json(
-        { error: "Failed to create payment invoice" },
+        { error: errorMessage, details: errorText, status: response.status },
         { status: 500 }
       );
     }
