@@ -116,6 +116,9 @@ export async function POST(request: NextRequest) {
     // Generate order ID
     const orderId = `order_${Date.now()}_${Math.random().toString(36).substring(7)}`;
 
+    // Use Koyeb default URL if not set
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://illusionhost.koyeb.app";
+    
     // Create payment invoice with NOWPayments
     // Leave pay_currency empty to let NOWPayments handle the conversion
     const paymentData = {
@@ -124,13 +127,13 @@ export async function POST(request: NextRequest) {
       pay_currency: "", // Empty allows NOWPayments to select best currency
       order_id: orderId,
       order_description: `Illusionhost - Domain and Hosting Purchase`,
-      ipn_callback_url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/payment/webhook`,
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cart?payment=success&orderId=${orderId}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cart?payment=cancelled`,
+      ipn_callback_url: `${siteUrl}/api/payment/webhook`,
+      success_url: `${siteUrl}/cart?payment=success&orderId=${orderId}`,
+      cancel_url: `${siteUrl}/cart?payment=cancelled`,
     };
 
     console.log("Creating NOWPayments invoice...");
-    console.log("Site URL:", process.env.NEXT_PUBLIC_SITE_URL);
+    console.log("Site URL:", siteUrl);
     console.log("API Key:", nowPaymentsConfig.apiKey ? "set" : "missing");
     console.log("Wallet:", nowPaymentsConfig.walletAddress ? "set" : "missing");
 
