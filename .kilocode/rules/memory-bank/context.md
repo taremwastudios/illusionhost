@@ -48,6 +48,7 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 - [x] **Fixed Login Event** - Navigation now updates immediately after login to show Dashboard button
 - [x] **Hosting-Required Domain Checkout** - Domains require a hosting plan; free domains based on plan (Starter=1, Professional=3, Business=5)
 - [x] **NOWPayments Integration** - Added cryptocurrency payment option via NOWPayments (USDT, BTC, ETH, and 50+ more)
+- [x] **NOWPayments crypto2crypto UI** - Shows payment address and amount for crypto2crypto payments instead of trying to redirect to hosted checkout
 
 ## Current Structure
 
