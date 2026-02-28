@@ -191,6 +191,7 @@ export default function AccountPage() {
                 transition: "all 0.2s"
               }}
             >
+              {tab.icon && <tab.icon size={16} style={{ marginRight: "0.5rem", verticalAlign: "middle" }} />}
               {tab.label} {tab.count > 0 && <span style={{ opacity: 0.8 }}>({tab.count})</span>}
             </button>
           ))}
