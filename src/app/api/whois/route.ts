@@ -284,12 +284,15 @@ export async function POST(request: Request) {
       const domainWithTld = `${cleanDomain}${t}`;
       const isTaken = isDomainLikelyTaken(cleanDomain, t);
       
+      const tldWithDot = "." + t;
+      const tldDetails = tldInfo[tldWithDot] || { plan: "Professional ($12/mo)", premium: false };
+      
       results.push({
         name: domainWithTld,
         available: !isTaken,
         tld: t,
-        requiredPlan: tldInfo[t].plan,
-        isPremium: tldInfo[t].premium,
+        requiredPlan: tldDetails.plan,
+        isPremium: tldDetails.premium,
         isHybridEligible: hybridEligibleTLDs.includes(t),
         domainPrice: domainPrices[t] || 19.99,
         isExactMatch: false,
