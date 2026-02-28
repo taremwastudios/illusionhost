@@ -127,43 +127,46 @@ export default function AccountPage() {
         {/* Quick Actions */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem", marginBottom: "2rem" }}>
           <Link href="/domains" style={{ textDecoration: "none" }}>
-            <div style={{ background: "white", padding: "1.5rem", borderRadius: "0.75rem", boxShadow: "0 2px 10px rgba(0,0,0,0.08)", textAlign: "center", cursor: "pointer", transition: "transform 0.2s" }}>
-              <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>🌐</div>
-              <div style={{ fontWeight: "600", color: "var(--dark)" }}>Register Domain</div>
+            <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "center", cursor: "pointer", transition: "all 0.3s" }}>
+              <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.75rem", margin: "0 auto 1rem" }}>🌐</div>
+              <div style={{ fontWeight: "600", color: "var(--text-white)" }}>Register Domain</div>
               <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>Find your perfect domain</div>
             </div>
           </Link>
           <Link href="/hosting" style={{ textDecoration: "none" }}>
-            <div style={{ background: "white", padding: "1.5rem", borderRadius: "0.75rem", boxShadow: "0 2px 10px rgba(0,0,0,0.08)", textAlign: "center", cursor: "pointer", transition: "transform 0.2s" }}>
-              <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>🖥️</div>
-              <div style={{ fontWeight: "600", color: "var(--dark)" }}>Add Hosting</div>
+            <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "center", cursor: "pointer", transition: "all 0.3s" }}>
+              <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.75rem", margin: "0 auto 1rem" }}>🖥️</div>
+              <div style={{ fontWeight: "600", color: "var(--text-white)" }}>Add Hosting</div>
               <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>Get more services</div>
             </div>
           </Link>
           <Link href="/cart" style={{ textDecoration: "none" }}>
-            <div style={{ background: "white", padding: "1.5rem", borderRadius: "0.75rem", boxShadow: "0 2px 10px rgba(0,0,0,0.08)", textAlign: "center", cursor: "pointer", transition: "transform 0.2s" }}>
-              <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>🛒</div>
-              <div style={{ fontWeight: "600", color: "var(--dark)" }}>Shopping Cart</div>
+            <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "center", cursor: "pointer", transition: "all 0.3s" }}>
+              <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.75rem", margin: "0 auto 1rem" }}>🛒</div>
+              <div style={{ fontWeight: "600", color: "var(--text-white)" }}>Shopping Cart</div>
               <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>View your cart</div>
             </div>
           </Link>
           <button onClick={handleLogout} style={{ background: "none", border: "none", cursor: "pointer" }}>
-            <div style={{ background: "white", padding: "1.5rem", borderRadius: "0.75rem", boxShadow: "0 2px 10px rgba(0,0,0,0.08)", textAlign: "center", transition: "transform 0.2s" }}>
-              <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>🚪</div>
-              <div style={{ fontWeight: "600", color: "var(--dark)" }}>Logout</div>
+            <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "center", transition: "all 0.3s" }}>
+              <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.75rem", margin: "0 auto 1rem" }}>🚪</div>
+              <div style={{ fontWeight: "600", color: "var(--text-white)" }}>Logout</div>
               <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>Sign out</div>
             </div>
           </button>
         </div>
 
         {/* Tabs */}
-        <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.5rem", borderBottom: "2px solid #eee", overflowX: "auto" }}>
+        <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.5rem", borderBottom: "2px solid var(--border)", overflowX: "auto" }}>
           {[
             { id: "domains", label: "🌐 Domains", count: domainItems.length },
             { id: "hosting", label: "🖥️ Hosting", count: hostingItems.length },
             { id: "dns", label: "🌍 DNS", count: dnsRecords.length },
             { id: "builder", label: "🎨 Site Builder", count: 0 },
             { id: "vps", label: "☁️ VPS", count: 0 },
+            { id: "mxrecords", label: "📧 MX Records", count: 0 },
+            { id: "more", label: "📦 More", count: 0 },
+            { id: "assistant", label: "🤖 Illusion Assistant", count: 0 },
           ].map(tab => (
             <button
               key={tab.id}
@@ -499,12 +502,12 @@ export default function AccountPage() {
         {/* VPS Tab */}
         {activeTab === "vps" && (
           <div>
-            <h2 style={{ marginBottom: "1.5rem", color: "var(--dark)" }}>VPS Management</h2>
-            <div style={{ background: "white", padding: "2rem", borderRadius: "1rem", boxShadow: "0 4px 20px rgba(0,0,0,0.08)", marginBottom: "1.5rem" }}>
+            <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>VPS Management</h2>
+            <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
-                <div style={{ fontSize: "3rem" }}>☁️</div>
+                <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.75rem" }}>☁️</div>
                 <div>
-                  <h3 style={{ color: "var(--dark)", marginBottom: "0.25rem" }}>Virtual Private Server</h3>
+                  <h3 style={{ color: "var(--text-white)", marginBottom: "0.25rem" }}>Virtual Private Server</h3>
                   <p style={{ color: "var(--text-light)", margin: 0 }}>Full root access, scalable resources, and complete control</p>
                 </div>
               </div>
@@ -513,15 +516,15 @@ export default function AccountPage() {
               </button>
             </div>
 
-            <h3 style={{ marginBottom: "1rem", color: "var(--dark)" }}>VPS Plans</h3>
+            <h3 style={{ marginBottom: "1rem", color: "var(--text-white)" }}>VPS Plans</h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1rem", marginBottom: "1.5rem" }}>
               {[
                 { name: "VPS Starter", cpu: "1 vCPU", ram: "1GB RAM", storage: "25GB SSD", price: 5 },
                 { name: "VPS Professional", cpu: "2 vCPU", ram: "4GB RAM", storage: "80GB SSD", price: 20 },
                 { name: "VPS Business", cpu: "4 vCPU", ram: "8GB RAM", storage: "160GB SSD", price: 40 },
               ].map((plan, index) => (
-                <div key={index} style={{ background: "white", padding: "1.5rem", borderRadius: "0.75rem", boxShadow: "0 2px 10px rgba(0,0,0,0.08)" }}>
-                  <div style={{ fontWeight: "600", color: "var(--dark)", marginBottom: "0.5rem" }}>{plan.name}</div>
+                <div key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)" }}>
+                  <div style={{ fontWeight: "600", color: "var(--text-white)", marginBottom: "0.5rem" }}>{plan.name}</div>
                   <div style={{ fontSize: "0.875rem", color: "var(--text-light)", marginBottom: "1rem" }}>
                     <div>{plan.cpu}</div>
                     <div>{plan.ram}</div>
@@ -532,7 +535,7 @@ export default function AccountPage() {
               ))}
             </div>
 
-            <h3 style={{ marginBottom: "1rem", color: "var(--dark)" }}>Quick Actions</h3>
+            <h3 style={{ marginBottom: "1rem", color: "var(--text-white)" }}>Quick Actions</h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
               {[
                 { name: "🔄 Reboot Server", desc: "Restart your VPS" },
@@ -542,9 +545,106 @@ export default function AccountPage() {
                 { name: "🔥 Firewall", desc: "Configure firewall rules" },
                 { name: "📦 Backups", desc: "Manage backups", },
               ].map((action, index) => (
-                <button key={index} style={{ background: "white", padding: "1.5rem", borderRadius: "0.75rem", boxShadow: "0 2px 10px rgba(0,0,0,0.08)", border: "none", textAlign: "left", cursor: "pointer" }}>
-                  <div style={{ fontWeight: "600", color: "var(--dark)", marginBottom: "0.25rem" }}>{action.name}</div>
+                <button key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "left", cursor: "pointer" }}>
+                  <div style={{ fontWeight: "600", color: "var(--text-white)", marginBottom: "0.25rem" }}>{action.name}</div>
                   <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>{action.desc}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* MX Records Tab */}
+        {activeTab === "mxrecords" && (
+          <div>
+            <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>MX Records</h2>
+            <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
+                <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.75rem" }}>📧</div>
+                <div>
+                  <h3 style={{ color: "var(--text-white)", marginBottom: "0.25rem" }}>Email Routing</h3>
+                  <p style={{ color: "var(--text-light)", margin: 0 }}>Configure MX records for your domain&apos;s email delivery</p>
+                </div>
+              </div>
+              <button style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>
+                Configure MX Records
+              </button>
+            </div>
+
+            <h3 style={{ marginBottom: "1rem", color: "var(--text-white)" }}>Common MX Configurations</h3>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1rem" }}>
+              {[
+                { name: "Google Workspace", priority: "10", host: "aspmx.l.google.com" },
+                { name: "Microsoft 365", priority: "10", host: "mx1.microsoft.com" },
+                { name: "Zoho Mail", priority: "10", host: "mx.zoho.com" },
+                { name: "Mailgun", priority: "10", host: "mxa.mailgun.org" },
+              ].map((config, index) => (
+                <div key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)" }}>
+                  <div style={{ fontWeight: "600", color: "var(--text-white)", marginBottom: "0.5rem" }}>{config.name}</div>
+                  <div style={{ fontSize: "0.875rem", color: "var(--text-light)", marginBottom: "0.5rem" }}>
+                    <div>Priority: {config.priority}</div>
+                    <div>Host: {config.host}</div>
+                  </div>
+                  <button style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontSize: "0.875rem", fontWeight: "600" }}>Apply</button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* More Tab */}
+        {activeTab === "more" && (
+          <div>
+            <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>More Services</h2>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1rem" }}>
+              {[
+                { name: "SSL Certificates", emoji: "🔒", desc: "Secure your website with premium SSL" },
+                { name: "Domain Privacy", emoji: "🛡️", desc: "Protect your personal information" },
+                { name: "Email Marketing", emoji: "📬", desc: "Reach your customers effectively" },
+                { name: "Website Backup", emoji: "💾", desc: "Automated daily backups" },
+                { name: "CDN Services", emoji: "🚀", desc: "Global content delivery network" },
+                { name: " DDoS Protection", emoji: "🛡️", desc: "Advanced security for your site" },
+              ].map((service, index) => (
+                <div key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "center" }}>
+                  <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.75rem", margin: "0 auto 1rem" }}>{service.emoji}</div>
+                  <div style={{ fontWeight: "600", color: "var(--text-white)", marginBottom: "0.5rem" }}>{service.name}</div>
+                  <div style={{ fontSize: "0.875rem", color: "var(--text-light)", marginBottom: "1rem" }}>{service.desc}</div>
+                  <button style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>Learn More</button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Illusion Assistant Tab */}
+        {activeTab === "assistant" && (
+          <div>
+            <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>Illusion Assistant</h2>
+            <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", marginBottom: "1.5rem", textAlign: "center" }}>
+              <div style={{ width: "80px", height: "80px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2.5rem", margin: "0 auto 1.5rem" }}>🤖</div>
+              <h3 style={{ color: "var(--text-white)", marginBottom: "0.5rem", fontSize: "1.5rem" }}>Your AI-Powered Hosting Assistant</h3>
+              <p style={{ color: "var(--text-light)", marginBottom: "1.5rem", maxWidth: "500px", margin: "0 auto 1.5rem" }}>Get instant help with domain setup, DNS configuration, troubleshooting, and more. Our AI assistant is available 24/7 to help you.</p>
+              <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+                <button style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>Start Chat</button>
+                <button style={{ padding: "0.75rem 1.5rem", background: "transparent", color: "var(--text-white)", border: "2px solid var(--border)", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>View Help Articles</button>
+              </div>
+            </div>
+
+            <h3 style={{ marginBottom: "1rem", color: "var(--text-white)" }}>Quick Help Topics</h3>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
+              {[
+                { name: "How to connect domain", emoji: "🔗" },
+                { name: "Set up email", emoji: "📧" },
+                { name: "Install SSL certificate", emoji: "🔒" },
+                { name: "Transfer domain", emoji: "📤" },
+                { name: "Configure DNS", emoji: "⚙️" },
+                { name: "Billing questions", emoji: "💳" },
+              ].map((topic, index) => (
+                <button key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "left", cursor: "pointer" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                    <span style={{ fontSize: "1.5rem" }}>{topic.emoji}</span>
+                    <span style={{ fontWeight: "600", color: "var(--text-white)" }}>{topic.name}</span>
+                  </div>
                 </button>
               ))}
             </div>
