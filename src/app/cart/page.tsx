@@ -12,13 +12,10 @@ interface User {
 
 type PaymentMethod = "card" | "crypto";
 
-interface CryptoPaymentDetails {
-  address: string;
-  amount: number;
-  currency: string;
-  paymentId: string;
-  orderId: string;
-}
+  // NOWPayments hosted payment button link
+  const getNOWPaymentsUrl = (amount: number) => {
+    return `https://nowpayments.io/payment/?iid=6118248419&amount=${amount.toFixed(2)}&source=button`;
+  };
 
 // Hosting plan free domain quotas
 const HOSTING_QUOTAS: Record<string, number> = {
@@ -37,7 +34,6 @@ export default function CartPage() {
   const [domainError, setDomainError] = useState<string | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
   const [paymentError, setPaymentError] = useState<string | null>(null);
-  const [cryptoPaymentDetails, setCryptoPaymentDetails] = useState<CryptoPaymentDetails | null>(null);
 
   // Get user's purchased items to check for hosting plan
   useEffect(() => {
@@ -101,7 +97,7 @@ export default function CartPage() {
     setDomainError(null);
     setPaymentError(null);
     
-    // If paying with crypto, use NOWPayments
+    // If paying with crypto, redirect to NOWPayments hosted checkout
     if (paymentMethod === "crypto") {
       try {
         const orderTotal = domainsWithHosting ? totalWithFreeDomains : total;
@@ -112,39 +108,14 @@ export default function CartPage() {
           return;
         }
         
-        const response = await fetch("/api/payment", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ items, user }),
-        });
+        // Redirect to NOWPayments hosted checkout page
+        const nowPaymentsUrl = getNOWPaymentsUrl(orderTotal);
+        window.open(nowPaymentsUrl, "_blank");
         
-        const paymentData = await response.json();
-        
-        if (paymentData.mockPayment) {
-          // Mock payment for demo
-          console.log("Mock crypto payment:", paymentData);
-          await processFreeOrder();
-          return;
-        }
-        
-        if (paymentData.success && paymentData.payUrl) {
-          // Redirect to crypto payment hosted page
-          window.location.href = paymentData.payUrl;
-          return;
-        } else if (paymentData.success && paymentData.payAddress) {
-          // Crypto2crypto payment - show payment details to user
-          setCryptoPaymentDetails({
-            address: paymentData.payAddress,
-            amount: paymentData.payAmount,
-            currency: paymentData.payCurrency,
-            paymentId: paymentData.paymentId,
-            orderId: paymentData.orderId
-          });
-          setIsProcessing(false);
-          return;
-        } else {
-          throw new Error(paymentData.error || "Failed to create payment");
-        }
+        // Show confirmation that they can complete payment
+        setIsProcessing(false);
+        alert("Please complete your payment in the NOWPayments window. Your order will be processed once payment is confirmed.");
+        return;
       } catch (error: any) {
         console.error("Crypto payment error:", error);
         setPaymentError(error.message || "Payment failed. Please try again.");
@@ -182,115 +153,6 @@ export default function CartPage() {
     setIsProcessing(false);
     setOrderComplete(true);
   };
-
-  // Show crypto payment instructions
-  if (cryptoPaymentDetails) {
-    return (
-      <>
-        <section className="page-header">
-          <h1>Complete Your Payment</h1>
-          <p>Send cryptocurrency to complete your order</p>
-        </section>
-
-        <section className="container">
-          <div style={{ 
-            background: "white", 
-            padding: "3rem", 
-            borderRadius: "1rem", 
-            boxShadow: "0 10px 40px -12px rgba(0, 0, 0, 0.1)",
-            maxWidth: "600px",
-            margin: "0 auto"
-          }}>
-            <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-              <div style={{ 
-                fontSize: "4rem", 
-                marginBottom: "1rem",
-                background: "linear-gradient(135deg, #f7931a, #ffb84d)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent"
-              }}>
-                ₿
-              </div>
-              <h2 style={{ color: "#1a1a2e", marginBottom: "0.5rem" }}>Send {cryptoPaymentDetails.amount} {cryptoPaymentDetails.currency.toUpperCase()}</h2>
-              <p style={{ color: "#666" }}>Total: ${(cryptoPaymentDetails.amount * 60000).toFixed(2)} USD (approx)</p>
-            </div>
-
-            <div style={{ 
-              background: "#f8f9fa", 
-              padding: "1.5rem", 
-              borderRadius: "0.5rem", 
-              marginBottom: "1.5rem"
-            }}>
-              <p style={{ fontWeight: "600", marginBottom: "0.5rem", color: "#1a1a2e" }}>Send to this address:</p>
-              <code style={{ 
-                display: "block",
-                background: "#fff", 
-                padding: "1rem", 
-                borderRadius: "0.5rem",
-                border: "1px solid #e0e0e0",
-                wordBreak: "break-all",
-                fontFamily: "monospace",
-                fontSize: "0.9rem"
-              }}>
-                {cryptoPaymentDetails.address}
-              </code>
-              <button 
-                onClick={() => navigator.clipboard.writeText(cryptoPaymentDetails.address)}
-                style={{
-                  marginTop: "0.5rem",
-                  padding: "0.5rem 1rem",
-                  background: "#6366f1",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "0.25rem",
-                  cursor: "pointer"
-                }}
-              >
-                Copy Address
-              </button>
-            </div>
-
-            <div style={{ 
-              background: "#fff3cd", 
-              padding: "1rem", 
-              borderRadius: "0.5rem",
-              marginBottom: "1.5rem"
-            }}>
-              <p style={{ fontWeight: "600", color: "#856404", marginBottom: "0.5rem" }}>⚠️ Important:</p>
-              <ul style={{ margin: 0, paddingLeft: "1.25rem", color: "#856404" }}>
-                <li>Only send {cryptoPaymentDetails.currency.toUpperCase()} to this address</li>
-                <li>Send the exact amount shown above</li>
-                <li>Payment may take a few minutes to confirm</li>
-              </ul>
-            </div>
-
-            <div style={{ textAlign: "center" }}>
-              <p style={{ color: "#666", marginBottom: "1rem" }}>
-                Payment ID: <code>{cryptoPaymentDetails.paymentId}</code>
-              </p>
-              <button 
-                onClick={() => {
-                  setCryptoPaymentDetails(null);
-                  setOrderComplete(true);
-                }}
-                style={{
-                  padding: "0.75rem 2rem",
-                  background: "#6366f1",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "0.5rem",
-                  cursor: "pointer",
-                  fontSize: "1rem"
-                }}
-              >
-                I&apos;ve Sent the Payment
-              </button>
-            </div>
-          </div>
-        </section>
-      </>
-    );
-  }
 
   if (orderComplete) {
     return (
