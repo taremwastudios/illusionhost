@@ -25,10 +25,16 @@ declare global {
 
 // NOWPayments API configuration
 const NOWPAYMENTS_API_URL = "https://api.nowpayments.io/v1";
-const NOWPAYMENTS_API_KEY = process.env.NOWPAYMENTS_API_KEY;
-const NOWPAYMENTS_IPN_SECRET = process.env.NOWPAYMENTS_IPN_SECRET;
-const NOWPAYMENTS_WALLET_ADDRESS = process.env.NOWPAYMENTS_WALLET_ADDRESS;
-const NOWPAYMENTS_TEST_MODE = process.env.NOWPAYMENTS_TEST_MODE === "true";
+
+// Get environment variables at runtime (not build time)
+function getNowPaymentsConfig() {
+  return {
+    apiKey: process.env.NOWPAYMENTS_API_KEY,
+    ipnSecret: process.env.NOWPAYMENTS_IPN_SECRET,
+    walletAddress: process.env.NOWPAYMENTS_WALLET_ADDRESS,
+    testMode: process.env.NOWPAYMENTS_TEST_MODE === "true",
+  };
+}
 
 // Calculate order total from cart items
 function calculateOrderTotal(items: any[]): number {
@@ -81,6 +87,9 @@ export async function POST(request: NextRequest) {
 
     const orderTotal = calculateOrderTotal(items);
 
+    // Get NOWPayments config at runtime
+    const nowPaymentsConfig = getNowPaymentsConfig();
+
     if (orderTotal <= 0) {
       // Free order - no payment needed
       return NextResponse.json({
@@ -91,8 +100,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if NOWPayments is configured
-    if (!NOWPAYMENTS_API_KEY || !NOWPAYMENTS_WALLET_ADDRESS) {
+    if (!nowPaymentsConfig.apiKey || !nowPaymentsConfig.walletAddress) {
       console.log("NOWPayments not configured, using mock payment");
+      console.log("API Key:", nowPaymentsConfig.apiKey ? "set" : "missing");
+      console.log("Wallet Address:", nowPaymentsConfig.walletAddress ? "set" : "missing");
       return NextResponse.json({
         success: true,
         mockPayment: true,
@@ -121,7 +132,7 @@ export async function POST(request: NextRequest) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": NOWPAYMENTS_API_KEY,
+        "x-api-key": nowPaymentsConfig.apiKey,
       },
       body: JSON.stringify(paymentData),
     });
@@ -129,6 +140,8 @@ export async function POST(request: NextRequest) {
     if (!response.ok) {
       const error = await response.text();
       console.error("NOWPayments API error:", error);
+      console.error("Response status:", response.status);
+      console.error("Request data:", paymentData);
       return NextResponse.json(
         { error: "Failed to create payment invoice" },
         { status: 500 }
@@ -191,7 +204,9 @@ export async function GET(request: NextRequest) {
   }
 
   // Check if NOWPayments is configured
-  if (!NOWPAYMENTS_API_KEY) {
+  const nowPaymentsConfig = getNowPaymentsConfig();
+
+  if (!nowPaymentsConfig.apiKey) {
     return NextResponse.json({
       status: "mock",
       message: "NOWPayments not configured",
@@ -203,7 +218,7 @@ export async function GET(request: NextRequest) {
       `${NOWPAYMENTS_API_URL}/payment/${paymentId}`,
       {
         headers: {
-          "x-api-key": NOWPAYMENTS_API_KEY,
+          "x-api-key": nowPaymentsConfig.apiKey,
         },
       }
     );
