@@ -7,6 +7,9 @@ import { Providers } from "@/components/Providers";
 export const metadata: Metadata = {
   title: "Illusionhost - Premium Domain Names & Web Hosting",
   description: "Find your perfect domain name and professional web hosting services at Illusionhost. Secure, fast, and affordable.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
