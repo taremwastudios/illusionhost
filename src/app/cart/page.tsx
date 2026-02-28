@@ -10,13 +10,23 @@ interface User {
   email: string;
 }
 
+// Hosting plan free domain quotas
+const HOSTING_QUOTAS: Record<string, number> = {
+  "Starter Hosting": 1,
+  "Professional Hosting": 3,
+  "Business Hosting": 5,
+};
+
 export default function CartPage() {
   const { items, removeItem, clearCart, total } = useCart();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderComplete, setOrderComplete] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [hostingPlan, setHostingPlan] = useState<string | null>(null);
+  const [domainError, setDomainError] = useState<string | null>(null);
 
+  // Get user's purchased items to check for hosting plan
   useEffect(() => {
     const stored = localStorage.getItem("user");
     if (stored) {
@@ -27,15 +37,55 @@ export default function CartPage() {
         console.error("Failed to parse user", e);
       }
     }
+    
+    // Check purchased items for hosting plan - read directly and set initial state
+    const purchasedItems = JSON.parse(localStorage.getItem("purchased_items") || "[]");
+    const existingHosting = purchasedItems.find((item: any) => item.type === "hosting");
+    if (existingHosting) {
+      // Use a timeout to avoid calling setState in useEffect body
+      setTimeout(() => setHostingPlan(existingHosting.name), 0);
+    }
   }, []);
 
+  // Check cart for hosting plan
+  const cartHasHosting = items.some(item => item.type === "hosting");
+  const cartHostingPlan = items.find(item => item.type === "hosting");
+  
+  // Get current effective hosting plan (from cart or purchased)
+  const effectiveHostingPlan = cartHostingPlan?.name || hostingPlan;
+  const freeDomainsQuota = effectiveHostingPlan ? HOSTING_QUOTAS[effectiveHostingPlan] || 0 : 0;
+  
+  // Count domains in cart
+  const domainItems = items.filter(item => item.type === "domain");
+  const domainCount = domainItems.length;
+  
+  // Calculate how many domains can be free
+  const domainsWithHosting = cartHasHosting || hostingPlan;
+  const freeDomainCount = domainsWithHosting ? Math.min(domainCount, freeDomainsQuota) : 0;
+  const paidDomainCount = domainCount - freeDomainCount;
+  
+  // Calculate total with free domains applied
+  const domainTotal = domainItems.reduce((sum, item) => sum + item.price, 0);
+  const hostingTotal = items.filter(item => item.type === "hosting").reduce((sum, item) => sum + item.price, 0);
+  const totalWithFreeDomains = hostingTotal + domainTotal - (freeDomainCount * 9.99); // Assume $9.99 per domain
+
   const handleCheckout = async () => {
+    // Check if trying to checkout domains without hosting
+    const hasDomains = items.some(item => item.type === "domain");
+    const hasHostingInCart = items.some(item => item.type === "hosting");
+    
+    if (hasDomains && !hasHostingInCart && !hostingPlan) {
+      setDomainError("You need a hosting plan to register a domain. Please add a hosting plan to your cart first.");
+      return;
+    }
+    
     if (!user) {
       alert("Please login to complete your purchase");
       return;
     }
     
     setIsProcessing(true);
+    setDomainError(null);
     
     // Simulate payment processing
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -44,11 +94,18 @@ export default function CartPage() {
     const purchasedItems = JSON.parse(localStorage.getItem("purchased_items") || "[]");
     const newItems = items.map(item => ({
       ...item,
+      // Make domains free if user has hosting
+      price: item.type === "domain" && domainsWithHosting ? 0 : item.price,
       purchaseDate: new Date().toISOString(),
       status: "active",
       expirationDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
     }));
     localStorage.setItem("purchased_items", JSON.stringify([...purchasedItems, ...newItems]));
+    
+    // If purchasing hosting, update the hosting plan
+    if (cartHostingPlan) {
+      setHostingPlan(cartHostingPlan.name);
+    }
     
     clearCart();
     setIsProcessing(false);
@@ -141,7 +198,13 @@ export default function CartPage() {
             </div>
             
             <div style={{ padding: "1rem" }}>
-              {items.map((item, index) => (
+              {items.map((item, index) => {
+                // Determine if this domain is free
+                const isFreeDomain = item.type === "domain" && domainsWithHosting;
+                const domainIndex = items.filter(i => i.type === "domain").indexOf(item);
+                const isWithinQuota = isFreeDomain && domainIndex < freeDomainsQuota;
+                
+                return (
                 <div 
                   key={item.id}
                   style={{ 
@@ -168,7 +231,10 @@ export default function CartPage() {
                       {item.type === "domain" ? "🌐" : item.type === "hosting" ? "🖥️" : "➕"}
                     </div>
                     <div>
-                      <div style={{ fontWeight: "600", color: "var(--dark)" }}>{item.name}</div>
+                      <div style={{ fontWeight: "600", color: "var(--dark)" }}>
+                        {item.name}
+                        {isWithinQuota && <span style={{ marginLeft: "0.5rem", fontSize: "0.75rem", color: "#10b981", background: "#ecfdf5", padding: "0.125rem 0.375rem", borderRadius: "0.25rem" }}>FREE</span>}
+                      </div>
                       <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>
                         {item.type === "domain" && "Domain Registration"}
                         {item.type === "hosting" && item.details}
@@ -178,7 +244,9 @@ export default function CartPage() {
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
                     <div style={{ textAlign: "right" }}>
-                      <div style={{ fontWeight: "600", color: "var(--dark)" }}>${item.price}</div>
+                      <div style={{ fontWeight: "600", color: isWithinQuota ? "#10b981" : "var(--dark)" }}>
+                        {isWithinQuota ? "FREE" : `${item.price}`}
+                      </div>
                       <div style={{ fontSize: "0.75rem", color: "var(--text-light)" }}>{item.period}</div>
                     </div>
                     <button
@@ -196,7 +264,7 @@ export default function CartPage() {
                     </button>
                   </div>
                 </div>
-              ))}
+              )})}
             </div>
           </div>
 
@@ -206,10 +274,61 @@ export default function CartPage() {
               Order Summary
             </h2>
             
+            {/* Domain error message */}
+            {domainError && (
+              <div style={{ 
+                background: "#fef3c7", 
+                padding: "0.75rem", 
+                borderRadius: "0.5rem", 
+                marginBottom: "1rem",
+                fontSize: "0.875rem",
+                color: "#92400e"
+              }}>
+                ⚠️ {domainError}
+                <Link href="/hosting" style={{ display: "block", marginTop: "0.5rem", color: "#b45309", fontWeight: "600" }}>
+                  View Hosting Plans →
+                </Link>
+              </div>
+            )}
+            
+            {/* Hosting requirement info */}
+            {domainItems.length > 0 && !domainsWithHosting && (
+              <div style={{ 
+                background: "#eff6ff", 
+                padding: "0.75rem", 
+                borderRadius: "0.5rem", 
+                marginBottom: "1rem",
+                fontSize: "0.875rem",
+                color: "#1e40af"
+              }}>
+                🔒 Domains require a hosting plan. Add hosting to get domains for free!
+              </div>
+            )}
+            
+            {/* Free domains applied */}
+            {domainsWithHosting && freeDomainCount > 0 && (
+              <div style={{ 
+                background: "#ecfdf5", 
+                padding: "0.75rem", 
+                borderRadius: "0.5rem", 
+                marginBottom: "1rem",
+                fontSize: "0.875rem",
+                color: "#065f46"
+              }}>
+                🎉 {freeDomainCount} {freeDomainCount === 1 ? "domain" : "domains"} free with {effectiveHostingPlan}!
+              </div>
+            )}
+            
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.75rem", color: "var(--text-light)" }}>
               <span>Subtotal</span>
               <span>${total.toFixed(2)}</span>
             </div>
+            {freeDomainCount > 0 && (
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.75rem", color: "#10b981" }}>
+                <span>Free Domains ({freeDomainCount} × $9.99)</span>
+                <span>-${(freeDomainCount * 9.99).toFixed(2)}</span>
+              </div>
+            )}
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem", color: "var(--text-light)" }}>
               <span>ICANN Fee</span>
               <span>$0.00</span>
@@ -222,7 +341,7 @@ export default function CartPage() {
             <div style={{ borderTop: "1px solid #eee", paddingTop: "1rem", marginBottom: "1.5rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "600", fontSize: "1.25rem", color: "var(--dark)" }}>
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>${(domainsWithHosting ? totalWithFreeDomains : total).toFixed(2)}</span>
               </div>
             </div>
 
