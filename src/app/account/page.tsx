@@ -1494,8 +1494,8 @@ export default function AccountPage() {
                   padding: "0.75rem", 
                   borderRadius: "0.5rem", 
                   border: "1px solid var(--border)", 
-                  background: "var(--dark)", 
-                  color: "white",
+                  background: "#f5f5f5", 
+                  color: "#1a1a2e",
                   fontSize: "1rem"
                 }}
               />
