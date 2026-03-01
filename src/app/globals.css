@@ -219,16 +219,13 @@ body {
 .hero h1 {
   font-size: 3.5rem;
   font-weight: 800;
-  color: white;
+  color: black;
   margin-bottom: 1.5rem;
   line-height: 1.1;
 }
 
 .hero h1 span {
-  background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #D4AF37;
 }
 
 .hero-subtitle {
