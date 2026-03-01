@@ -1,5 +1,3 @@
-"use server";
-
 /**
  * GitHub App API Client
  * 
