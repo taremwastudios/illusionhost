@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Server, Globe, Database, RefreshCw, AlertCircle, CheckCircle, ExternalLink, Plus, Trash2 } from "lucide-react";
+import { Server, Globe, Database, RefreshCw, AlertCircle, CheckCircle, ExternalLink, Plus, Trash2, Cpu, HardDrive, Activity } from "lucide-react";
 
 interface HestiaStatus {
   available: boolean;
@@ -32,13 +32,23 @@ interface DNSRecord {
   ttl: number;
 }
 
+interface SystemInfo {
+  hostname: string;
+  os: string;
+  uptime: number;
+  load: number[];
+  memory: { total: number; used: number; free: number };
+  disk: { total: number; used: number; free: number };
+}
+
 export default function HestiaCPanel() {
   const [status, setStatus] = useState<HestiaStatus | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"domains" | "databases" | "dns">("domains");
+  const [activeTab, setActiveTab] = useState<"domains" | "databases" | "dns" | "system">("domains");
   const [domains, setDomains] = useState<WebDomain[]>([]);
   const [databases, setDatabases] = useState<Database[]>([]);
   const [dnsRecords, setDnsRecords] = useState<DNSRecord[]>([]);
+  const [systemInfo, setSystemInfo] = useState<SystemInfo | null>(null);
   const [selectedDomain, setSelectedDomain] = useState<string>("");
   const [saving, setSaving] = useState(false);
 
@@ -55,6 +65,9 @@ export default function HestiaCPanel() {
     }
     if (status?.available && activeTab === "dns" && selectedDomain) {
       loadDNSRecords();
+    }
+    if (status?.available && activeTab === "system") {
+      loadSystemInfo();
     }
   }, [status, activeTab, selectedDomain]);
 
@@ -98,6 +111,16 @@ export default function HestiaCPanel() {
       setDnsRecords(data.records || []);
     } catch (error) {
       console.error("Failed to load DNS records:", error);
+    }
+  };
+
+  const loadSystemInfo = async () => {
+    try {
+      const res = await fetch("/api/hestia/system");
+      const data = await res.json();
+      setSystemInfo(data);
+    } catch (error) {
+      console.error("Failed to load system info:", error);
     }
   };
 
@@ -278,6 +301,23 @@ export default function HestiaCPanel() {
           }}
         >
           <Server size={16} /> DNS Records
+        </button>
+        <button
+          onClick={() => setActiveTab("system")}
+          style={{
+            padding: "0.75rem 1.25rem",
+            background: activeTab === "system" ? "var(--primary)" : "transparent",
+            color: activeTab === "system" ? "white" : "var(--text-light)",
+            border: "none",
+            borderRadius: "0.5rem 0.5rem 0 0",
+            fontWeight: "600",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem"
+          }}
+        >
+          <Cpu size={16} /> Server Stats
         </button>
       </div>
 
@@ -516,6 +556,156 @@ export default function HestiaCPanel() {
                   ))}
                 </tbody>
               </table>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Server Stats Tab */}
+      {activeTab === "system" && (
+        <div>
+          {!systemInfo ? (
+            <div style={{ textAlign: "center", padding: "2rem" }}>
+              <RefreshCw className="animate-spin" style={{ width: 24, height: 24, color: "var(--primary)" }} />
+              <p style={{ color: "var(--text-light)", marginTop: "1rem" }}>Loading server stats...</p>
+            </div>
+          ) : (
+            <div>
+              {/* Server Info Header */}
+              <div style={{ 
+                background: "var(--dark-secondary)", 
+                padding: "1.5rem", 
+                borderRadius: "0.75rem", 
+                border: "1px solid var(--border)",
+                marginBottom: "1.5rem"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "0.5rem" }}>
+                  <Server size={24} style={{ color: "var(--primary)" }} />
+                  <div>
+                    <div style={{ fontSize: "1.25rem", fontWeight: "600", color: "var(--text-white)" }}>
+                      {systemInfo.hostname}
+                    </div>
+                    <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>
+                      {systemInfo.os} • Uptime: {Math.floor(systemInfo.uptime / 3600)}h {(Math.floor(systemInfo.uptime / 60) % 60)}m
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* CPU Load */}
+              <div style={{ 
+                background: "var(--dark-secondary)", 
+                padding: "1.5rem", 
+                borderRadius: "0.75rem", 
+                border: "1px solid var(--border)",
+                marginBottom: "1rem"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                    <Activity size={20} style={{ color: "var(--primary)" }} />
+                    <span style={{ fontWeight: "600", color: "var(--text-white)" }}>CPU Load</span>
+                  </div>
+                  <span style={{ color: "var(--text-light)", fontSize: "0.875rem" }}>
+                    {systemInfo.load[0].toFixed(2)} • {systemInfo.load[1].toFixed(2)} • {systemInfo.load[2].toFixed(2)}
+                  </span>
+                </div>
+                <div style={{ display: "flex", gap: "0.5rem" }}>
+                  {[systemInfo.load[0], systemInfo.load[1], systemInfo.load[2]].map((load, i) => (
+                    <div key={i} style={{ flex: 1 }}>
+                      <div style={{ 
+                        height: "8px", 
+                        background: "var(--border)", 
+                        borderRadius: "4px",
+                        overflow: "hidden"
+                      }}>
+                        <div style={{ 
+                          height: "100%", 
+                          width: `${Math.min(load * 33, 100)}%`,
+                          background: load > 0.8 ? "#ef4444" : load > 0.5 ? "#f59e0b" : "var(--primary)",
+                          borderRadius: "4px",
+                          transition: "width 0.3s ease"
+                        }} />
+                      </div>
+                      <div style={{ fontSize: "0.75rem", color: "var(--text-light)", marginTop: "0.25rem", textAlign: "center" }}>
+                        {i === 0 ? "1m" : i === 1 ? "5m" : "15m"}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Memory */}
+              <div style={{ 
+                background: "var(--dark-secondary)", 
+                padding: "1.5rem", 
+                borderRadius: "0.75rem", 
+                border: "1px solid var(--border)",
+                marginBottom: "1rem"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                    <Cpu size={20} style={{ color: "var(--primary)" }} />
+                    <span style={{ fontWeight: "600", color: "var(--text-white)" }}>Memory</span>
+                  </div>
+                  <span style={{ color: "var(--text-light)", fontSize: "0.875rem" }}>
+                    {(systemInfo.memory.used / 1024 / 1024 / 1024).toFixed(1)} GB / {(systemInfo.memory.total / 1024 / 1024 / 1024).toFixed(1)} GB
+                  </span>
+                </div>
+                <div style={{ 
+                  height: "12px", 
+                  background: "var(--border)", 
+                  borderRadius: "6px",
+                  overflow: "hidden"
+                }}>
+                  <div style={{ 
+                    height: "100%", 
+                    width: `${(systemInfo.memory.used / systemInfo.memory.total) * 100}%`,
+                    background: (systemInfo.memory.used / systemInfo.memory.total) > 0.9 ? "#ef4444" : (systemInfo.memory.used / systemInfo.memory.total) > 0.7 ? "#f59e0b" : "var(--primary)",
+                    borderRadius: "6px",
+                    transition: "width 0.3s ease"
+                  }} />
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "0.5rem", fontSize: "0.75rem" }}>
+                  <span style={{ color: "#22c55e" }}>{(systemInfo.memory.free / 1024 / 1024 / 1024).toFixed(1)} GB free</span>
+                  <span style={{ color: "var(--text-light)" }}>{((systemInfo.memory.used / systemInfo.memory.total) * 100).toFixed(1)}% used</span>
+                </div>
+              </div>
+
+              {/* Disk */}
+              <div style={{ 
+                background: "var(--dark-secondary)", 
+                padding: "1.5rem", 
+                borderRadius: "0.75rem", 
+                border: "1px solid var(--border)"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                    <HardDrive size={20} style={{ color: "var(--primary)" }} />
+                    <span style={{ fontWeight: "600", color: "var(--text-white)" }}>Disk</span>
+                  </div>
+                  <span style={{ color: "var(--text-light)", fontSize: "0.875rem" }}>
+                    {(systemInfo.disk.used / 1024 / 1024 / 1024).toFixed(1)} GB / {(systemInfo.disk.total / 1024 / 1024 / 1024).toFixed(1)} GB
+                  </span>
+                </div>
+                <div style={{ 
+                  height: "12px", 
+                  background: "var(--border)", 
+                  borderRadius: "6px",
+                  overflow: "hidden"
+                }}>
+                  <div style={{ 
+                    height: "100%", 
+                    width: `${(systemInfo.disk.used / systemInfo.disk.total) * 100}%`,
+                    background: (systemInfo.disk.used / systemInfo.disk.total) > 0.9 ? "#ef4444" : (systemInfo.disk.used / systemInfo.disk.total) > 0.7 ? "#f59e0b" : "var(--primary)",
+                    borderRadius: "6px",
+                    transition: "width 0.3s ease"
+                  }} />
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "0.5rem", fontSize: "0.75rem" }}>
+                  <span style={{ color: "#22c55e" }}>{(systemInfo.disk.free / 1024 / 1024 / 1024).toFixed(1)} GB free</span>
+                  <span style={{ color: "var(--text-light)" }}>{((systemInfo.disk.used / systemInfo.disk.total) * 100).toFixed(1)}% used</span>
+                </div>
+              </div>
             </div>
           )}
         </div>
