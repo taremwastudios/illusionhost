@@ -396,7 +396,8 @@ export default function AccountPage() {
                 fontWeight: "600",
                 cursor: "pointer",
                 whiteSpace: "nowrap",
-                transition: "all 0.2s"
+                transition: "all 0.2s",
+                boxShadow: activeTab === tab.id ? "0 0 15px rgba(139, 92, 246, 0.4)" : "none"
               }}
             >
               {tab.icon && <tab.icon size={16} style={{ marginRight: "0.5rem", verticalAlign: "middle" }} />}
@@ -887,7 +888,9 @@ export default function AccountPage() {
                           display: "flex",
                           flexDirection: "column",
                           alignItems: "center",
-                          gap: "0.5rem"
+                          gap: "0.5rem",
+                          boxShadow: withdrawMethod === "bank" ? "0 0 20px rgba(139, 92, 246, 0.5)" : "0 0 10px rgba(139, 92, 246, 0.2)",
+                          transition: "all 0.3s ease"
                         }}
                       >
                         <CreditCard size={24} />
@@ -906,7 +909,9 @@ export default function AccountPage() {
                           display: "flex",
                           flexDirection: "column",
                           alignItems: "center",
-                          gap: "0.5rem"
+                          gap: "0.5rem",
+                          boxShadow: withdrawMethod === "paypal" ? "0 0 20px rgba(139, 92, 246, 0.5)" : "0 0 10px rgba(139, 92, 246, 0.2)",
+                          transition: "all 0.3s ease"
                         }}
                       >
                         <Send size={24} />
@@ -925,7 +930,9 @@ export default function AccountPage() {
                           display: "flex",
                           flexDirection: "column",
                           alignItems: "center",
-                          gap: "0.5rem"
+                          gap: "0.5rem",
+                          boxShadow: withdrawMethod === "crypto" ? "0 0 20px rgba(139, 92, 246, 0.5)" : "0 0 10px rgba(139, 92, 246, 0.2)",
+                          transition: "all 0.3s ease"
                         }}
                       >
                         <DollarSign size={24} />
@@ -1183,17 +1190,17 @@ export default function AccountPage() {
                 </div>
               </div>
               <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-                <button style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>
+                <button style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600", boxShadow: "0 0 15px rgba(139, 92, 246, 0.4)", transition: "all 0.3s ease" }}>
                   Browse Templates
                 </button>
                 <button 
                   onClick={() => setShowGithubModal(true)}
-                  style={{ padding: "0.75rem 1.5rem", background: "#24292e", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600", display: "flex", alignItems: "center", gap: "0.5rem" }}
+                  style={{ padding: "0.75rem 1.5rem", background: "#24292e", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600", display: "flex", alignItems: "center", gap: "0.5rem", boxShadow: "0 0 15px rgba(139, 92, 246, 0.4)", transition: "all 0.3s ease" }}
                 >
                   <Github size={18} />
                   Import from Github
                 </button>
-                <button style={{ padding: "0.75rem 1.5rem", background: "transparent", color: "var(--text-white)", border: "2px solid var(--border)", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>
+                <button style={{ padding: "0.75rem 1.5rem", background: "transparent", color: "var(--text-white)", border: "2px solid var(--border)", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600", boxShadow: "0 0 10px rgba(139, 92, 246, 0.2)", transition: "all 0.3s ease" }}>
                   Start from Scratch
                 </button>
               </div>
@@ -1387,7 +1394,7 @@ export default function AccountPage() {
                   <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem" }}>{service.icon && <service.icon size={28} color="white" />}</div>
                   <div style={{ fontWeight: "600", color: "var(--text-white)", marginBottom: "0.5rem" }}>{service.name}</div>
                   <div style={{ fontSize: "0.875rem", color: "var(--text-light)", marginBottom: "1rem" }}>{service.desc}</div>
-                  <button style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>Learn More</button>
+                  <button style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600", boxShadow: "0 0 15px rgba(139, 92, 246, 0.4)", transition: "all 0.3s ease" }}>Learn More</button>
                 </div>
               ))}
             </div>
@@ -1403,8 +1410,8 @@ export default function AccountPage() {
               <h3 style={{ color: "var(--text-white)", marginBottom: "0.5rem", fontSize: "1.5rem" }}>Your AI-Powered Hosting Assistant</h3>
               <p style={{ color: "var(--text-light)", marginBottom: "1.5rem", maxWidth: "500px", margin: "0 auto 1.5rem" }}>Get instant help with domain setup, DNS configuration, troubleshooting, and more. Our AI assistant is available 24/7 to help you.</p>
               <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-                <button style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>Start Chat</button>
-                <button style={{ padding: "0.75rem 1.5rem", background: "transparent", color: "var(--text-white)", border: "2px solid var(--border)", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>View Help Articles</button>
+                <button style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600", boxShadow: "0 0 15px rgba(139, 92, 246, 0.4)", transition: "all 0.3s ease" }}>Start Chat</button>
+                <button style={{ padding: "0.75rem 1.5rem", background: "transparent", color: "var(--text-white)", border: "2px solid var(--border)", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600", boxShadow: "0 0 10px rgba(139, 92, 246, 0.2)", transition: "all 0.3s ease" }}>View Help Articles</button>
               </div>
             </div>
 
@@ -1418,7 +1425,7 @@ export default function AccountPage() {
                 { name: "Configure DNS", icon: Settings },
                 { name: "Billing questions", icon: CreditCard },
               ].map((topic, index) => (
-                <button key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <button key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.75rem", boxShadow: "0 0 10px rgba(139, 92, 246, 0.1)", transition: "all 0.3s ease" }}>
                   <div style={{ width: "40px", height: "40px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "0.5rem", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><topic.icon size={20} color="white" /></div>
                   <span style={{ fontWeight: "600", color: "var(--text-white)" }}>{topic.name}</span>
                 </button>
