@@ -765,7 +765,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #FFD700;
   text-decoration: none;
   transition: all 0.2s;
 }
