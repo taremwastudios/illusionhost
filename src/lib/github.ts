@@ -425,20 +425,19 @@ export async function importRepository(
  * Get the GitHub App installation URL for a specific owner
  * This is where users are redirected to install the app
  */
-export function getInstallationUrl(owner: string): string | null {
+export function getInstallationUrl(owner: string): string {
+  // Try to get the app slug from environment, otherwise use a fallback
+  // The app slug is typically in the format: illusionhost or illusionhost-app
+  const appSlug = process.env.GITHUB_APP_SLUG || "illusionhost";
+  
+  // If client_id is available, use it, otherwise construct from app ID
   const config = getConfig();
-  if (!config) {
-    return null;
+  if (config?.clientId) {
+    // Try client_id first as it's commonly used in the URL
+    return `https://github.com/apps/${config.clientId}/installations/new?repository_owner=${owner}`;
   }
   
-  // The installation URL allows users to install the GitHub App
-  // and grant access to their repositories
-  // We use the client_id to construct the URL
-  // Format: https://github.com/apps/{client_id}/installations/new?repository_owner={owner}
-  // Note: In practice, the app slug may differ from client_id
-  // If GITHUB_APP_SLUG is set, use that instead
-  const appSlug = process.env.GITHUB_APP_SLUG || config.clientId || config.appId;
-  
+  // Fallback to app slug (user needs to set GITHUB_APP_SLUG env var for this to work reliably)
   return `https://github.com/apps/${appSlug}/installations/new?repository_owner=${owner}`;
 }
 

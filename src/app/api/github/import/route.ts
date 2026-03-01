@@ -47,10 +47,26 @@ export async function POST(request: Request) {
     if (!installation) {
       // Get installation URL for the repository owner
       const installUrl = getInstallationUrl(owner);
+      
+      // If GitHub App is not configured, allow import in demo mode
+      if (!isGitHubAppConfigured()) {
+        console.log("[GitHub] App not configured, allowing demo import");
+        return NextResponse.json({
+          success: true,
+          message: "Repository import simulated (demo mode - GitHub App not configured).",
+          demo: true,
+          repo: {
+            owner,
+            name: repo,
+            fullName: `${owner}/${repo}`,
+          },
+        });
+      }
+      
       return NextResponse.json(
         {
           success: false,
-          error: `GitHub App is not installed on your account. Please install the app to grant access to your repositories.`,
+          error: `GitHub App is not installed on your GitHub account. Please install the Illusionhost App to grant access to your repositories.`,
           needsInstallation: true,
           installationUrl: installUrl,
           owner,
