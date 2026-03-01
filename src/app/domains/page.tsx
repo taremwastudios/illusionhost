@@ -1,7 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart, CartItemType } from "@/lib/cart";
+import Link from "next/link";
+import { AlertCircle, Info } from "lucide-react";
+
+// Hosting plan domain quotas
+const HOSTING_QUOTAS: Record<string, number> = {
+  "Starter Hosting": 1,
+  "Professional Hosting": 3,
+  "Business Hosting": 5,
+};
 
 interface DomainResult {
   name: string;
@@ -22,8 +31,33 @@ export default function DomainsPage() {
   const [error, setError] = useState<string | null>(null);
   const { addItem } = useCart();
   const [addedDomains, setAddedDomains] = useState<Set<string>>(new Set());
+  const [hasHostingPlan, setHasHostingPlan] = useState(false);
+  const [hostingPlan, setHostingPlan] = useState<string | null>(null);
+  const [domainLimitError, setDomainLimitError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Check if user has a hosting plan
+    const purchasedItems = JSON.parse(localStorage.getItem("purchased_items") || "[]");
+    const hostingItem = purchasedItems.find((item: any) => item.type === "hosting");
+    if (hostingItem) {
+      setHasHostingPlan(true);
+      setHostingPlan(hostingItem.name);
+    }
+  }, []);
 
   const handleAddToCart = (result: DomainResult) => {
+    // Check domain limit based on hosting plan
+    if (hasHostingPlan && hostingPlan) {
+      const quota = HOSTING_QUOTAS[hostingPlan] || 0;
+      // Count domains already added
+      const currentDomains = addedDomains.size;
+      
+      if (currentDomains >= quota) {
+        setDomainLimitError(`Your ${hostingPlan} plan allows only ${quota} domain${quota > 1 ? 's' : ''}. Upgrade your plan to register more domains.`);
+        return;
+      }
+    }
+    
     const item: CartItemType = {
       id: `domain-${result.name}`,
       name: result.name,
@@ -34,6 +68,7 @@ export default function DomainsPage() {
     };
     addItem(item);
     setAddedDomains(prev => new Set(prev).add(result.name));
+    setDomainLimitError(null);
   };
 
   const handleSearch = async () => {
@@ -199,6 +234,33 @@ export default function DomainsPage() {
             <p style={{ color: "#dc2626", fontSize: "1.1rem", fontWeight: "600", margin: 0 }}>
               {error}
             </p>
+          </div>
+        )}
+
+        {domainLimitError && (
+          <div style={{
+            maxWidth: "900px",
+            margin: "1rem auto",
+            padding: "1.5rem",
+            background: "rgba(245, 158, 11, 0.15)",
+            border: "2px solid #f59e0b",
+            borderRadius: "0.75rem",
+            textAlign: "center"
+          }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+              <AlertCircle size={24} color="#f59e0b" />
+              <p style={{ color: "#fbbf24", fontSize: "1.1rem", fontWeight: "600", margin: 0 }}>
+                Domain Limit Reached
+              </p>
+            </div>
+            <p style={{ color: "#fcd34d", margin: 0 }}>
+              {domainLimitError}
+            </p>
+            {hostingPlan && (
+              <Link href="/hosting" style={{ color: "#f59e0b", fontWeight: "600", display: "block", marginTop: "0.75rem" }}>
+                View Hosting Plans →
+              </Link>
+            )}
           </div>
         )}
 

@@ -1,4 +1,27 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { CheckCircle, Clock, ArrowUpCircle, Info } from "lucide-react";
+
 export default function PricingPage() {
+  const [hasHostingPlan, setHasHostingPlan] = useState(false);
+  const [existingPlan, setExistingPlan] = useState<string | null>(null);
+  const [expirationDate, setExpirationDate] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Check if user has an existing hosting plan
+    const purchasedItems = JSON.parse(localStorage.getItem("purchased_items") || "[]");
+    const hostingItem = purchasedItems.find((item: any) => item.type === "hosting");
+    if (hostingItem) {
+      // Use setTimeout to avoid calling setState in useEffect body
+      setTimeout(() => {
+        setHasHostingPlan(true);
+        setExistingPlan(hostingItem.name);
+        setExpirationDate(hostingItem.expirationDate);
+      }, 0);
+    }
+  }, []);
   const hostingPlans = [
     {
       name: "Student",
@@ -34,12 +57,90 @@ export default function PricingPage() {
 
       <section className="pricing-section">
         <div className="pricing-container">
-          <div className="section-header">
-            <h2>Web Hosting Plans</h2>
-            <p>High-performance hosting at affordable prices. All plans include free SSL!</p>
-          </div>
-          
-          <div className="pricing-grid">
+          {/* Show current plan info if user has hosting */}
+          {hasHostingPlan ? (
+            <div style={{ marginBottom: "2rem" }}>
+              <div style={{ 
+                background: "linear-gradient(135deg, #065f46 0%, #047857 100%)", 
+                padding: "2rem", 
+                borderRadius: "1rem", 
+                border: "2px solid #10b981",
+                textAlign: "center",
+                maxWidth: "600px",
+                margin: "0 auto 2rem"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem", marginBottom: "1rem" }}>
+                  <CheckCircle size={32} color="white" />
+                  <h2 style={{ color: "white", margin: 0, fontSize: "1.5rem" }}>You&apos;re All Set!</h2>
+                </div>
+                <p style={{ color: "rgba(255,255,255,0.9)", fontSize: "1.125rem", marginBottom: "1rem" }}>
+                  You already have the <strong>{existingPlan}</strong> plan active.
+                </p>
+                <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.875rem" }}>
+                  Your plan expires on {expirationDate ? new Date(expirationDate).toLocaleDateString() : "N/A"}
+                </p>
+              </div>
+
+              <div style={{ 
+                background: "var(--dark-secondary)", 
+                padding: "2rem", 
+                borderRadius: "1rem", 
+                border: "1px solid var(--border)",
+                maxWidth: "600px",
+                margin: "0 auto"
+              }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "1rem", marginBottom: "1.5rem" }}>
+                  <Info size={24} color="var(--primary)" style={{ flexShrink: 0, marginTop: "0.25rem" }} />
+                  <div>
+                    <h3 style={{ color: "var(--text-white)", marginBottom: "0.5rem" }}>Why can&apos;t I subscribe again?</h3>
+                    <p style={{ color: "var(--text-light)", margin: 0, fontSize: "0.875rem" }}>
+                      Each account is limited to one active hosting plan at a time. This ensures fair resource allocation and prevents service abuse. You can upgrade to a higher plan when your current plan expires or contact support for special arrangements.
+                    </p>
+                  </div>
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
+                  <Link href="/account" style={{ textDecoration: "none" }}>
+                    <div style={{ 
+                      background: "var(--dark)", 
+                      padding: "1.5rem", 
+                      borderRadius: "0.75rem", 
+                      border: "1px solid var(--border)",
+                      textAlign: "center",
+                      cursor: "pointer",
+                      transition: "all 0.3s"
+                    }}>
+                      <Clock size={24} color="var(--primary)" style={{ marginBottom: "0.5rem" }} />
+                      <div style={{ color: "var(--text-white)", fontWeight: "600" }}>Manage Current Plan</div>
+                      <div style={{ color: "var(--text-light)", fontSize: "0.75rem" }}>View details in dashboard</div>
+                    </div>
+                  </Link>
+                  <Link href="/domains" style={{ textDecoration: "none" }}>
+                    <div style={{ 
+                      background: "var(--dark)", 
+                      padding: "1.5rem", 
+                      borderRadius: "0.75rem", 
+                      border: "1px solid var(--border)",
+                      textAlign: "center",
+                      cursor: "pointer",
+                      transition: "all 0.3s"
+                    }}>
+                      <ArrowUpCircle size={24} color="var(--primary)" style={{ marginBottom: "0.5rem" }} />
+                      <div style={{ color: "var(--text-white)", fontWeight: "600" }}>Add Domains</div>
+                      <div style={{ color: "var(--text-light)", fontSize: "0.75rem" }}>Register more domains</div>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="section-header">
+                <h2>Web Hosting Plans</h2>
+                <p>High-performance hosting at affordable prices. All plans include free SSL!</p>
+              </div>
+              
+              <div className="pricing-grid">
             {hostingPlans.map((plan, index) => (
               <div key={index} className={`pricing-card ${index === 2 ? 'featured' : ''}`}>
                 <div className="pricing-header">
@@ -61,6 +162,8 @@ export default function PricingPage() {
               </div>
             ))}
           </div>
+        </>
+          )}
         </div>
       </section>
 

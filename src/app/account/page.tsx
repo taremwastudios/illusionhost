@@ -10,7 +10,7 @@ import {
   Camera, GraduationCap, Home, Dumbbell, Plane, Music,
   Sparkles, CheckCircle, AlertCircle, RefreshCcw, BarChart3,
   Terminal, Flame, Link2, CreditCard, Settings, Upload, Wallet,
-  ArrowUpRight, ArrowDownRight, Send, HelpCircle, Clock, DollarSign
+  ArrowUpRight, ArrowDownRight, Send, HelpCircle, Clock, DollarSign, Server
 } from "lucide-react";
 
 interface User {
@@ -186,10 +186,10 @@ export default function AccountPage() {
             { id: "domains", label: "Domains", icon: Globe, count: domainItems.length },
             { id: "hosting", label: "Hosting", icon: Monitor, count: hostingItems.length },
             { id: "dns", label: "DNS", icon: Network, count: dnsRecords.length },
+            { id: "database", label: "Database", icon: Database, count: 0 },
             { id: "wallet", label: "Wallet", icon: Wallet, count: 0 },
             { id: "builder", label: "Site Builder", icon: Palette, count: 0 },
             { id: "vps", label: "VPS", icon: Cloud, count: 0 },
-            { id: "mxrecords", label: "MX Records", icon: Mail, count: 0 },
             { id: "more", label: "More", icon: Package, count: 0 },
             { id: "assistant", label: "Illusion Assistant", icon: Sparkles, count: 0 },
           ].map(tab => (
@@ -474,6 +474,44 @@ export default function AccountPage() {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Database Tab */}
+        {activeTab === "database" && (
+          <div>
+            <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>My Databases</h2>
+            <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
+                <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center" }}><Server size={28} color="white" /></div>
+                <div>
+                  <h3 style={{ color: "var(--text-white)", marginBottom: "0.25rem" }}>Managed Databases</h3>
+                  <p style={{ color: "var(--text-light)", margin: 0 }}>MySQL, PostgreSQL, MongoDB and more</p>
+                </div>
+              </div>
+              <button style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>
+                Create New Database
+              </button>
+            </div>
+
+            <h3 style={{ marginBottom: "1rem", color: "var(--text-white)" }}>Available Database Types</h3>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1rem" }}>
+              {[
+                { name: "MySQL", desc: "Popular open-source relational database", icon: Database },
+                { name: "PostgreSQL", desc: "Advanced object-relational database", icon: Database },
+                { name: "MongoDB", desc: "NoSQL document database", icon: Database },
+                { name: "Redis", desc: "In-memory data structure store", icon: Database },
+              ].map((db, index) => (
+                <div key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.5rem" }}>
+                    <db.icon size={20} color="var(--primary)" />
+                    <div style={{ fontWeight: "600", color: "var(--text-white)" }}>{db.name}</div>
+                  </div>
+                  <div style={{ fontSize: "0.875rem", color: "var(--text-light)", marginBottom: "1rem" }}>{db.desc}</div>
+                  <button style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontSize: "0.875rem", fontWeight: "600" }}>Provision</button>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
@@ -866,44 +904,6 @@ export default function AccountPage() {
                     <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>{action.desc}</div>
                   </div>
                 </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* MX Records Tab */}
-        {activeTab === "mxrecords" && (
-          <div>
-            <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>MX Records</h2>
-            <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
-                <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center" }}><Mail size={28} color="white" /></div>
-                <div>
-                  <h3 style={{ color: "var(--text-white)", marginBottom: "0.25rem" }}>Email Routing</h3>
-                  <p style={{ color: "var(--text-light)", margin: 0 }}>Configure MX records for your domain&apos;s email delivery</p>
-                </div>
-              </div>
-              <button style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>
-                Configure MX Records
-              </button>
-            </div>
-
-            <h3 style={{ marginBottom: "1rem", color: "var(--text-white)" }}>Common MX Configurations</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1rem" }}>
-              {[
-                { name: "Google Workspace", priority: "10", host: "aspmx.l.google.com" },
-                { name: "Microsoft 365", priority: "10", host: "mx1.microsoft.com" },
-                { name: "Zoho Mail", priority: "10", host: "mx.zoho.com" },
-                { name: "Mailgun", priority: "10", host: "mxa.mailgun.org" },
-              ].map((config, index) => (
-                <div key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)" }}>
-                  <div style={{ fontWeight: "600", color: "var(--text-white)", marginBottom: "0.5rem" }}>{config.name}</div>
-                  <div style={{ fontSize: "0.875rem", color: "var(--text-light)", marginBottom: "0.5rem" }}>
-                    <div>Priority: {config.priority}</div>
-                    <div>Host: {config.host}</div>
-                  </div>
-                  <button style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontSize: "0.875rem", fontWeight: "600" }}>Apply</button>
-                </div>
               ))}
             </div>
           </div>

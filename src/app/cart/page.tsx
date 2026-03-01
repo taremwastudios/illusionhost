@@ -3,6 +3,7 @@
 import { useCart } from "@/lib/cart";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { CreditCard, Bitcoin, Lock, Globe } from "lucide-react";
 
 interface User {
   id: number;
@@ -434,9 +435,13 @@ export default function CartPage() {
                     background: paymentMethod === "card" ? "rgba(139, 92, 246, 0.2)" : "var(--dark)",
                     cursor: "pointer",
                     transition: "all 0.2s",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "0.25rem"
                   }}
                 >
-                  <div style={{ fontSize: "1.5rem", marginBottom: "0.25rem" }}>💳</div>
+                  <CreditCard size={24} color={paymentMethod === "card" ? "var(--primary-light)" : "var(--text-light)"} />
                   <div style={{ fontSize: "0.75rem", fontWeight: "600", color: paymentMethod === "card" ? "var(--primary-light)" : "var(--text-light)" }}>Credit Card</div>
                 </button>
                 <button
@@ -449,9 +454,13 @@ export default function CartPage() {
                     background: paymentMethod === "crypto" ? "rgba(249, 115, 22, 0.2)" : "var(--dark)",
                     cursor: "pointer",
                     transition: "all 0.2s",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "0.25rem"
                   }}
                 >
-                  <div style={{ fontSize: "1.5rem", marginBottom: "0.25rem" }}>₿</div>
+                  <Bitcoin size={24} color={paymentMethod === "crypto" ? "#fb923c" : "var(--text-light)"} />
                   <div style={{ fontSize: "0.75rem", fontWeight: "600", color: paymentMethod === "crypto" ? "#fb923c" : "var(--text-light)" }}>Crypto</div>
                 </button>
               </div>
@@ -467,7 +476,9 @@ export default function CartPage() {
                   color: "#fb923c",
                   border: "1px solid rgba(249, 115, 22, 0.3)"
                 }}>
-                  <div style={{ fontWeight: "600", marginBottom: "0.25rem" }}>Pay with Cryptocurrency</div>
+                  <div style={{ fontWeight: "600", marginBottom: "0.25rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    <Bitcoin size={14} /> Pay with Cryptocurrency
+                  </div>
                   <div>Pay with USDT, BTC, ETH, and 50+ other cryptocurrencies via NOWPayments</div>
                 </div>
               )}
@@ -483,7 +494,9 @@ export default function CartPage() {
                   color: "#f87171",
                   border: "1px solid rgba(239, 68, 68, 0.3)"
                 }}>
-                  ⚠️ {paymentError}
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    <Lock size={14} /> {paymentError}
+                  </div>
                 </div>
               )}
             </div>
