@@ -53,6 +53,7 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 - [x] **NOWPayments Hosted Checkout** - Using NOWPayments button redirect (iid: 6118248419) instead of manual crypto2crypto
 - [x] **NOWPayments pay_currency Fix** - Removed hardcoded pay_currency to allow NOWPayments to handle USD to crypto conversion
 - [x] **Cart Dark Theme** - Applied purple dark theme to cart page matching other pages
+- [x] **Fixed Quota API Demo Mode** - Added demo mode handling in quota API to return default "free" plan limits when no database is configured
 
 ## Current Structure
 
