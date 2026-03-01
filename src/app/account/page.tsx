@@ -396,7 +396,8 @@ export default function AccountPage() {
           ))}
         </div>
 
-        {/* Resource Usage & System Status */}
+        {/* Resource Usage & System Status - Only show when VPS is configured */}
+        {containers.length > 0 ? (
         <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
             <h3 style={{ color: "var(--text-white)", margin: 0, display: "flex", alignItems: "center", gap: "0.5rem" }}>
@@ -483,7 +484,14 @@ export default function AccountPage() {
               </div>
             </div>
           </div>
-        </div>
+          </div>
+        ) : (
+          <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "0.75rem", border: "1px solid var(--border)", marginBottom: "1.5rem", textAlign: "center" }}>
+            <Cloud size={48} style={{ color: "var(--primary)", marginBottom: "1rem" }} />
+            <p style={{ color: "var(--text-light)", marginBottom: "0.5rem" }}>No VPS Configured</p>
+            <p style={{ color: "var(--text-light)", fontSize: "0.875rem" }}>Purchase a hosting plan to provision your first virtual server.</p>
+          </div>
+        )}
 
         {/* SSH/Server Logs Tab */}
         {activeTab === "logs" && (
