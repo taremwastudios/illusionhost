@@ -13,6 +13,7 @@ import {
   ArrowUpRight, ArrowDownRight, Send, HelpCircle, Clock, DollarSign, Server
 } from "lucide-react";
 import HestiaCPanel from "@/components/HestiaCPanel";
+import VPSTerminal from "@/components/vps/Terminal";
 
 interface User {
   id: number;
@@ -61,6 +62,26 @@ interface DNSRecord {
   ttl: number;
 }
 
+interface VPSContainer {
+  id: number;
+  vmid: string;
+  name: string;
+  ostemplate: string;
+  cores: number;
+  memory: number;
+  disk: number;
+  ip: string;
+  status: "running" | "stopped" | "suspended";
+  uptime: number;
+  hostname: string;
+}
+
+interface VPSTemplate {
+  id: string;
+  name: string;
+  size: string;
+}
+
 export default function AccountPage() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
@@ -70,6 +91,22 @@ export default function AccountPage() {
   const [quota, setQuota] = useState<QuotaInfo | null>(null);
   const [isEditingDNS, setIsEditingDNS] = useState(false);
   const [newDNSRecord, setNewDNSRecord] = useState<Partial<DNSRecord>>({ type: "A", ttl: 3600 });
+  const [containers, setContainers] = useState<VPSContainer[]>([]);
+  const [templates, setTemplates] = useState<VPSTemplate[]>([]);
+  const [showProvisionModal, setShowProvisionModal] = useState(false);
+  const [showTerminalModal, setShowTerminalModal] = useState(false);
+  const [selectedContainer, setSelectedContainer] = useState<VPSContainer | null>(null);
+  const [provisionForm, setProvisionForm] = useState({
+    name: "",
+    hostname: "",
+    cores: 1,
+    memory: 1024,
+    disk: 10,
+    password: "",
+    ostemplate: "ubuntu-22.04",
+  });
+  const [loadingContainers, setLoadingContainers] = useState(false);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
   
   // Wallet state
   const [walletBalance, setWalletBalance] = useState(1250.00);
@@ -102,6 +139,24 @@ export default function AccountPage() {
           .then(res => res.json())
           .then(data => {
             if (!data.error) setQuota(data);
+          })
+          .catch(console.error);
+        
+        // Fetch VPS containers
+        setLoadingContainers(true);
+        fetch(`/api/lxc?userId=${parsed.id}`)
+          .then(res => res.json())
+          .then(data => {
+            if (Array.isArray(data)) setContainers(data);
+          })
+          .catch(console.error)
+          .finally(() => setLoadingContainers(false));
+        
+        // Fetch templates
+        fetch("/api/lxc?action=templates")
+          .then(res => res.json())
+          .then(data => {
+            if (Array.isArray(data)) setTemplates(data);
           })
           .catch(console.error);
       }, 0);
@@ -137,6 +192,93 @@ export default function AccountPage() {
     localStorage.removeItem("user");
     window.dispatchEvent(new Event("logout"));
     router.push("/");
+  };
+
+  // VPS Container handlers
+  const refreshContainers = () => {
+    if (!user) return;
+    setLoadingContainers(true);
+    fetch(`/api/lxc?userId=${user.id}`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setContainers(data);
+      })
+      .catch(console.error)
+      .finally(() => setLoadingContainers(false));
+  };
+
+  const handleProvisionContainer = async () => {
+    if (!user || !provisionForm.name || !provisionForm.hostname || !provisionForm.password) {
+      return;
+    }
+    
+    setActionLoading("provision");
+    try {
+      const res = await fetch("/api/lxc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          ...provisionForm,
+        }),
+      });
+      const data = await res.json();
+      if (!data.error) {
+        setShowProvisionModal(false);
+        setProvisionForm({
+          name: "",
+          hostname: "",
+          cores: 1,
+          memory: 1024,
+          disk: 10,
+          password: "",
+          ostemplate: "ubuntu-22.04",
+        });
+        refreshContainers();
+      }
+    } catch (err) {
+      console.error("Failed to provision container:", err);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const handleContainerAction = async (vmid: string, action: "start" | "stop" | "restart") => {
+    setActionLoading(vmid);
+    try {
+      const res = await fetch(`/api/lxc/${vmid}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action }),
+      });
+      const data = await res.json();
+      if (!data.error) {
+        refreshContainers();
+      }
+    } catch (err) {
+      console.error(`Failed to ${action} container:`, err);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const handleDeleteContainer = async (vmid: string) => {
+    if (!confirm("Are you sure you want to delete this container? This action cannot be undone.")) {
+      return;
+    }
+    
+    setActionLoading(vmid);
+    try {
+      const res = await fetch(`/api/lxc/${vmid}`, { method: "DELETE" });
+      const data = await res.json();
+      if (!data.error) {
+        refreshContainers();
+      }
+    } catch (err) {
+      console.error("Failed to delete container:", err);
+    } finally {
+      setActionLoading(null);
+    }
   };
 
   const saveDNSRecord = () => {
@@ -881,6 +1023,154 @@ export default function AccountPage() {
                 </div>
               </div>
             )}
+
+            {/* VPS Provision Modal */}
+            {showProvisionModal && (
+              <div style={{ 
+                position: "fixed", 
+                top: 0, 
+                left: 0, 
+                right: 0, 
+                bottom: 0, 
+                background: "rgba(0,0,0,0.7)", 
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center",
+                zIndex: 1000
+              }}>
+                <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", maxWidth: "500px", width: "90%" }}>
+                  <h3 style={{ marginBottom: "1.5rem", color: "var(--text-white)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    <Cloud size={24} color="var(--primary)" /> Provision New VPS
+                  </h3>
+                  
+                  <div style={{ marginBottom: "1rem" }}>
+                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Container Name</label>
+                    <input 
+                      type="text"
+                      value={provisionForm.name}
+                      onChange={(e) => setProvisionForm({...provisionForm, name: e.target.value})}
+                      placeholder="my-container"
+                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
+                    />
+                  </div>
+
+                  <div style={{ marginBottom: "1rem" }}>
+                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Hostname</label>
+                    <input 
+                      type="text"
+                      value={provisionForm.hostname}
+                      onChange={(e) => setProvisionForm({...provisionForm, hostname: e.target.value})}
+                      placeholder="server.example.com"
+                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
+                    />
+                  </div>
+
+                  <div style={{ marginBottom: "1rem" }}>
+                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>OS Template</label>
+                    <select 
+                      value={provisionForm.ostemplate}
+                      onChange={(e) => setProvisionForm({...provisionForm, ostemplate: e.target.value})}
+                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
+                    >
+                      {templates.map(t => (
+                        <option key={t.id} value={t.id}>{t.name} ({t.size})</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem", marginBottom: "1rem" }}>
+                    <div>
+                      <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>vCPUs</label>
+                      <select 
+                        value={provisionForm.cores}
+                        onChange={(e) => setProvisionForm({...provisionForm, cores: parseInt(e.target.value)})}
+                        style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
+                      >
+                        {[1,2,4,8].map(c => <option key={c} value={c}>{c}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>RAM (MB)</label>
+                      <select 
+                        value={provisionForm.memory}
+                        onChange={(e) => setProvisionForm({...provisionForm, memory: parseInt(e.target.value)})}
+                        style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
+                      >
+                        {[512, 1024, 2048, 4096, 8192].map(m => <option key={m} value={m}>{m}MB</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Disk (GB)</label>
+                      <select 
+                        value={provisionForm.disk}
+                        onChange={(e) => setProvisionForm({...provisionForm, disk: parseInt(e.target.value)})}
+                        style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
+                      >
+                        {[5, 10, 20, 40, 80, 160].map(d => <option key={d} value={d}>{d}GB</option>)}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: "1.5rem" }}>
+                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Root Password</label>
+                    <input 
+                      type="password"
+                      value={provisionForm.password}
+                      onChange={(e) => setProvisionForm({...provisionForm, password: e.target.value})}
+                      placeholder="Enter root password"
+                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
+                    />
+                  </div>
+
+                  <div style={{ display: "flex", gap: "1rem", justifyContent: "flex-end" }}>
+                    <button
+                      onClick={() => setShowProvisionModal(false)}
+                      style={{ padding: "0.75rem 1.5rem", background: "var(--border)", color: "var(--text-white)", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleProvisionContainer}
+                      disabled={actionLoading === "provision" || !provisionForm.name || !provisionForm.hostname || !provisionForm.password}
+                      style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600", opacity: (actionLoading === "provision" || !provisionForm.name || !provisionForm.hostname || !provisionForm.password) ? 0.5 : 1 }}
+                    >
+                      {actionLoading === "provision" ? "Provisioning..." : "Provision VPS"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Terminal Modal */}
+            {showTerminalModal && selectedContainer && (
+              <div style={{ 
+                position: "fixed", 
+                top: 0, 
+                left: 0, 
+                right: 0, 
+                bottom: 0, 
+                background: "rgba(0,0,0,0.9)", 
+                display: "flex", 
+                flexDirection: "column",
+                zIndex: 1000
+              }}>
+                <div style={{ padding: "1rem", background: "#161b22", borderBottom: "1px solid #30363d", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    <Terminal size={20} color="var(--primary)" />
+                    <span style={{ color: "#c9d1d9", fontWeight: 600 }}>{selectedContainer.hostname} ({selectedContainer.ip})</span>
+                  </div>
+                  <button
+                    onClick={() => setShowTerminalModal(false)}
+                    style={{ background: "transparent", border: "none", color: "#8b949e", cursor: "pointer", padding: "0.5rem", fontSize: "1.25rem" }}
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <VPSTerminal containerId={selectedContainer.vmid} onClose={() => setShowTerminalModal(false)} />
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -944,48 +1234,129 @@ export default function AccountPage() {
                   <p style={{ color: "var(--text-light)", margin: 0 }}>Full root access, scalable resources, and complete control</p>
                 </div>
               </div>
-              <button style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>
+              <button 
+                onClick={() => setShowProvisionModal(true)}
+                style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}
+              >
                 Provision New VPS
               </button>
             </div>
 
-            <h3 style={{ marginBottom: "1rem", color: "var(--text-white)" }}>VPS Plans</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1rem", marginBottom: "1.5rem" }}>
-              {[
-                { name: "VPS Starter", cpu: "1 vCPU", ram: "1GB RAM", storage: "25GB SSD", price: 5 },
-                { name: "VPS Professional", cpu: "2 vCPU", ram: "4GB RAM", storage: "80GB SSD", price: 20 },
-                { name: "VPS Business", cpu: "4 vCPU", ram: "8GB RAM", storage: "160GB SSD", price: 40 },
-              ].map((plan, index) => (
-                <div key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)" }}>
-                  <div style={{ fontWeight: "600", color: "var(--text-white)", marginBottom: "0.5rem" }}>{plan.name}</div>
-                  <div style={{ fontSize: "0.875rem", color: "var(--text-light)", marginBottom: "1rem" }}>
-                    <div>{plan.cpu}</div>
-                    <div>{plan.ram}</div>
-                    <div>{plan.storage}</div>
+            {/* My Containers */}
+            <h3 style={{ marginBottom: "1rem", color: "var(--text-white)" }}>My Containers</h3>
+            {loadingContainers ? (
+              <div style={{ textAlign: "center", padding: "2rem", color: "var(--text-light)" }}>Loading containers...</div>
+            ) : containers.length === 0 ? (
+              <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", textAlign: "center" }}>
+                <Cloud size={48} style={{ color: "var(--primary)", marginBottom: "1rem" }} />
+                <p style={{ color: "var(--text-light)" }}>No containers yet. Provision your first VPS to get started.</p>
+              </div>
+            ) : (
+              <div style={{ display: "grid", gap: "1rem", marginBottom: "1.5rem" }}>
+                {containers.map((container) => (
+                  <div key={container.vmid} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                          <span style={{ fontWeight: 600, color: "var(--text-white)", fontSize: "1.125rem" }}>{container.hostname}</span>
+                          <span style={{ 
+                            padding: "0.125rem 0.5rem", 
+                            borderRadius: "1rem", 
+                            fontSize: "0.75rem", 
+                            fontWeight: 600,
+                            background: container.status === "running" ? "#065f46" : "#374151",
+                            color: container.status === "running" ? "#34d399" : "#9ca3af",
+                          }}>
+                            {container.status}
+                          </span>
+                        </div>
+                        <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>
+                          <span>VMID: {container.vmid}</span> • 
+                          <span> IP: {container.ip}</span> •
+                          <span> {container.cores} vCPU / {container.memory}MB RAM / {container.disk}GB SSD</span>
+                        </div>
+                      </div>
+                      <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                        {container.status === "running" ? (
+                          <>
+                            <button 
+                              onClick={() => handleContainerAction(container.vmid, "stop")}
+                              disabled={actionLoading === container.vmid}
+                              style={{ padding: "0.5rem 1rem", background: "#374151", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontSize: "0.875rem" }}
+                            >
+                              Stop
+                            </button>
+                            <button 
+                              onClick={() => handleContainerAction(container.vmid, "restart")}
+                              disabled={actionLoading === container.vmid}
+                              style={{ padding: "0.5rem 1rem", background: "#374151", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontSize: "0.875rem" }}
+                            >
+                              Restart
+                            </button>
+                          </>
+                        ) : (
+                          <button 
+                            onClick={() => handleContainerAction(container.vmid, "start")}
+                            disabled={actionLoading === container.vmid}
+                            style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontSize: "0.875rem" }}
+                          >
+                            Start
+                          </button>
+                        )}
+                        <button 
+                          onClick={() => {
+                            setSelectedContainer(container);
+                            setShowTerminalModal(true);
+                          }}
+                          disabled={container.status !== "running"}
+                          style={{ padding: "0.5rem 1rem", background: "#7c3aed", color: "white", border: "none", borderRadius: "0.5rem", cursor: container.status === "running" ? "pointer" : "not-allowed", fontSize: "0.875rem", opacity: container.status === "running" ? 1 : 0.5 }}
+                        >
+                          Console
+                        </button>
+                        <button 
+                          onClick={() => handleDeleteContainer(container.vmid)}
+                          disabled={actionLoading === container.vmid}
+                          style={{ padding: "0.5rem 1rem", background: "#dc2626", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontSize: "0.875rem" }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ fontSize: "1.5rem", fontWeight: "700", color: "var(--primary)" }}>${plan.price}/mo</div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
 
             <h3 style={{ marginBottom: "1rem", color: "var(--text-white)" }}>Quick Actions</h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
-              {[
-                { name: "Reboot Server", icon: RefreshCcw, desc: "Restart your VPS" },
-                { name: "View Statistics", icon: BarChart3, desc: "CPU, RAM, Bandwidth" },
-                { name: "Console Access", icon: Terminal, desc: "Web-based terminal" },
-                { name: "Snapshots", icon: Database, desc: "Backup your server" },
-                { name: "Firewall", icon: Flame, desc: "Configure firewall rules" },
-                { name: "Backups", icon: Package, desc: "Manage backups", },
-              ].map((action, index) => (
-                <button key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "1rem" }}>
-                  <div style={{ width: "48px", height: "48px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "0.75rem", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><action.icon size={24} color="white" /></div>
-                  <div>
-                    <div style={{ fontWeight: "600", color: "var(--text-white)", marginBottom: "0.25rem" }}>{action.name}</div>
-                    <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>{action.desc}</div>
-                  </div>
-                </button>
-              ))}
+              <button onClick={refreshContainers} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "1rem" }}>
+                <div style={{ width: "48px", height: "48px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "0.75rem", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><RefreshCcw size={24} color="white" /></div>
+                <div>
+                  <div style={{ fontWeight: "600", color: "var(--text-white)", marginBottom: "0.25rem" }}>Refresh</div>
+                  <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>Update container list</div>
+                </div>
+              </button>
+              <button style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "1rem" }}>
+                <div style={{ width: "48px", height: "48px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "0.75rem", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><BarChart3 size={24} color="white" /></div>
+                <div>
+                  <div style={{ fontWeight: "600", color: "var(--text-white)", marginBottom: "0.25rem" }}>Statistics</div>
+                  <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>CPU, RAM, Bandwidth</div>
+                </div>
+              </button>
+              <button style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "1rem" }}>
+                <div style={{ width: "48px", height: "48px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "0.75rem", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Database size={24} color="white" /></div>
+                <div>
+                  <div style={{ fontWeight: "600", color: "var(--text-white)", marginBottom: "0.25rem" }}>Snapshots</div>
+                  <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>Backup your server</div>
+                </div>
+              </button>
+              <button style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "1rem" }}>
+                <div style={{ width: "48px", height: "48px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "0.75rem", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Flame size={24} color="white" /></div>
+                <div>
+                  <div style={{ fontWeight: "600", color: "var(--text-white)", marginBottom: "0.25rem" }}>Firewall</div>
+                  <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>Configure rules</div>
+                </div>
+              </button>
             </div>
           </div>
         )}

@@ -54,6 +54,19 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 - [x] **NOWPayments pay_currency Fix** - Removed hardcoded pay_currency to allow NOWPayments to handle USD to crypto conversion
 - [x] **Cart Dark Theme** - Applied purple dark theme to cart page matching other pages
 - [x] **Fixed Quota API Demo Mode** - Added demo mode handling in quota API to return default "free" plan limits when no database is configured
+- [x] **LXC Container Provisioning** - Added VPS container management with API endpoints and web terminal
+  - [`src/lib/lxc.ts`](src/lib/lxc.ts) - LXC service with mock implementation (replace with Proxmox API in production)
+  - [`src/app/api/lxc/route.ts`](src/app/api/lxc/route.ts) - List/create containers API
+  - [`src/app/api/lxc/[vmid]/route.ts`](src/app/api/lxc/[vmid]/route.ts) - Container actions (start/stop/restart/delete)
+  - [`src/app/api/lxc/console/[vmid]/route.ts`](src/app/api/lxc/console/[vmid]/route.ts) - Console connection API
+  - [`src/components/vps/Terminal.tsx`](src/components/vps/Terminal.tsx) - Web terminal with xterm.js
+  - Updated account page VPS tab to use real API for container management
+- [x] **NOWPayments Dynamic Invoice API** - Crypto payments now use dynamic invoice API with cart total amount instead of static button
+- [x] **NOWPayments crypto2crypto UI** - Shows payment address and amount for crypto2crypto payments instead of trying to redirect to hosted checkout
+- [x] **NOWPayments Hosted Checkout** - Using NOWPayments button redirect (iid: 6118248419) instead of manual crypto2crypto
+- [x] **NOWPayments pay_currency Fix** - Removed hardcoded pay_currency to allow NOWPayments to handle USD to crypto conversion
+- [x] **Cart Dark Theme** - Applied purple dark theme to cart page matching other pages
+- [x] **Fixed Quota API Demo Mode** - Added demo mode handling in quota API to return default "free" plan limits when no database is configured
 
 ## Current Structure
 
