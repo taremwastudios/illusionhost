@@ -63,7 +63,7 @@ export default function Home() {
       <section className="hero">
         <div className="hero-content">
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900">
-            The Domain <span style={{ background: "linear-gradient(135deg, #D4AF37 0%, #F5DEB3 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Powerhouse</span>
+            The Domain <span className="text-[#D4AF37]">Powerhouse</span>
           </h1>
           <p className="hero-subtitle">
             That&apos;s right — we GIVE domains away for FREE! The catch? Just get any hosting plan. All plans are suitable for any business but differ by standard and the firepower we give you. Are you a student? There&apos;s a package especially for you! That&apos;s right, you get a custom &quot;yourdomain.illusionhost.co&quot; for a whole year! What are you waiting for? Just make sure to read our Terms of Service and Privacy Policy on usage to make sure you are within our limits.
