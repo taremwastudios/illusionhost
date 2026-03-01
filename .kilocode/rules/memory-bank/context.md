@@ -61,6 +61,10 @@ Illusionhost is a full-featured domain selling service website similar to Namech
   - [`src/app/api/lxc/console/[vmid]/route.ts`](src/app/api/lxc/console/[vmid]/route.ts) - Console connection API
   - [`src/components/vps/Terminal.tsx`](src/components/vps/Terminal.tsx) - Web terminal with xterm.js
   - Updated account page VPS tab to use real API for container management
+- [x] **GitHub App Import** - Added GitHub App API client for repository importing with JWT authentication
+  - [`src/lib/github.ts`](src/lib/github.ts) - GitHub App client with JWT/token management  
+  - [`src/app/api/github/import/route.ts`](src/app/api/github/import/route.ts) - Import API endpoint
+- [x] **Fixed Build Error** - Removed 'use server' directive from github.ts that was causing Turbopack to incorrectly treat functions as Server Actions
 - [x] **NOWPayments Dynamic Invoice API** - Crypto payments now use dynamic invoice API with cart total amount instead of static button
 - [x] **NOWPayments crypto2crypto UI** - Shows payment address and amount for crypto2crypto payments instead of trying to redirect to hosted checkout
 - [x] **NOWPayments Hosted Checkout** - Using NOWPayments button redirect (iid: 6118248419) instead of manual crypto2crypto
@@ -93,6 +97,8 @@ Illusionhost is a full-featured domain selling service website similar to Namech
 | `.env.nowpayments.example` | NOWPayments API keys template | ✅ Complete |
 | `src/app/api/payment/route.ts` | NOWPayments payment API | ✅ Complete |
 | `src/app/api/payment/webhook/route.ts` | NOWPayments webhook handler | ✅ Complete |
+| `src/lib/github.ts` | GitHub App client with JWT/token management | ✅ Complete |
+| `src/app/api/github/import/route.ts` | GitHub repository import API | ✅ Complete |
 | `Procfile` | Koyeb deployment entry point | ✅ Complete |
 | `.koyeb.yaml` | Koyeb build configuration | ✅ Complete |
 
@@ -171,3 +177,5 @@ Optional integrations (for production):
 | 2026-02-27 | Added mock payment system and user dashboard with DNS, site builder, VPS |
 | 2026-02-28 | Added hosting-required domain checkout - domains require hosting plan, free domains based on plan (Starter=1, Professional=3, Business=5) |
 | 2026-02-28 | Added NOWPayments cryptocurrency payment integration (USDT, BTC, ETH, 50+ cryptos) |
+| 2026-03-01 | Added GitHub App for repository importing with JWT authentication |
+| 2026-03-01 | Fixed build error - removed 'use server' directive from github.ts |
