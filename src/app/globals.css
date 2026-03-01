@@ -86,13 +86,13 @@ body {
 
 .nav-link {
   text-decoration: none;
-  color: var(--text);
+  color: #fbbf24; /* Gold color - visible by default */
   font-weight: 500;
   transition: color 0.2s;
 }
 
 .nav-link:hover {
-  color: var(--primary-light);
+  color: #fcd34d; /* Lighter gold on hover */
 }
 
 .cart-link {
