@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/db";
+import { db, isDemoMode, demoUsers } from "@/db";
 import { users, PLAN_LIMITS } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
@@ -17,6 +17,26 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Invalid user ID" }, { status: 400 });
   }
 
+  // Handle demo mode
+  if (isDemoMode) {
+    const allDemoUsers = demoUsers.getAll();
+    const demoUser = allDemoUsers.find(u => u.id === userIdNum);
+    if (!demoUser) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+    return NextResponse.json({
+      plan: "free",
+      limits: PLAN_LIMITS.free,
+      usage: {
+        domains: 0,
+        databases: 0,
+        diskMB: 0,
+        dnsRecords: 0,
+        emailAccounts: 0,
+      },
+    });
+  }
+
   const user = await db.query.users.findFirst({
     where: eq(users.id, userIdNum),
   });
@@ -26,7 +46,7 @@ export async function GET(request: Request) {
   }
 
   const plan = (user.plan || "free") as keyof typeof PLAN_LIMITS;
-  const limits = PLAN_LIMITS[plan];
+  const limits = PLAN_LIMITS[plan] || PLAN_LIMITS.free;
 
   return NextResponse.json({
     plan,
