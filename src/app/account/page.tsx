@@ -11,7 +11,7 @@ import {
   Sparkles, CheckCircle, AlertCircle, RefreshCcw, BarChart3,
   Terminal, Flame, Link2, CreditCard, Settings, Upload, Wallet,
   ArrowUpRight, ArrowDownRight, Send, HelpCircle, Clock, DollarSign, Server,
-  Cpu, HardDrive, Activity, XCircle, Check
+  Cpu, HardDrive, Activity, XCircle, Check, Github
 } from "lucide-react";
 import HestiaCPanel from "@/components/HestiaCPanel";
 import VPSTerminal from "@/components/vps/Terminal";
@@ -83,6 +83,9 @@ export default function AccountPage() {
   const [containers, setContainers] = useState<VPSContainer[]>([]);
   const [templates, setTemplates] = useState<VPSTemplate[]>([]);
   const [showProvisionModal, setShowProvisionModal] = useState(false);
+  const [showGithubModal, setShowGithubModal] = useState(false);
+  const [githubRepoUrl, setGithubRepoUrl] = useState("");
+  const [githubImporting, setGithubImporting] = useState(false);
   
   // Debug modal state
   useEffect(() => {
@@ -1183,6 +1186,13 @@ export default function AccountPage() {
                 <button style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>
                   Browse Templates
                 </button>
+                <button 
+                  onClick={() => setShowGithubModal(true)}
+                  style={{ padding: "0.75rem 1.5rem", background: "#24292e", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600", display: "flex", alignItems: "center", gap: "0.5rem" }}
+                >
+                  <Github size={18} />
+                  Import from Github
+                </button>
                 <button style={{ padding: "0.75rem 1.5rem", background: "transparent", color: "var(--text-white)", border: "2px solid var(--border)", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>
                   Start from Scratch
                 </button>
@@ -1417,6 +1427,149 @@ export default function AccountPage() {
           </div>
         )}
       </section>
+
+      {/* GitHub Import Modal */}
+      {showGithubModal && (
+        <div 
+          onClick={() => setShowGithubModal(false)}
+          style={{ 
+            position: "fixed", 
+            top: 0, left: 0, right: 0, bottom: 0, 
+            background: "rgba(0,0,0,0.8)", 
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "center",
+            zIndex: 9999
+          }}
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            style={{ 
+              background: "var(--dark-secondary)", 
+              padding: "2rem", 
+              borderRadius: "1rem", 
+              border: "1px solid var(--border)", 
+              maxWidth: "500px", 
+              width: "90%",
+              position: "relative"
+            }}
+          >
+            <button 
+              onClick={() => setShowGithubModal(false)}
+              style={{ 
+                position: "absolute", 
+                top: "1rem", 
+                right: "1rem", 
+                background: "none", 
+                border: "none", 
+                color: "var(--text-light)", 
+                cursor: "pointer",
+                fontSize: "1.5rem"
+              }}
+            >
+              ×
+            </button>
+            
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
+              <div style={{ width: "50px", height: "50px", background: "#24292e", borderRadius: "0.75rem", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Github size={28} color="white" />
+              </div>
+              <div>
+                <h3 style={{ color: "var(--text-white)", marginBottom: "0.25rem" }}>Import from GitHub</h3>
+                <p style={{ color: "var(--text-light)", margin: 0, fontSize: "0.9rem" }}>Deploy your existing GitHub repository</p>
+              </div>
+            </div>
+
+            <div style={{ marginBottom: "1.5rem" }}>
+              <label style={{ display: "block", color: "var(--text-white)", marginBottom: "0.5rem", fontWeight: "600" }}>
+                Repository URL
+              </label>
+              <input
+                type="text"
+                value={githubRepoUrl}
+                onChange={(e) => setGithubRepoUrl(e.target.value)}
+                placeholder="https://github.com/username/repo"
+                style={{ 
+                  width: "100%", 
+                  padding: "0.75rem", 
+                  borderRadius: "0.5rem", 
+                  border: "1px solid var(--border)", 
+                  background: "var(--dark)", 
+                  color: "white",
+                  fontSize: "1rem"
+                }}
+              />
+              <p style={{ color: "var(--text-light)", marginTop: "0.5rem", fontSize: "0.85rem" }}>
+                Enter the full URL to your public or private GitHub repository
+              </p>
+            </div>
+
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <button 
+                onClick={() => setShowGithubModal(false)}
+                style={{ 
+                  flex: 1,
+                  padding: "0.75rem", 
+                  background: "transparent", 
+                  color: "var(--text-white)", 
+                  border: "2px solid var(--border)", 
+                  borderRadius: "0.5rem", 
+                  cursor: "pointer", 
+                  fontWeight: "600"
+                }}
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={async () => {
+                  if (!githubRepoUrl) return;
+                  setGithubImporting(true);
+                  try {
+                    const response = await fetch("/api/github/import", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ repoUrl: githubRepoUrl })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                      alert("Repository imported successfully! Your site is being deployed.");
+                      setShowGithubModal(false);
+                      setGithubRepoUrl("");
+                    } else {
+                      alert("Failed to import: " + data.error);
+                    }
+                  } catch (err) {
+                    alert("Error importing repository");
+                  } finally {
+                    setGithubImporting(false);
+                  }
+                }}
+                disabled={!githubRepoUrl || githubImporting}
+                style={{ 
+                  flex: 1,
+                  padding: "0.75rem", 
+                  background: githubImporting ? "var(--border)" : "var(--primary)", 
+                  color: "white", 
+                  border: "none", 
+                  borderRadius: "0.5rem", 
+                  cursor: githubImporting ? "not-allowed" : "pointer", 
+                  fontWeight: "600",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.5rem"
+                }}
+              >
+                {githubImporting ? (
+                  <><RefreshCcw size={18} /> Importing...</>
+                ) : (
+                  <><Rocket size={18} /> Import Repository</>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
