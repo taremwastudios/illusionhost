@@ -74,9 +74,13 @@ export default function HestiaCPanel() {
   const checkStatus = async () => {
     try {
       const res = await fetch("/api/hestia/status");
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
       const data = await res.json();
       setStatus(data);
     } catch (error) {
+      console.error("Status check error:", error);
       setStatus({ available: false, message: "Failed to connect" });
     } finally {
       setLoading(false);
@@ -86,20 +90,28 @@ export default function HestiaCPanel() {
   const loadDomains = async () => {
     try {
       const res = await fetch("/api/hestia/domains");
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
       const data = await res.json();
       setDomains(data.domains || []);
     } catch (error) {
       console.error("Failed to load domains:", error);
+      setDomains([]);
     }
   };
 
   const loadDatabases = async () => {
     try {
       const res = await fetch("/api/hestia/databases");
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
       const data = await res.json();
       setDatabases(data.databases || []);
     } catch (error) {
       console.error("Failed to load databases:", error);
+      setDatabases([]);
     }
   };
 
@@ -107,16 +119,23 @@ export default function HestiaCPanel() {
     if (!selectedDomain) return;
     try {
       const res = await fetch(`/api/hestia/dns?domain=${encodeURIComponent(selectedDomain)}`);
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
       const data = await res.json();
       setDnsRecords(data.records || []);
     } catch (error) {
       console.error("Failed to load DNS records:", error);
+      setDnsRecords([]);
     }
   };
 
   const loadSystemInfo = async () => {
     try {
       const res = await fetch("/api/hestia/system");
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
       const data = await res.json();
       setSystemInfo(data);
     } catch (error) {
@@ -137,6 +156,9 @@ export default function HestiaCPanel() {
           ...record,
         }),
       });
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
       const data = await res.json();
       if (data.success) {
         loadDNSRecords();

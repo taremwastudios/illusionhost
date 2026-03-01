@@ -306,11 +306,19 @@ export default function AccountPage() {
       if (firstDomain) {
         setDnsLoading(true);
         fetch(`/api/hestia/dns?domain=${firstDomain}`)
-          .then(res => res.json())
+          .then(res => {
+            if (!res.ok) {
+              throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+            }
+            return res.json();
+          })
           .then(data => {
             setDnsRecords(data.records || []);
           })
-          .catch(console.error)
+          .catch(err => {
+            console.error("DNS fetch error:", err);
+            setDnsRecords([]);
+          })
           .finally(() => setDnsLoading(false));
       }
     }
@@ -318,11 +326,19 @@ export default function AccountPage() {
     if (activeTab === "database") {
       setDbLoading(true);
       fetch("/api/hestia/databases")
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+          }
+          return res.json();
+        })
         .then(data => {
           setDatabases(data.databases || []);
         })
-        .catch(console.error)
+        .catch(err => {
+          console.error("Database fetch error:", err);
+          setDatabases([]);
+        })
         .finally(() => setDbLoading(false));
     }
   }, [activeTab, domainItems]);
@@ -607,11 +623,19 @@ export default function AccountPage() {
                       if (e.target.value) {
                         setDnsLoading(true);
                         fetch(`/api/hestia/dns?domain=${e.target.value}`)
-                          .then(res => res.json())
+                          .then(res => {
+                            if (!res.ok) {
+                              throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+                            }
+                            return res.json();
+                          })
                           .then(data => {
                             setDnsRecords(data.records || []);
                           })
-                          .catch(console.error)
+                          .catch(err => {
+                            console.error("DNS fetch error:", err);
+                            setDnsRecords([]);
+                          })
                           .finally(() => setDnsLoading(false));
                       }
                     }}
@@ -678,11 +702,19 @@ export default function AccountPage() {
                 onClick={() => {
                   setDbLoading(true);
                   fetch("/api/hestia/databases")
-                    .then(res => res.json())
+                    .then(res => {
+                      if (!res.ok) {
+                        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+                      }
+                      return res.json();
+                    })
                     .then(data => {
                       setDatabases(data.databases || []);
                     })
-                    .catch(console.error)
+                    .catch(err => {
+                      console.error("Database fetch error:", err);
+                      setDatabases([]);
+                    })
                     .finally(() => setDbLoading(false));
                 }}
                 style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer" }}
