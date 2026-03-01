@@ -120,7 +120,7 @@ export default function HostingPage() {
   return (
     <>
       <section className="page-header">
-        <h1>Web Hosting Services</h1>
+        <h1>Web <strong>Hosting</strong> Services</h1>
         <p>Lightning-fast hosting with 99.9% uptime guarantee. Start your website today.</p>
       </section>
 

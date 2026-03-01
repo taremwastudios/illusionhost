@@ -51,7 +51,7 @@ export default function PricingPage() {
   return (
     <>
       <section className="page-header">
-        <h1>Pricing</h1>
+        <h1><strong>Pricing</strong></h1>
         <p>Transparent pricing with no hidden fees. Choose the plan that fits your needs.</p>
       </section>
 
