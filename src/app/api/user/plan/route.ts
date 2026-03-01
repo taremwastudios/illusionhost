@@ -1,10 +1,38 @@
 import { NextResponse } from "next/server";
-import { db } from "@/db";
+import { db, isDemoMode } from "@/db";
 import { users, HostingPlan } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 // Update user's hosting plan
 export async function PUT(request: Request) {
+  // Demo mode - return success without actually updating
+  if (isDemoMode || !db) {
+    const body = await request.json();
+    const { userId, plan } = body;
+    
+    if (!userId || !plan) {
+      return NextResponse.json(
+        { error: "userId and plan required" },
+        { status: 400 }
+      );
+    }
+    
+    const validPlans: HostingPlan[] = ["free", "starter", "professional", "business"];
+    if (!validPlans.includes(plan)) {
+      return NextResponse.json(
+        { error: "Invalid plan. Must be: free, starter, professional, or business" },
+        { status: 400 }
+      );
+    }
+    
+    return NextResponse.json({
+      success: true,
+      userId: parseInt(String(userId)),
+      plan,
+      message: `Demo mode: Plan updated to ${plan}`,
+    });
+  }
+  
   const body = await request.json();
   const { userId, plan } = body;
 

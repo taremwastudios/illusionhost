@@ -18,7 +18,7 @@ export async function GET(request: Request) {
   }
 
   // Handle demo mode
-  if (isDemoMode) {
+  if (isDemoMode || !db) {
     const allDemoUsers = demoUsers.getAll();
     const demoUser = allDemoUsers.find(u => u.id === userIdNum);
     if (!demoUser) {
@@ -92,6 +92,23 @@ export async function POST(request: Request) {
     );
   }
 
+  // Handle demo mode
+  if (isDemoMode || !db) {
+    const allDemoUsers = demoUsers.getAll();
+    const demoUser = allDemoUsers.find(u => u.id === userIdNum);
+    if (!demoUser) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+    const limits = PLAN_LIMITS.free;
+    return NextResponse.json({
+      canAdd: true,
+      current: 0,
+      limit: limits.domains,
+      remaining: limits.domains,
+      plan: "free",
+    });
+  }
+
   const user = await db.query.users.findFirst({
     where: eq(users.id, userIdNum),
   });
@@ -155,6 +172,23 @@ export async function PUT(request: Request) {
       { error: "Invalid resource type" },
       { status: 400 }
     );
+  }
+
+  // Handle demo mode
+  if (isDemoMode || !db) {
+    const allDemoUsers = demoUsers.getAll();
+    const demoUser = allDemoUsers.find(u => u.id === userIdNum);
+    if (!demoUser) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+    return NextResponse.json({
+      success: true,
+      resourceType,
+      operation,
+      previousValue: 0,
+      newValue: operation === "add" ? amount : 0,
+      message: "Demo mode: Usage updated (not persisted)",
+    });
   }
 
   const user = await db.query.users.findFirst({

@@ -48,6 +48,10 @@ export async function signup(
     const { users } = await import("@/db/schema");
     const { eq } = await import("drizzle-orm");
     
+    if (!db) {
+      return { success: false, error: "Database not configured" };
+    }
+    
     // Check if user already exists
     const existingUser = await db
       .select()
@@ -116,6 +120,10 @@ export async function login(
     const { db } = await import("@/db");
     const { users } = await import("@/db/schema");
     const { eq } = await import("drizzle-orm");
+    
+    if (!db) {
+      return { success: false, error: "Database not configured" };
+    }
     
     // Find user by email
     const existingUser = await db
