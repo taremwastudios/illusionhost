@@ -65,6 +65,8 @@ Illusionhost is a full-featured domain selling service website similar to Namech
   - [`src/lib/github.ts`](src/lib/github.ts) - GitHub App client with JWT/token management  
   - [`src/app/api/github/import/route.ts`](src/app/api/github/import/route.ts) - Import API endpoint
 - [x] **Fixed Build Error** - Removed 'use server' directive from github.ts that was causing Turbopack to incorrectly treat functions as Server Actions
+- [x] **GitHub App Installation Flow** - Added installation URL redirect when GitHub App is not installed on user's account
+- [x] **Fixed DNS/Database Crashes** - Added better error handling for HestiaCP API calls
 - [x] **NOWPayments Dynamic Invoice API** - Crypto payments now use dynamic invoice API with cart total amount instead of static button
 - [x] **NOWPayments crypto2crypto UI** - Shows payment address and amount for crypto2crypto payments instead of trying to redirect to hosted checkout
 - [x] **NOWPayments Hosted Checkout** - Using NOWPayments button redirect (iid: 6118248419) instead of manual crypto2crypto
