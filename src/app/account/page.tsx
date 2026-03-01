@@ -83,6 +83,12 @@ export default function AccountPage() {
   const [containers, setContainers] = useState<VPSContainer[]>([]);
   const [templates, setTemplates] = useState<VPSTemplate[]>([]);
   const [showProvisionModal, setShowProvisionModal] = useState(false);
+  
+  // Debug modal state
+  useEffect(() => {
+    console.log('Provision modal state:', showProvisionModal);
+  }, [showProvisionModal]);
+  
   const [showTerminalModal, setShowTerminalModal] = useState(false);
   const [selectedContainer, setSelectedContainer] = useState<VPSContainer | null>(null);
   const [provisionForm, setProvisionForm] = useState({
@@ -1015,13 +1021,19 @@ export default function AccountPage() {
                 left: 0, 
                 right: 0, 
                 bottom: 0, 
-                background: "rgba(0,0,0,0.7)", 
+                background: "rgba(0,0,0,0.8)", 
                 display: "flex", 
                 alignItems: "center", 
                 justifyContent: "center",
-                zIndex: 1000
+                zIndex: 9999
               }}>
-                <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", maxWidth: "500px", width: "90%" }}>
+                <div style={{ background: "#1a1a2e", padding: "2rem", borderRadius: "1rem", border: "2px solid var(--primary)", maxWidth: "500px", width: "90%", position: "relative" }}>
+                  <button 
+                    onClick={() => setShowProvisionModal(false)}
+                    style={{ position: "absolute", top: "1rem", right: "1rem", background: "none", border: "none", color: "white", cursor: "pointer", fontSize: "1.5rem" }}
+                  >
+                    ×
+                  </button>
                   <h3 style={{ marginBottom: "1.5rem", color: "var(--text-white)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
                     <Cloud size={24} color="var(--primary)" /> Provision New VPS
                   </h3>
@@ -1218,7 +1230,15 @@ export default function AccountPage() {
                 </div>
               </div>
               <button 
-                onClick={() => setShowProvisionModal(true)}
+                onMouseDown={() => {
+                  console.log('Opening provision modal');
+                  setShowProvisionModal(true);
+                }}
+                onClick={() => {
+                  console.log('Opening provision modal');
+                  setShowProvisionModal(true);
+                }}
+                type="button"
                 style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}
               >
                 Provision New VPS
