@@ -10,7 +10,8 @@ import {
   Camera, GraduationCap, Home, Dumbbell, Plane, Music,
   Sparkles, CheckCircle, AlertCircle, RefreshCcw, BarChart3,
   Terminal, Flame, Link2, CreditCard, Settings, Upload, Wallet,
-  ArrowUpRight, ArrowDownRight, Send, HelpCircle, Clock, DollarSign, Server
+  ArrowUpRight, ArrowDownRight, Send, HelpCircle, Clock, DollarSign, Server,
+  Cpu, HardDrive, Activity, XCircle, Check
 } from "lucide-react";
 import HestiaCPanel from "@/components/HestiaCPanel";
 import VPSTerminal from "@/components/vps/Terminal";
@@ -53,15 +54,6 @@ interface PurchasedItem {
   expirationDate: string;
 }
 
-interface DNSRecord {
-  id: string;
-  type: "A" | "AAAA" | "CNAME" | "MX" | "TXT" | "NS";
-  name: string;
-  value: string;
-  priority?: number;
-  ttl: number;
-}
-
 interface VPSContainer {
   id: number;
   vmid: string;
@@ -87,10 +79,7 @@ export default function AccountPage() {
   const [user, setUser] = useState<User | null>(null);
   const [purchasedItems, setPurchasedItems] = useState<PurchasedItem[]>([]);
   const [activeTab, setActiveTab] = useState("domains");
-  const [dnsRecords, setDnsRecords] = useState<DNSRecord[]>([]);
   const [quota, setQuota] = useState<QuotaInfo | null>(null);
-  const [isEditingDNS, setIsEditingDNS] = useState(false);
-  const [newDNSRecord, setNewDNSRecord] = useState<Partial<DNSRecord>>({ type: "A", ttl: 3600 });
   const [containers, setContainers] = useState<VPSContainer[]>([]);
   const [templates, setTemplates] = useState<VPSTemplate[]>([]);
   const [showProvisionModal, setShowProvisionModal] = useState(false);
@@ -107,6 +96,18 @@ export default function AccountPage() {
   });
   const [loadingContainers, setLoadingContainers] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [systemStatus, setSystemStatus] = useState<"healthy" | "failing">("healthy");
+  const [resourceUsage, setResourceUsage] = useState({ cpu: 23, ram: 45, storage: 67 });
+  const [sshLogs, setSshLogs] = useState([
+    { id: "1", time: "2026-03-01 14:05:23", message: "SSH connection established from 192.168.1.100" },
+    { id: "2", time: "2026-03-01 14:04:15", message: "User 'admin' logged in successfully" },
+    { id: "3", time: "2026-03-01 14:02:47", message: "Container vps-001 started" },
+    { id: "4", time: "2026-03-01 13:58:12", message: "System health check: OK" },
+    { id: "5", time: "2026-03-01 13:55:33", message: "Backup completed successfully" },
+    { id: "6", time: "2026-03-01 13:45:21", message: "Container vps-002 stopped" },
+    { id: "7", time: "2026-03-01 13:30:10", message: "SSH connection closed" },
+    { id: "8", time: "2026-03-01 13:15:44", message: "System update available: security patches" },
+  ]);
   
   // Wallet state
   const [walletBalance, setWalletBalance] = useState(1250.00);
@@ -173,17 +174,6 @@ export default function AccountPage() {
         setTimeout(() => setPurchasedItems(parsed), 0);
       } catch (e) {
         console.error("Failed to parse items", e);
-      }
-    }
-
-    // Load DNS records
-    const storedDNS = localStorage.getItem("dns_records");
-    if (storedDNS) {
-      try {
-        const parsed = JSON.parse(storedDNS);
-        setTimeout(() => setDnsRecords(parsed), 0);
-      } catch (e) {
-        console.error("Failed to parse DNS records", e);
       }
     }
   }, [router]);
@@ -281,31 +271,6 @@ export default function AccountPage() {
     }
   };
 
-  const saveDNSRecord = () => {
-    if (!newDNSRecord.name || !newDNSRecord.value) return;
-    
-    const record: DNSRecord = {
-      id: `dns-${Date.now()}`,
-      type: newDNSRecord.type as DNSRecord["type"],
-      name: newDNSRecord.name,
-      value: newDNSRecord.value,
-      priority: newDNSRecord.priority,
-      ttl: newDNSRecord.ttl || 3600,
-    };
-    
-    const updated = [...dnsRecords, record];
-    setDnsRecords(updated);
-    localStorage.setItem("dns_records", JSON.stringify(updated));
-    setNewDNSRecord({ type: "A", ttl: 3600 });
-    setIsEditingDNS(false);
-  };
-
-  const deleteDNSRecord = (id: string) => {
-    const updated = dnsRecords.filter(r => r.id !== id);
-    setDnsRecords(updated);
-    localStorage.setItem("dns_records", JSON.stringify(updated));
-  };
-
   const domainItems = purchasedItems.filter(item => item.type === "domain");
   const hostingItems = purchasedItems.filter(item => item.type === "hosting");
 
@@ -358,13 +323,9 @@ export default function AccountPage() {
           {[
             { id: "domains", label: "Domains", icon: Globe, count: domainItems.length },
             { id: "hosting", label: "Hosting Server", icon: Server, count: 0 },
-            { id: "hostingPlans", label: "Hosting Plans", icon: Monitor, count: hostingItems.length },
-            { id: "dns", label: "DNS", icon: Network, count: dnsRecords.length },
-            { id: "database", label: "Database", icon: Database, count: 0 },
             { id: "wallet", label: "Wallet", icon: Wallet, count: 0 },
             { id: "builder", label: "Site Builder", icon: Palette, count: 0 },
             { id: "vps", label: "VPS", icon: Cloud, count: 0 },
-            { id: "more", label: "More", icon: Package, count: 0 },
             { id: "assistant", label: "Illusion Assistant", icon: Sparkles, count: 0 },
           ].map(tab => (
             <button
@@ -388,49 +349,115 @@ export default function AccountPage() {
           ))}
         </div>
 
-        {/* Quota Display */}
-        {quota && (
-          <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-              <h3 style={{ color: "var(--text-white)", margin: 0 }}>
-                <BarChart3 size={20} style={{ marginRight: "0.5rem", verticalAlign: "middle" }} />
-                Resource Usage ({quota.plan.charAt(0).toUpperCase() + quota.plan.slice(1)} Plan)
-              </h3>
-              <Link href="/hosting" style={{ color: "var(--primary)", textDecoration: "none", fontSize: "0.875rem" }}>Upgrade Plan</Link>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "1rem" }}>
-              {[
-                { label: "Domains", used: quota.usage.domains, limit: quota.limits.domains, icon: Globe },
-                { label: "Databases", used: quota.usage.databases, limit: quota.limits.databases, icon: Database },
-                { label: "Disk Space", used: Math.round(quota.usage.diskMB / 1024), limit: quota.limits.diskGB, unit: "GB", icon: Server },
-                { label: "DNS Records", used: quota.usage.dnsRecords, limit: quota.limits.dnsRecords, icon: Network },
-                { label: "Email Accounts", used: quota.usage.emailAccounts, limit: quota.limits.emailAccounts, icon: Mail },
-              ].map((item, idx) => (
-                <div key={idx} style={{ background: "var(--dark-bg)", padding: "1rem", borderRadius: "0.5rem", textAlign: "center" }}>
-                  <item.icon size={20} style={{ color: "var(--primary)", marginBottom: "0.5rem" }} />
-                  <div style={{ fontSize: "1.5rem", fontWeight: "700", color: "var(--text-white)" }}>
-                    {item.used}/{item.limit}{item.unit || ""}
-                  </div>
-                  <div style={{ fontSize: "0.75rem", color: "var(--text-light)" }}>{item.label}</div>
-                  <div style={{ 
-                    height: "4px", 
-                    background: "var(--border)", 
-                    borderRadius: "2px", 
-                    marginTop: "0.5rem",
-                    overflow: "hidden" 
-                  }}>
-                    <div style={{ 
-                      height: "100%", 
-                      width: `${Math.min(100, (item.used / item.limit) * 100)}%`,
-                      background: item.used >= item.limit ? "#ef4444" : "var(--primary)",
-                      transition: "width 0.3s"
-                    }} />
-                  </div>
-                </div>
-              ))}
+        {/* Resource Usage & System Status */}
+        <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+            <h3 style={{ color: "var(--text-white)", margin: 0, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <BarChart3 size={20} />
+              Resource Usage & System Status
+            </h3>
+            <div style={{ 
+              display: "flex", 
+              alignItems: "center", 
+              gap: "0.5rem",
+              padding: "0.5rem 1rem",
+              borderRadius: "2rem",
+              background: systemStatus === "healthy" ? "#065f46" : "#991b1b"
+            }}>
+              {systemStatus === "healthy" ? <Check size={16} color="white" /> : <XCircle size={16} color="white" />}
+              <span style={{ color: "white", fontWeight: "600", fontSize: "0.875rem" }}>
+                System {systemStatus === "healthy" ? "Healthy" : "Overloaded"}
+              </span>
             </div>
           </div>
-        )}
+          
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1.5rem" }}>
+            {/* CPU Usage */}
+            <div style={{ background: "var(--dark-bg)", padding: "1.25rem", borderRadius: "0.5rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
+                <Cpu size={20} color="#3b82f6" />
+                <span style={{ color: "var(--text-white)", fontWeight: "600" }}>CPU Usage</span>
+              </div>
+              <div style={{ fontSize: "2rem", fontWeight: "700", color: resourceUsage.cpu > 80 ? "#ef4444" : resourceUsage.cpu > 60 ? "#f59e0b" : "#10b981", marginBottom: "0.5rem" }}>
+                {resourceUsage.cpu}%
+              </div>
+              <div style={{ height: "8px", background: "var(--border)", borderRadius: "4px", overflow: "hidden" }}>
+                <div style={{ 
+                  height: "100%", 
+                  width: `${resourceUsage.cpu}%`,
+                  background: resourceUsage.cpu > 80 ? "#ef4444" : resourceUsage.cpu > 60 ? "#f59e0b" : "#10b981",
+                  transition: "width 0.3s"
+                }} />
+              </div>
+            </div>
+
+            {/* RAM Usage */}
+            <div style={{ background: "var(--dark-bg)", padding: "1.25rem", borderRadius: "0.5rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
+                <Activity size={20} color="#8b5cf6" />
+                <span style={{ color: "var(--text-white)", fontWeight: "600" }}>RAM Usage</span>
+              </div>
+              <div style={{ fontSize: "2rem", fontWeight: "700", color: resourceUsage.ram > 80 ? "#ef4444" : resourceUsage.ram > 60 ? "#f59e0b" : "#10b981", marginBottom: "0.5rem" }}>
+                {resourceUsage.ram}%
+              </div>
+              <div style={{ height: "8px", background: "var(--border)", borderRadius: "4px", overflow: "hidden" }}>
+                <div style={{ 
+                  height: "100%", 
+                  width: `${resourceUsage.ram}%`,
+                  background: resourceUsage.ram > 80 ? "#ef4444" : resourceUsage.ram > 60 ? "#f59e0b" : "#10b981",
+                  transition: "width 0.3s"
+                }} />
+              </div>
+            </div>
+
+            {/* Storage Usage */}
+            <div style={{ background: "var(--dark-bg)", padding: "1.25rem", borderRadius: "0.5rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
+                <HardDrive size={20} color="#f59e0b" />
+                <span style={{ color: "var(--text-white)", fontWeight: "600" }}>Storage</span>
+              </div>
+              <div style={{ fontSize: "2rem", fontWeight: "700", color: resourceUsage.storage > 90 ? "#ef4444" : resourceUsage.storage > 75 ? "#f59e0b" : "#10b981", marginBottom: "0.5rem" }}>
+                {resourceUsage.storage}%
+              </div>
+              <div style={{ height: "8px", background: "var(--border)", borderRadius: "4px", overflow: "hidden" }}>
+                <div style={{ 
+                  height: "100%", 
+                  width: `${resourceUsage.storage}%`,
+                  background: resourceUsage.storage > 90 ? "#ef4444" : resourceUsage.storage > 75 ? "#f59e0b" : "#10b981",
+                  transition: "width 0.3s"
+                }} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* SSH Logs */}
+        <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+            <h3 style={{ color: "var(--text-white)", margin: 0, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <Terminal size={20} />
+              SSH Logs
+            </h3>
+            <button 
+              onClick={() => setSshLogs([
+                { id: String(Date.now()), time: new Date().toISOString().replace("T", " ").substring(0, 19), message: "Logs refreshed" },
+                ...sshLogs
+              ])}
+              style={{ padding: "0.25rem 0.75rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.25rem", cursor: "pointer", fontSize: "0.75rem" }}
+            >
+              Refresh
+            </button>
+          </div>
+          <div style={{ background: "#0a0a0a", borderRadius: "0.5rem", padding: "1rem", maxHeight: "250px", overflowY: "auto", fontFamily: "monospace", fontSize: "0.8rem" }}>
+            {sshLogs.map((log) => (
+              <div key={log.id} style={{ padding: "0.25rem 0", borderBottom: "1px solid #222", display: "flex", gap: "1rem" }}>
+                <span style={{ color: "#6b7280", flexShrink: 0 }}>{log.time}</span>
+                <span style={{ color: "#10b981" }}>$</span>
+                <span style={{ color: "var(--text-light)" }}>{log.message}</span>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Domains Tab */}
         {activeTab === "domains" && (
@@ -466,10 +493,9 @@ export default function AccountPage() {
                         {item.status === "active" ? <><CheckCircle size={14} /> Active</> : <><AlertCircle size={14} /> Expiring</>}
                       </span>
                       <button 
-                        onClick={() => setActiveTab("dns")}
                         style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer" }}
                       >
-                        Manage DNS
+                        Manage
                       </button>
                     </div>
                   </div>
@@ -483,258 +509,6 @@ export default function AccountPage() {
         {activeTab === "hosting" && (
           <div>
             <HestiaCPanel />
-          </div>
-        )}
-
-        {/* Hosting Plans Tab */}
-        {activeTab === "hostingPlans" && (
-          <div>
-            <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>My Hosting Plans</h2>
-            {hostingItems.length === 0 ? (
-              <div style={{ background: "var(--dark-secondary)", padding: "3rem", borderRadius: "1rem", border: "1px solid var(--border)", textAlign: "center" }}>
-                <div style={{ fontSize: "3rem", marginBottom: "1rem" }}><Monitor size={64} color="var(--primary)" /></div>
-                <h3 style={{ color: "var(--text-white)", marginBottom: "0.5rem" }}>No hosting plans yet</h3>
-                <p style={{ color: "var(--text-light)", marginBottom: "1.5rem" }}>Get hosting to power your websites</p>
-                <Link href="/hosting" className="domain-action-btn">View Hosting Plans</Link>
-              </div>
-            ) : (
-              <div style={{ display: "grid", gap: "1rem" }}>
-                {hostingItems.map((item, index) => (
-                  <div key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
-                    <div>
-                      <div style={{ fontSize: "1.25rem", fontWeight: "600", color: "var(--text-white)" }}>{item.name}</div>
-                      <div style={{ fontSize: "0.875rem", color: "var(--text-light)" }}>
-                        {item.details} • ${item.price}/{item.period}
-                      </div>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                      <span style={{ 
-                        padding: "0.25rem 0.75rem", 
-                        background: "#065f46",
-                        color: "white",
-                        borderRadius: "1rem",
-                        fontSize: "0.875rem",
-                        fontWeight: "600"
-                      }}>
-                        <><CheckCircle size={14} /> Active</>
-                      </span>
-                      <button style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer" }}>
-                        Manage
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-        {activeTab === "dns" && (
-          <div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: "1rem" }}>
-              <h2 style={{ color: "var(--text-white)", margin: 0 }}>DNS Management</h2>
-              <button 
-                onClick={() => setIsEditingDNS(true)}
-                style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}
-              >
-                + Add Record
-              </button>
-            </div>
-
-            {dnsRecords.length === 0 ? (
-              <div style={{ background: "var(--dark-secondary)", padding: "3rem", borderRadius: "1rem", border: "1px solid var(--border)", textAlign: "center" }}>
-                <div style={{ fontSize: "3rem", marginBottom: "1rem" }}><Network size={64} color="var(--primary)" /></div>
-                <h3 style={{ color: "var(--text-white)", marginBottom: "0.5rem" }}>No DNS records</h3>
-                <p style={{ color: "var(--text-light)", marginBottom: "1rem" }}>Add DNS records to point your domain to your website or services</p>
-                <button 
-                  onClick={() => setIsEditingDNS(true)}
-                  className="domain-action-btn"
-                >
-                  Add First Record
-                </button>
-              </div>
-            ) : (
-              <div style={{ background: "var(--dark-secondary)", borderRadius: "0.75rem", border: "1px solid var(--border)", overflow: "hidden" }}>
-                <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                  <thead>
-                    <tr style={{ background: "var(--primary)", borderBottom: "2px solid var(--border)" }}>
-                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>Type</th>
-                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>Name</th>
-                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>Value</th>
-                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>TTL</th>
-                      <th style={{ padding: "1rem", textAlign: "right", fontWeight: "600", color: "white" }}>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {dnsRecords.map((record) => (
-                      <tr key={record.id} style={{ borderBottom: "1px solid var(--border)" }}>
-                        <td style={{ padding: "1rem" }}>
-                          <span style={{ 
-                            padding: "0.25rem 0.5rem", 
-                            background: record.type === "A" ? "#1e3a8a" : record.type === "MX" ? "#854d0e" : "#3730a3",
-                            color: "white",
-                            borderRadius: "0.25rem",
-                            fontSize: "0.75rem",
-                            fontWeight: "700"
-                          }}>
-                            {record.type}
-                          </span>
-                        </td>
-                        <td style={{ padding: "1rem", fontFamily: "monospace", color: "var(--text-white)" }}>{record.name}</td>
-                        <td style={{ padding: "1rem", fontFamily: "monospace", fontSize: "0.875rem", color: "var(--text-light)" }}>{record.value}</td>
-                        <td style={{ padding: "1rem", color: "var(--text-light)" }}>{record.ttl}s</td>
-                        <td style={{ padding: "1rem", textAlign: "right" }}>
-                          <button 
-                            onClick={() => deleteDNSRecord(record.id)}
-                            style={{ background: "#991b1b", color: "white", border: "none", padding: "0.25rem 0.5rem", borderRadius: "0.25rem", cursor: "pointer" }}
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-
-            {/* Add DNS Record Modal */}
-            {isEditingDNS && (
-              <div style={{ 
-                position: "fixed", 
-                top: 0, 
-                left: 0, 
-                right: 0, 
-                bottom: 0, 
-                background: "rgba(0,0,0,0.7)", 
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center",
-                zIndex: 1000
-              }}>
-                <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", maxWidth: "500px", width: "90%" }}>
-                  <h3 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>Add DNS Record</h3>
-                  
-                  <div style={{ marginBottom: "1rem" }}>
-                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Record Type</label>
-                    <select 
-                      value={newDNSRecord.type}
-                      onChange={(e) => setNewDNSRecord({ ...newDNSRecord, type: e.target.value as DNSRecord["type"] })}
-                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
-                    >
-                      <option value="A">A</option>
-                      <option value="AAAA">AAAA</option>
-                      <option value="CNAME">CNAME</option>
-                      <option value="MX">MX</option>
-                      <option value="TXT">TXT</option>
-                      <option value="NS">NS</option>
-                    </select>
-                  </div>
-
-                  <div style={{ marginBottom: "1rem" }}>
-                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Name</label>
-                    <input 
-                      type="text"
-                      value={newDNSRecord.name || ""}
-                      onChange={(e) => setNewDNSRecord({ ...newDNSRecord, name: e.target.value })}
-                      placeholder="@ or subdomain"
-                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
-                    />
-                  </div>
-
-                  <div style={{ marginBottom: "1rem" }}>
-                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Value</label>
-                    <input 
-                      type="text"
-                      value={newDNSRecord.value || ""}
-                      onChange={(e) => setNewDNSRecord({ ...newDNSRecord, value: e.target.value })}
-                      placeholder="IP address or hostname"
-                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
-                    />
-                  </div>
-
-                  {newDNSRecord.type === "MX" && (
-                    <div style={{ marginBottom: "1rem" }}>
-                      <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Priority</label>
-                      <input 
-                        type="number"
-                        value={newDNSRecord.priority || 10}
-                        onChange={(e) => setNewDNSRecord({ ...newDNSRecord, priority: parseInt(e.target.value) })}
-                        style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
-                      />
-                    </div>
-                  )}
-
-                  <div style={{ marginBottom: "1.5rem" }}>
-                    <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>TTL</label>
-                    <select 
-                      value={newDNSRecord.ttl}
-                      onChange={(e) => setNewDNSRecord({ ...newDNSRecord, ttl: parseInt(e.target.value) })}
-                      style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
-                    >
-                      <option value={300}>5 minutes</option>
-                      <option value={900}>15 minutes</option>
-                      <option value={1800}>30 minutes</option>
-                      <option value={3600}>1 hour</option>
-                      <option value={7200}>2 hours</option>
-                      <option value={86400}>24 hours</option>
-                    </select>
-                  </div>
-
-                  <div style={{ display: "flex", gap: "1rem", justifyContent: "flex-end" }}>
-                    <button 
-                      onClick={() => setIsEditingDNS(false)}
-                      style={{ padding: "0.75rem 1.5rem", background: "var(--border)", color: "var(--text-white)", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}
-                    >
-                      Cancel
-                    </button>
-                    <button 
-                      onClick={saveDNSRecord}
-                      style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}
-                    >
-                      Save Record
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Database Tab */}
-        {activeTab === "database" && (
-          <div>
-            <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>My Databases</h2>
-            <div style={{ background: "var(--dark-secondary)", padding: "2rem", borderRadius: "1rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
-                <div style={{ width: "60px", height: "60px", background: "linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%)", borderRadius: "1rem", display: "flex", alignItems: "center", justifyContent: "center" }}><Server size={28} color="white" /></div>
-                <div>
-                  <h3 style={{ color: "var(--text-white)", marginBottom: "0.25rem" }}>Managed Databases</h3>
-                  <p style={{ color: "var(--text-light)", margin: 0 }}>MySQL, PostgreSQL, MongoDB and more</p>
-                </div>
-              </div>
-              <button style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}>
-                Create New Database
-              </button>
-            </div>
-
-            <h3 style={{ marginBottom: "1rem", color: "var(--text-white)" }}>Available Database Types</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1rem" }}>
-              {[
-                { name: "MySQL", desc: "Popular open-source relational database", icon: Database },
-                { name: "PostgreSQL", desc: "Advanced object-relational database", icon: Database },
-                { name: "MongoDB", desc: "NoSQL document database", icon: Database },
-                { name: "Redis", desc: "In-memory data structure store", icon: Database },
-              ].map((db, index) => (
-                <div key={index} style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.5rem" }}>
-                    <db.icon size={20} color="var(--primary)" />
-                    <div style={{ fontWeight: "600", color: "var(--text-white)" }}>{db.name}</div>
-                  </div>
-                  <div style={{ fontSize: "0.875rem", color: "var(--text-light)", marginBottom: "1rem" }}>{db.desc}</div>
-                  <button style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontSize: "0.875rem", fontWeight: "600" }}>Provision</button>
-                </div>
-              ))}
-            </div>
           </div>
         )}
 
