@@ -18,6 +18,26 @@ interface User {
   id: number;
   name: string;
   email: string;
+  plan?: string;
+}
+
+interface QuotaInfo {
+  plan: string;
+  limits: {
+    domains: number;
+    databases: number;
+    diskGB: number;
+    dnsRecords: number;
+    emailAccounts: number;
+    bandwidthGB: number;
+  };
+  usage: {
+    domains: number;
+    databases: number;
+    diskMB: number;
+    dnsRecords: number;
+    emailAccounts: number;
+  };
 }
 
 interface PurchasedItem {
@@ -47,6 +67,7 @@ export default function AccountPage() {
   const [purchasedItems, setPurchasedItems] = useState<PurchasedItem[]>([]);
   const [activeTab, setActiveTab] = useState("domains");
   const [dnsRecords, setDnsRecords] = useState<DNSRecord[]>([]);
+  const [quota, setQuota] = useState<QuotaInfo | null>(null);
   const [isEditingDNS, setIsEditingDNS] = useState(false);
   const [newDNSRecord, setNewDNSRecord] = useState<Partial<DNSRecord>>({ type: "A", ttl: 3600 });
   
@@ -74,7 +95,16 @@ export default function AccountPage() {
     
     try {
       const parsed = JSON.parse(storedUser);
-      setTimeout(() => setUser(parsed), 0);
+      setTimeout(() => {
+        setUser(parsed);
+        // Fetch quota info
+        fetch(`/api/quota?userId=${parsed.id}`)
+          .then(res => res.json())
+          .then(data => {
+            if (!data.error) setQuota(data);
+          })
+          .catch(console.error);
+      }, 0);
     } catch (e) {
       console.error("Failed to parse user", e);
       router.push("/login");
@@ -215,6 +245,50 @@ export default function AccountPage() {
             </button>
           ))}
         </div>
+
+        {/* Quota Display */}
+        {quota && (
+          <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+              <h3 style={{ color: "var(--text-white)", margin: 0 }}>
+                <BarChart3 size={20} style={{ marginRight: "0.5rem", verticalAlign: "middle" }} />
+                Resource Usage ({quota.plan.charAt(0).toUpperCase() + quota.plan.slice(1)} Plan)
+              </h3>
+              <Link href="/hosting" style={{ color: "var(--primary)", textDecoration: "none", fontSize: "0.875rem" }}>Upgrade Plan</Link>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "1rem" }}>
+              {[
+                { label: "Domains", used: quota.usage.domains, limit: quota.limits.domains, icon: Globe },
+                { label: "Databases", used: quota.usage.databases, limit: quota.limits.databases, icon: Database },
+                { label: "Disk Space", used: Math.round(quota.usage.diskMB / 1024), limit: quota.limits.diskGB, unit: "GB", icon: Server },
+                { label: "DNS Records", used: quota.usage.dnsRecords, limit: quota.limits.dnsRecords, icon: Network },
+                { label: "Email Accounts", used: quota.usage.emailAccounts, limit: quota.limits.emailAccounts, icon: Mail },
+              ].map((item, idx) => (
+                <div key={idx} style={{ background: "var(--dark-bg)", padding: "1rem", borderRadius: "0.5rem", textAlign: "center" }}>
+                  <item.icon size={20} style={{ color: "var(--primary)", marginBottom: "0.5rem" }} />
+                  <div style={{ fontSize: "1.5rem", fontWeight: "700", color: "var(--text-white)" }}>
+                    {item.used}/{item.limit}{item.unit || ""}
+                  </div>
+                  <div style={{ fontSize: "0.75rem", color: "var(--text-light)" }}>{item.label}</div>
+                  <div style={{ 
+                    height: "4px", 
+                    background: "var(--border)", 
+                    borderRadius: "2px", 
+                    marginTop: "0.5rem",
+                    overflow: "hidden" 
+                  }}>
+                    <div style={{ 
+                      height: "100%", 
+                      width: `${Math.min(100, (item.used / item.limit) * 100)}%`,
+                      background: item.used >= item.limit ? "#ef4444" : "var(--primary)",
+                      transition: "width 0.3s"
+                    }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Domains Tab */}
         {activeTab === "domains" && (
