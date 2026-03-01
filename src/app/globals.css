@@ -370,6 +370,10 @@ body {
   margin-bottom: 1.5rem;
 }
 
+.feature-icon svg {
+  color: white;
+}
+
 .feature-card h3 {
   font-size: 1.25rem;
   font-weight: 600;

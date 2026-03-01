@@ -1,62 +1,8 @@
 "use client";
 
-import { useState } from "react";
-
-interface DomainResult {
-  name: string;
-  available: boolean;
-  tld: string;
-  requiredPlan: string;
-  isPremium: boolean;
-  isHybridEligible: boolean;
-  domainPrice: number;
-  isExactMatch: boolean;
-  isRecommendation: boolean;
-}
+import { Server, Sparkles, Zap, Shield, Gem, Wrench, Phone, DollarSign } from "lucide-react";
 
 export default function Home() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [results, setResults] = useState<DomainResult[] | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleSearch = async () => {
-    if (!searchQuery.trim()) return;
-    
-    setLoading(true);
-    setResults(null);
-    setError(null);
-
-    try {
-      const response = await fetch("/api/whois", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          domain: searchQuery.trim(),
-          tld: ".com",
-        }),
-      });
-
-      const data = await response.json();
-      
-      if (data.error) {
-        setError(data.error);
-        return;
-      }
-      
-      if (data.results) {
-        setResults(data.results);
-      }
-    } catch (error) {
-      console.error("Search failed:", error);
-      setError("Failed to search. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <>
       {/* Hero Section */}
@@ -69,134 +15,30 @@ export default function Home() {
             That&apos;s right — we GIVE domains away for FREE! The catch? Just get any hosting plan. All plans are suitable for any business but differ by standard and the firepower we give you. Are you a student? There&apos;s a package especially for you! That&apos;s right, you get a custom &quot;yourdomain.illusionhost.co&quot; for a whole year! What are you waiting for? Just make sure to read our Terms of Service and Privacy Policy on usage to make sure you are within our limits.
           </p>
           
-          <div className="domain-search" style={{ maxWidth: "100%", width: "100%" }}>
-            <div style={{ display: "flex", gap: "0", flexWrap: "wrap", width: "100%" }}>
-              <div style={{ flex: "1", minWidth: "300px", position: "relative" }}>
-                <input
-                  type="text"
-                  placeholder="Enter domain (e.g., example.com)..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                  style={{ 
-                    flex: "1", 
-                    minWidth: "300px",
-                    border: "none", 
-                    borderRadius: "0",
-                    height: "60px",
-                    fontSize: "1.1rem",
-                    padding: "0 1.5rem",
-                    width: "100%"
-                  }}
-                />
-              </div>
-              <button 
-                className="search-btn" 
-                onClick={handleSearch}
-                style={{ 
-                  borderRadius: "0",
-                  height: "60px",
-                  padding: "0 3rem",
-                  fontSize: "1.1rem"
-                }}
-              >
-                {loading ? "Searching..." : "Search"}
-              </button>
-            </div>
+          <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+            <a 
+              href="/domains" 
+              className="search-btn" 
+              style={{ 
+                borderRadius: '0.5rem',
+                height: 'auto',
+                padding: '1rem 2.5rem',
+                fontSize: '1.1rem',
+                display: 'inline-block',
+                textDecoration: 'none'
+              }}
+            >
+              Find Your Perfect Domain
+            </a>
           </div>
 
-          {error && (
-            <div style={{
-              maxWidth: "600px",
-              margin: "1rem auto",
-              padding: "1rem",
-              background: "#fef2f2",
-              border: "2px solid #ef4444",
-              borderRadius: "0.5rem",
-              textAlign: "center"
-            }}>
-              <p style={{ color: "#dc2626", margin: 0 }}>{error}</p>
-            </div>
-          )}
-
-          <p style={{ marginTop: "1rem", fontSize: "1rem", color: "#9ca3af", maxWidth: "600px", margin: "1rem auto 0", lineHeight: "1.6" }}>
+          <p style={{ marginTop: "1rem", fontSize: "1rem", color: "#9ca3af", maxWidth: "600px", margin: "2rem auto 0", lineHeight: "1.6" }}>
             We are a dedicated community that hopes to solve your business troubles, with a domain, hosting, multiple websites, dedicated website builder, large uptime, auto backup and a lot more, come join the illusion family trusted by thousands of users
           </p>
         </div>
       </section>
 
       {/* Domain Results */}
-      {results && (
-        <section className="container">
-          <div className="domain-results" style={{ maxWidth: "900px", margin: "0 auto" }}>
-            <h2 style={{ textAlign: "center", marginBottom: "1.5rem", color: "var(--dark)" }}>
-              Domain Search Results for &quot;{searchQuery}&quot;
-            </h2>
-            
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-              {results.map((result, index) => (
-                <div key={index} style={{
-                  background: result.isExactMatch ? "linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)" : "white",
-                  padding: "1.5rem",
-                  borderRadius: "0.75rem",
-                  border: result.isPremium ? "2px solid #f59e0b" : result.isExactMatch ? "2px solid #f59e0b" : "2px solid var(--border)",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  flexWrap: "wrap",
-                  gap: "1rem"
-                }}>
-                  <div style={{ flex: "1", minWidth: "200px" }}>
-                    <span style={{ fontSize: "1.25rem", fontWeight: "700", color: "var(--dark)" }}>
-                      {result.name}
-                    </span>
-                  </div>
-                  
-                  <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
-                    <span style={{ 
-                      color: result.available ? "#10b981" : "#ef4444", 
-                      fontSize: "1.25rem", 
-                      fontWeight: "700" 
-                    }}>
-                      {result.available ? "✅ Available" : "❌ Taken"}
-                    </span>
-                    
-                    {result.available && (
-                      <>
-                        <span style={{ 
-                          fontSize: "1.25rem", 
-                          fontWeight: "600",
-                          color: "var(--dark)"
-                        }}>
-                          ${result.domainPrice}/yr
-                        </span>
-                        
-                        <a 
-                          href="/hosting" 
-                          style={{ 
-                            padding: "0.75rem 1.5rem",
-                            background: "var(--primary)",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "0.5rem",
-                            fontWeight: "600",
-                            cursor: "pointer",
-                            textDecoration: "none",
-                            textAlign: "center"
-                          }}
-                        >
-                          Buy Domain
-                        </a>
-                      </>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Features Section */}
       <section className="features">
@@ -208,39 +50,51 @@ export default function Home() {
           
           <div className="features-grid">
           <div className="feature-card">
-            <div className="feature-icon">🚀</div>
+            <div className="feature-icon"><Zap size={32} /></div>
             <h3>Lightning Fast</h3>
             <p>Our global CDN ensures your website loads fast anywhere in the world. 99.9% uptime guaranteed.</p>
           </div>
           
           <div className="feature-card">
-            <div className="feature-icon">🛡️</div>
+            <div className="feature-icon"><Shield size={32} /></div>
             <h3>Secure by Default</h3>
             <p>Free SSL certificates with every domain. Enterprise-grade DDoS protection included.</p>
           </div>
           
           <div className="feature-card">
-            <div className="feature-icon">💎</div>
+            <div className="feature-icon"><Gem size={32} /></div>
             <h3>Premium Domains</h3>
             <p>Access to exclusive premium domain names. Find the perfect brand for your business.</p>
           </div>
           
           <div className="feature-card">
-            <div className="feature-icon">🔧</div>
+            <div className="feature-icon"><Wrench size={32} /></div>
             <h3>Easy Management</h3>
             <p>Intuitive control panel to manage all your domains, hosting, and email in one place.</p>
           </div>
           
           <div className="feature-card">
-            <div className="feature-icon">📞</div>
+            <div className="feature-icon"><Phone size={32} /></div>
             <h3>24/7 Expert Support</h3>
             <p>Our support team is available around the clock to help you with any questions.</p>
           </div>
           
           <div className="feature-card">
-            <div className="feature-icon">💰</div>
+            <div className="feature-icon"><DollarSign size={32} /></div>
             <h3>Best Price Guarantee</h3>
             <p>Found a better price? We&apos;ll match it. Plus, enjoy transparent pricing with no hidden fees.</p>
+          </div>
+          
+          <div className="feature-card">
+            <div className="feature-icon"><Server size={32} /></div>
+            <h3>Full VPS Support</h3>
+            <p>Scale your infrastructure with powerful VPS solutions. Full root access, dedicated resources, and instant provisioning.</p>
+          </div>
+          
+          <div className="feature-card">
+            <div className="feature-icon"><Sparkles size={32} /></div>
+            <h3>AI Automation</h3>
+            <p>Leverage cutting-edge AI to automate deployments, optimize performance, and manage your infrastructure intelligently.</p>
           </div>
         </div>
         </div>
