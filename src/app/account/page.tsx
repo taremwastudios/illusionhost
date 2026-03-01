@@ -98,6 +98,7 @@ export default function AccountPage() {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [systemStatus, setSystemStatus] = useState<"healthy" | "failing">("healthy");
   const [resourceUsage, setResourceUsage] = useState({ cpu: 23, ram: 45, storage: 67 });
+  const [isResourceDemo, setIsResourceDemo] = useState(true);
   const [sshLogs, setSshLogs] = useState([
     { id: "1", time: "2026-03-01 14:05:23", message: "SSH connection established from 192.168.1.100" },
     { id: "2", time: "2026-03-01 14:04:15", message: "User 'admin' logged in successfully" },
@@ -108,6 +109,10 @@ export default function AccountPage() {
     { id: "7", time: "2026-03-01 13:30:10", message: "SSH connection closed" },
     { id: "8", time: "2026-03-01 13:15:44", message: "System update available: security patches" },
   ]);
+  const [dnsRecords, setDnsRecords] = useState<Array<{id: string, record: string, type: string, value: string, priority: number, ttl: number}>>([]);
+  const [databases, setDatabases] = useState<Array<{DB: string, USER: string, HOST: string, TYPE: string, CHARSET: string}>>([]);
+  const [dnsLoading, setDnsLoading] = useState(false);
+  const [dbLoading, setDbLoading] = useState(false);
   
   // Wallet state
   const [walletBalance, setWalletBalance] = useState(1250.00);
@@ -158,6 +163,16 @@ export default function AccountPage() {
           .then(res => res.json())
           .then(data => {
             if (Array.isArray(data)) setTemplates(data);
+          })
+          .catch(console.error);
+        
+        // Fetch resource usage from HestiaCP
+        fetch("/api/hestia/resources")
+          .then(res => res.json())
+          .then(data => {
+            setResourceUsage({ cpu: data.cpu, ram: data.ram, storage: data.storage });
+            setSystemStatus(data.status === "failing" ? "failing" : "healthy");
+            setIsResourceDemo(data.isDemo || false);
           })
           .catch(console.error);
       }, 0);
@@ -274,6 +289,35 @@ export default function AccountPage() {
   const domainItems = purchasedItems.filter(item => item.type === "domain");
   const hostingItems = purchasedItems.filter(item => item.type === "hosting");
 
+  // Load DNS and Database data when tabs change
+  useEffect(() => {
+    if (activeTab === "dns" && domainItems.length > 0) {
+      // Load DNS for first domain by default
+      const firstDomain = domainItems[0]?.name;
+      if (firstDomain) {
+        setDnsLoading(true);
+        fetch(`/api/hestia/dns?domain=${firstDomain}`)
+          .then(res => res.json())
+          .then(data => {
+            setDnsRecords(data.records || []);
+          })
+          .catch(console.error)
+          .finally(() => setDnsLoading(false));
+      }
+    }
+    
+    if (activeTab === "database") {
+      setDbLoading(true);
+      fetch("/api/hestia/databases")
+        .then(res => res.json())
+        .then(data => {
+          setDatabases(data.databases || []);
+        })
+        .catch(console.error)
+        .finally(() => setDbLoading(false));
+    }
+  }, [activeTab, domainItems]);
+
   if (!user) {
     return null;
   }
@@ -323,10 +367,13 @@ export default function AccountPage() {
           {[
             { id: "domains", label: "Domains", icon: Globe, count: domainItems.length },
             { id: "hosting", label: "Hosting Server", icon: Server, count: 0 },
+            { id: "dns", label: "DNS", icon: Network, count: 0 },
+            { id: "database", label: "Database", icon: Database, count: 0 },
             { id: "wallet", label: "Wallet", icon: Wallet, count: 0 },
             { id: "builder", label: "Site Builder", icon: Palette, count: 0 },
             { id: "vps", label: "VPS", icon: Cloud, count: 0 },
-            { id: "assistant", label: "Illusion Assistant", icon: Sparkles, count: 0 },
+            { id: "assistant", label: "Illusion", icon: Sparkles, count: 0 },
+            { id: "logs", label: "Logs", icon: FileText, count: 0 },
           ].map(tab => (
             <button
               key={tab.id}
@@ -356,18 +403,25 @@ export default function AccountPage() {
               <BarChart3 size={20} />
               Resource Usage & System Status
             </h3>
-            <div style={{ 
-              display: "flex", 
-              alignItems: "center", 
-              gap: "0.5rem",
-              padding: "0.5rem 1rem",
-              borderRadius: "2rem",
-              background: systemStatus === "healthy" ? "#065f46" : "#991b1b"
-            }}>
-              {systemStatus === "healthy" ? <Check size={16} color="white" /> : <XCircle size={16} color="white" />}
-              <span style={{ color: "white", fontWeight: "600", fontSize: "0.875rem" }}>
-                System {systemStatus === "healthy" ? "Healthy" : "Overloaded"}
-              </span>
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              {isResourceDemo && (
+                <span style={{ fontSize: "0.75rem", color: "#f59e0b", background: "rgba(245, 158, 11, 0.1)", padding: "0.25rem 0.5rem", borderRadius: "0.25rem" }}>
+                  Demo Mode
+                </span>
+              )}
+              <div style={{ 
+                display: "flex", 
+                alignItems: "center", 
+                gap: "0.5rem",
+                padding: "0.5rem 1rem",
+                borderRadius: "2rem",
+                background: systemStatus === "healthy" ? "#065f46" : "#991b1b"
+              }}>
+                {systemStatus === "healthy" ? <Check size={16} color="white" /> : <XCircle size={16} color="white" />}
+                <span style={{ color: "white", fontWeight: "600", fontSize: "0.875rem" }}>
+                  System {systemStatus === "healthy" ? "Healthy" : "Overloaded"}
+                </span>
+              </div>
             </div>
           </div>
           
@@ -431,33 +485,35 @@ export default function AccountPage() {
           </div>
         </div>
 
-        {/* SSH Logs */}
-        <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-            <h3 style={{ color: "var(--text-white)", margin: 0, display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <Terminal size={20} />
-              SSH Logs
-            </h3>
-            <button 
-              onClick={() => setSshLogs([
-                { id: String(Date.now()), time: new Date().toISOString().replace("T", " ").substring(0, 19), message: "Logs refreshed" },
-                ...sshLogs
-              ])}
-              style={{ padding: "0.25rem 0.75rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.25rem", cursor: "pointer", fontSize: "0.75rem" }}
-            >
-              Refresh
-            </button>
+        {/* SSH/Server Logs Tab */}
+        {activeTab === "logs" && (
+          <div>
+            <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>Server Logs</h2>
+            <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
+              <p style={{ color: "var(--text-light)", marginBottom: "1rem" }}>
+                View real-time SSH and system logs from your server.
+              </p>
+              <button 
+                onClick={() => setSshLogs([
+                  { id: String(Date.now()), time: new Date().toISOString().replace("T", " ").substring(0, 19), message: "Logs refreshed - showing recent activity" },
+                  ...sshLogs
+                ])}
+                style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer" }}
+              >
+                Refresh Logs
+              </button>
+            </div>
+            <div style={{ background: "#0a0a0a", borderRadius: "0.5rem", padding: "1rem", maxHeight: "400px", overflowY: "auto", fontFamily: "monospace", fontSize: "0.8rem" }}>
+              {sshLogs.map((log) => (
+                <div key={log.id} style={{ padding: "0.5rem 0", borderBottom: "1px solid #222", display: "flex", gap: "1rem" }}>
+                  <span style={{ color: "#6b7280", flexShrink: 0 }}>{log.time}</span>
+                  <span style={{ color: "#10b981" }}>$</span>
+                  <span style={{ color: "var(--text-light)" }}>{log.message}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          <div style={{ background: "#0a0a0a", borderRadius: "0.5rem", padding: "1rem", maxHeight: "250px", overflowY: "auto", fontFamily: "monospace", fontSize: "0.8rem" }}>
-            {sshLogs.map((log) => (
-              <div key={log.id} style={{ padding: "0.25rem 0", borderBottom: "1px solid #222", display: "flex", gap: "1rem" }}>
-                <span style={{ color: "#6b7280", flexShrink: 0 }}>{log.time}</span>
-                <span style={{ color: "#10b981" }}>$</span>
-                <span style={{ color: "var(--text-light)" }}>{log.message}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        )}
 
         {/* Domains Tab */}
         {activeTab === "domains" && (
@@ -509,6 +565,151 @@ export default function AccountPage() {
         {activeTab === "hosting" && (
           <div>
             <HestiaCPanel />
+          </div>
+        )}
+
+        {/* DNS Tab */}
+        {activeTab === "dns" && (
+          <div>
+            <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>DNS Management</h2>
+            <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
+              <p style={{ color: "var(--text-light)", marginBottom: "1rem" }}>
+                Manage DNS records for your domains. Select a domain from your purchased domains to manage its DNS records.
+              </p>
+              {domainItems.length === 0 ? (
+                <div style={{ textAlign: "center", padding: "2rem", color: "var(--text-light)" }}>
+                  <Globe size={48} style={{ marginBottom: "1rem", opacity: 0.5 }} />
+                  <p>No domains found. Purchase a domain first to manage DNS records.</p>
+                </div>
+              ) : (
+                <div style={{ marginBottom: "1.5rem" }}>
+                  <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "600", color: "var(--text-white)" }}>Select Domain</label>
+                  <select 
+                    onChange={(e) => {
+                      if (e.target.value) {
+                        setDnsLoading(true);
+                        fetch(`/api/hestia/dns?domain=${e.target.value}`)
+                          .then(res => res.json())
+                          .then(data => {
+                            setDnsRecords(data.records || []);
+                          })
+                          .catch(console.error)
+                          .finally(() => setDnsLoading(false));
+                      }
+                    }}
+                    style={{ width: "100%", padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", fontSize: "1rem", background: "var(--dark)", color: "white" }}
+                  >
+                    <option value="">Select a domain...</option>
+                    {domainItems.map((item, index) => (
+                      <option key={index} value={item.name}>{item.name}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
+
+            {dnsLoading ? (
+              <div style={{ textAlign: "center", padding: "2rem", color: "var(--text-light)" }}>Loading DNS records...</div>
+            ) : dnsRecords.length > 0 ? (
+              <div style={{ background: "var(--dark-secondary)", borderRadius: "0.75rem", border: "1px solid var(--border)", overflow: "hidden" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                  <thead>
+                    <tr style={{ background: "var(--primary)" }}>
+                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>Record</th>
+                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>Type</th>
+                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>Value</th>
+                      <th style={{ padding: "1rem", textAlign: "center", fontWeight: "600", color: "white" }}>Priority</th>
+                      <th style={{ padding: "1rem", textAlign: "center", fontWeight: "600", color: "white" }}>TTL</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {dnsRecords.map((record, index) => (
+                      <tr key={index} style={{ borderBottom: "1px solid var(--border)" }}>
+                        <td style={{ padding: "1rem", color: "var(--text-white)" }}>{record.record}</td>
+                        <td style={{ padding: "1rem" }}>
+                          <span style={{ padding: "0.25rem 0.5rem", background: "var(--primary)", color: "white", borderRadius: "0.25rem", fontSize: "0.75rem", fontWeight: "600" }}>
+                            {record.type}
+                          </span>
+                        </td>
+                        <td style={{ padding: "1rem", color: "var(--text-light)", fontFamily: "monospace", fontSize: "0.875rem" }}>{record.value}</td>
+                        <td style={{ padding: "1rem", textAlign: "center", color: "var(--text-light)" }}>{record.priority}</td>
+                        <td style={{ padding: "1rem", textAlign: "center", color: "var(--text-light)" }}>{record.ttl}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div style={{ textAlign: "center", padding: "2rem", color: "var(--text-light)", background: "var(--dark-secondary)", borderRadius: "0.75rem", border: "1px solid var(--border)" }}>
+                <Network size={48} style={{ marginBottom: "1rem", opacity: 0.5 }} />
+                <p>Select a domain above to view its DNS records.</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Database Tab */}
+        {activeTab === "database" && (
+          <div>
+            <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>Database Management</h2>
+            <div style={{ background: "var(--dark-secondary)", padding: "1.5rem", borderRadius: "0.75rem", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
+              <p style={{ color: "var(--text-light)", marginBottom: "1rem" }}>
+                Manage your MySQL/MariaDB databases. You can create, view, and delete databases.
+              </p>
+              <button 
+                onClick={() => {
+                  setDbLoading(true);
+                  fetch("/api/hestia/databases")
+                    .then(res => res.json())
+                    .then(data => {
+                      setDatabases(data.databases || []);
+                    })
+                    .catch(console.error)
+                    .finally(() => setDbLoading(false));
+                }}
+                style={{ padding: "0.5rem 1rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer" }}
+              >
+                Refresh Databases
+              </button>
+            </div>
+
+            {dbLoading ? (
+              <div style={{ textAlign: "center", padding: "2rem", color: "var(--text-light)" }}>Loading databases...</div>
+            ) : databases.length > 0 ? (
+              <div style={{ background: "var(--dark-secondary)", borderRadius: "0.75rem", border: "1px solid var(--border)", overflow: "hidden" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                  <thead>
+                    <tr style={{ background: "var(--primary)" }}>
+                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>Database</th>
+                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>User</th>
+                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>Host</th>
+                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>Type</th>
+                      <th style={{ padding: "1rem", textAlign: "left", fontWeight: "600", color: "white" }}>Charset</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {databases.map((db, index) => (
+                      <tr key={index} style={{ borderBottom: "1px solid var(--border)" }}>
+                        <td style={{ padding: "1rem", color: "var(--text-white)" }}>{db.DB}</td>
+                        <td style={{ padding: "1rem", color: "var(--text-light)" }}>{db.USER}</td>
+                        <td style={{ padding: "1rem", color: "var(--text-light)" }}>{db.HOST}</td>
+                        <td style={{ padding: "1rem" }}>
+                          <span style={{ padding: "0.25rem 0.5rem", background: "#8b5cf6", color: "white", borderRadius: "0.25rem", fontSize: "0.75rem", fontWeight: "600" }}>
+                            {db.TYPE}
+                          </span>
+                        </td>
+                        <td style={{ padding: "1rem", color: "var(--text-light)" }}>{db.CHARSET}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div style={{ textAlign: "center", padding: "2rem", color: "var(--text-light)", background: "var(--dark-secondary)", borderRadius: "0.75rem", border: "1px solid var(--border)" }}>
+                <Database size={48} style={{ marginBottom: "1rem", opacity: 0.5 }} />
+                <p>No databases found. Click &quot;Refresh Databases&quot; to load your databases.</p>
+              </div>
+            )}
           </div>
         )}
 
