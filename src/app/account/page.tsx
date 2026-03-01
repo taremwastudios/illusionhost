@@ -1228,16 +1228,14 @@ export default function AccountPage() {
                 </div>
               </div>
               <button 
-                onClick={(e) => {
+                onMouseDown={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  console.log('Opening provision modal');
-                  setTimeout(() => {
-                    setShowProvisionModal(true);
-                  }, 0);
+                  console.log('Opening provision modal, state:', showProvisionModal);
+                  setShowProvisionModal(true);
                 }}
                 type="button"
-                style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600", display: "inline-block", position: "relative", zIndex: 1 }}
+                style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600" }}
               >
                 Provision New VPS
               </button>
