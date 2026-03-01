@@ -1013,16 +1013,15 @@ export default function AccountPage() {
               </div>
             )}
 
-            {/* VPS Provision Modal */}
-            {showProvisionModal && (
-              <div style={{ 
+            {/* VPS Provision Modal - always rendered, controlled by CSS */}
+            <div style={{ 
                 position: "fixed", 
                 top: 0, 
                 left: 0, 
                 right: 0, 
                 bottom: 0, 
                 background: "rgba(0,0,0,0.8)", 
-                display: "flex", 
+                display: showProvisionModal ? "flex" : "none", 
                 alignItems: "center", 
                 justifyContent: "center",
                 zIndex: 9999
@@ -1134,7 +1133,6 @@ export default function AccountPage() {
                   </div>
                 </div>
               </div>
-            )}
 
             {/* Terminal Modal */}
             {showTerminalModal && selectedContainer && (
@@ -1234,7 +1232,9 @@ export default function AccountPage() {
                   e.preventDefault();
                   e.stopPropagation();
                   console.log('Opening provision modal');
-                  setShowProvisionModal(true);
+                  setTimeout(() => {
+                    setShowProvisionModal(true);
+                  }, 0);
                 }}
                 type="button"
                 style={{ padding: "0.75rem 1.5rem", background: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", cursor: "pointer", fontWeight: "600", display: "inline-block", position: "relative", zIndex: 1 }}
