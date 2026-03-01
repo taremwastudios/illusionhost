@@ -422,6 +422,27 @@ export async function importRepository(
 }
 
 /**
+ * Get the GitHub App installation URL for a specific owner
+ * This is where users are redirected to install the app
+ */
+export function getInstallationUrl(owner: string): string | null {
+  const config = getConfig();
+  if (!config) {
+    return null;
+  }
+  
+  // The installation URL allows users to install the GitHub App
+  // and grant access to their repositories
+  // We use the client_id to construct the URL
+  // Format: https://github.com/apps/{client_id}/installations/new?repository_owner={owner}
+  // Note: In practice, the app slug may differ from client_id
+  // If GITHUB_APP_SLUG is set, use that instead
+  const appSlug = process.env.GITHUB_APP_SLUG || config.clientId || config.appId;
+  
+  return `https://github.com/apps/${appSlug}/installations/new?repository_owner=${owner}`;
+}
+
+/**
  * Check if GitHub App is configured
  */
 export function isGitHubAppConfigured(): boolean {

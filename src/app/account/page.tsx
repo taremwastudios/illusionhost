@@ -1535,6 +1535,16 @@ export default function AccountPage() {
                       alert("Repository imported successfully! Your site is being deployed.");
                       setShowGithubModal(false);
                       setGithubRepoUrl("");
+                    } else if (data.needsInstallation && data.installationUrl) {
+                      // Show a more helpful message and provide installation link
+                      const shouldInstall = confirm(
+                        "GitHub App is not installed on your account.\n\n" +
+                        "Click OK to install the Illusionhost App on GitHub, " +
+                        "then grant access to your repository and try importing again."
+                      );
+                      if (shouldInstall) {
+                        window.open(data.installationUrl, "_blank");
+                      }
                     } else {
                       alert("Failed to import: " + data.error);
                     }

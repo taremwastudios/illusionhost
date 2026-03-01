@@ -6,6 +6,7 @@ import {
   getInstallationToken,
   getRepository,
   getRepositoryContents,
+  getInstallationUrl,
 } from "@/lib/github";
 
 export async function POST(request: Request) {
@@ -44,10 +45,16 @@ export async function POST(request: Request) {
     // Find the installation for this repository
     const installation = await findInstallationForRepo(owner, repo);
     if (!installation) {
+      // Get installation URL for the repository owner
+      const installUrl = getInstallationUrl(owner);
       return NextResponse.json(
         {
           success: false,
-          error: `GitHub App is not installed on repository ${owner}/${repo}. Please install the app on this repository first.`,
+          error: `GitHub App is not installed on your account. Please install the app to grant access to your repositories.`,
+          needsInstallation: true,
+          installationUrl: installUrl,
+          owner,
+          repo,
         },
         { status: 403 }
       );
