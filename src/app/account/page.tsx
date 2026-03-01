@@ -12,6 +12,7 @@ import {
   Terminal, Flame, Link2, CreditCard, Settings, Upload, Wallet,
   ArrowUpRight, ArrowDownRight, Send, HelpCircle, Clock, DollarSign, Server
 } from "lucide-react";
+import HestiaCPanel from "@/components/HestiaCPanel";
 
 interface User {
   id: number;
@@ -184,7 +185,8 @@ export default function AccountPage() {
         <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.5rem", borderBottom: "2px solid var(--border)", overflowX: "auto" }}>
           {[
             { id: "domains", label: "Domains", icon: Globe, count: domainItems.length },
-            { id: "hosting", label: "Hosting", icon: Monitor, count: hostingItems.length },
+            { id: "hosting", label: "Hosting Server", icon: Server, count: 0 },
+            { id: "hostingPlans", label: "Hosting Plans", icon: Monitor, count: hostingItems.length },
             { id: "dns", label: "DNS", icon: Network, count: dnsRecords.length },
             { id: "database", label: "Database", icon: Database, count: 0 },
             { id: "wallet", label: "Wallet", icon: Wallet, count: 0 },
@@ -261,8 +263,15 @@ export default function AccountPage() {
           </div>
         )}
 
-        {/* Hosting Tab */}
+        {/* Hosting Server Tab (HestiaCP) */}
         {activeTab === "hosting" && (
+          <div>
+            <HestiaCPanel />
+          </div>
+        )}
+
+        {/* Hosting Plans Tab */}
+        {activeTab === "hostingPlans" && (
           <div>
             <h2 style={{ marginBottom: "1.5rem", color: "var(--text-white)" }}>My Hosting Plans</h2>
             {hostingItems.length === 0 ? (
@@ -303,8 +312,6 @@ export default function AccountPage() {
             )}
           </div>
         )}
-
-        {/* DNS Tab */}
         {activeTab === "dns" && (
           <div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: "1rem" }}>
