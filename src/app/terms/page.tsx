@@ -124,7 +124,6 @@ export default function TermsPage() {
       <p>BY USING SERVICE OR OTHER SERVICES PROVIDED BY US, YOU ACKNOWLEDGE THAT YOU HAVE READ THESE TERMS OF SERVICE AND AGREE TO BE BOUND BY THEM.</p>
       <p>27. <b>Contact Us</b></p>
       <p>Please send your feedback, comments, requests for technical support by email: <b>support@illusionhost.net</b>.</p>
-      <p style={{ marginTop: "5em", fontSize: "0.7em" }}>These Terms of Service were created for <b>illusionhost.net</b> by <a href="https://policymaker.io">PolicyMaker.io</a> on 2026-03-02.</p>
     </div>
   );
 }
