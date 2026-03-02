@@ -20,7 +20,7 @@ export default function PrivacyPage() {
         <b>Illusionhost</b> ("us", "we", or "our") operates <b>illusionhost.net</b> (hereinafter referred to as <b>"Service"</b>).
       </p>
       <p>
-        Our Privacy Policy governs your visit to <b>illusionhost.co</b>, and explains how we collect, safeguard and disclose information that results from your use of our Service.
+        Our Privacy Policy governs your visit to <b>illusionhost.net</b>, and explains how we collect, safeguard and disclose information that results from your use of our Service.
       </p>
       <p>
         We use your data to provide and improve Service. By using Service, you agree to the collection and use of information in accordance with this policy. Unless otherwise defined in this Privacy Policy, the terms used in this Privacy Policy have the same meanings as in our Terms and Conditions.
@@ -47,11 +47,11 @@ export default function PrivacyPage() {
       <h4><b>Personal Data</b></h4>
       <p>While using our Service, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you (<b>"Personal Data"</b>). Personally identifiable information may include, but is not limited to:</p>
       <ul style={{ marginLeft: "1.5rem", marginBottom: "1rem" }}>
-        <li>Email address</li>
-        <li>First name and last name</li>
-        <li>Phone number</li>
-        <li>Address, Country, State, Province, ZIP/Postal code, City</li>
-        <li>Cookies and Usage Data</li>
+        <li>0.1. Email address</li>
+        <li>0.2. First name and last name</li>
+        <li>0.3. Phone number</li>
+        <li>0.4. Address, Country, State, Province, ZIP/Postal code, City</li>
+        <li>0.5. Cookies and Usage Data</li>
       </ul>
       <p>We may use your Personal Data to contact you with newsletters, marketing or promotional materials and other information that may be of interest to you. You may opt out of receiving any, or all, of these communications from us by following the unsubscribe link.</p>
 
@@ -66,10 +66,10 @@ export default function PrivacyPage() {
       <p>You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some portions of our Service.</p>
       <p>Examples of Cookies we use:</p>
       <ul style={{ marginLeft: "1.5rem", marginBottom: "1rem" }}>
-        <li><b>Session Cookies:</b> We use Session Cookies to operate our Service.</li>
-        <li><b>Preference Cookies:</b> We use Preference Cookies to remember your preferences and various settings.</li>
-        <li><b>Security Cookies:</b> We use Security Cookies for security purposes.</li>
-        <li><b>Advertising Cookies:</b> Advertising Cookies are used to serve you with advertisements that may be relevant to you and your interests.</li>
+        <li>0.1. <b>Session Cookies:</b> We use Session Cookies to operate our Service.</li>
+        <li>0.2. <b>Preference Cookies:</b> We use Preference Cookies to remember your preferences and various settings.</li>
+        <li>0.3. <b>Security Cookies:</b> We use Security Cookies for security purposes.</li>
+        <li>0.4. <b>Advertising Cookies:</b> Advertising Cookies are used to serve you with advertisements that may be relevant to you and your interests.</li>
       </ul>
 
       <h4><b>Other Data</b></h4>
@@ -78,19 +78,19 @@ export default function PrivacyPage() {
       <h3><b>5. Use of Data</b></h3>
       <p>Illusionhost uses the collected data for various purposes:</p>
       <ul style={{ marginLeft: "1.5rem", marginBottom: "1rem" }}>
-        <li>to provide and maintain our Service;</li>
-        <li>to notify you about changes to our Service;</li>
-        <li>to allow you to participate in interactive features of our Service when you choose to do so;</li>
-        <li>to provide customer support;</li>
-        <li>to gather analysis or valuable information so that we can improve our Service;</li>
-        <li>to monitor the usage of our Service;</li>
-        <li>to detect, prevent and address technical issues;</li>
-        <li>to fulfil any other purpose for which you provide it;</li>
-        <li>to carry out our obligations and enforce our rights arising from any contracts entered into between you and us, including for billing and collection;</li>
-        <li>to provide you with notices about your account and/or subscription, including expiration and renewal notices, email-instructions, etc.;</li>
-        <li>to provide you with news, special offers and general information about other goods, services and events which we offer that are similar to those that you have already purchased or enquired about unless you have opted not to receive such information;</li>
-        <li>in any other way we may describe when you provide the information;</li>
-        <li>for any other purpose with your consent.</li>
+        <li>0.1. to provide and maintain our Service;</li>
+        <li>0.2. to notify you about changes to our Service;</li>
+        <li>0.3. to allow you to participate in interactive features of our Service when you choose to do so;</li>
+        <li>0.4. to provide customer support;</li>
+        <li>0.5. to gather analysis or valuable information so that we can improve our Service;</li>
+        <li>0.6. to monitor the usage of our Service;</li>
+        <li>0.7. to detect, prevent and address technical issues;</li>
+        <li>0.8. to fulfil any other purpose for which you provide it;</li>
+        <li>0.9. to carry out our obligations and enforce our rights arising from any contracts entered into between you and us, including for billing and collection;</li>
+        <li>0.10. to provide you with notices about your account and/or subscription, including expiration and renewal notices, email-instructions, etc.;</li>
+        <li>0.11. to provide you with news, special offers and general information about other goods, services and events which we offer that are similar to those that you have already purchased or enquired about unless you have opted not to receive such information;</li>
+        <li>0.12. in any other way we may describe when you provide the information;</li>
+        <li>0.13. for any other purpose with your consent.</li>
       </ul>
 
       <h3><b>6. Retention of Data</b></h3>
@@ -114,13 +114,13 @@ export default function PrivacyPage() {
 
       <h4><b>0.3. Other cases. We may disclose your information also:</b></h4>
       <ul style={{ marginLeft: "1.5rem", marginBottom: "1rem" }}>
-        <li>to our subsidiaries and affiliates;</li>
-        <li>to contractors, service providers, and other third parties we use to support our business;</li>
-        <li>to fulfill the purpose for which you provide it;</li>
-        <li>for the purpose of including your company's logo on our website;</li>
-        <li>for any other purpose disclosed by us when you provide the information;</li>
-        <li>with your consent in any other cases;</li>
-        <li>if we believe disclosure is necessary or appropriate to protect the rights, property, or safety of the Company, our customers, or others.</li>
+        <li>0.3.1. to our subsidiaries and affiliates;</li>
+        <li>0.3.2. to contractors, service providers, and other third parties we use to support our business;</li>
+        <li>0.3.3. to fulfill the purpose for which you provide it;</li>
+        <li>0.3.4. for the purpose of including your company's logo on our website;</li>
+        <li>0.3.5. for any other purpose disclosed by us when you provide the information;</li>
+        <li>0.3.6. with your consent in any other cases;</li>
+        <li>0.3.7. if we believe disclosure is necessary or appropriate to protect the rights, property, or safety of the Company, our customers, or others.</li>
       </ul>
 
       <h3><b>9. Security of Data</b></h3>
@@ -129,15 +129,15 @@ export default function PrivacyPage() {
       <h3><b>10. Your Data Protection Rights Under General Data Protection Regulation (GDPR)</b></h3>
       <p>If you are a resident of the European Union (EU) and European Economic Area (EEA), you have certain data protection rights, covered by GDPR.</p>
       <p>We aim to take reasonable steps to allow you to correct, amend, delete, or limit the use of your Personal Data.</p>
-      <p>If you wish to be informed what Personal Data we hold about you and if you want it to be removed from our systems, please email us at <b>support@illusionhost.co</b>.</p>
+      <p>If you wish to be informed what Personal Data we hold about you and if you want it to be removed from our systems, please email us at <b>support@illusionhost.net</b>.</p>
       <p>In certain circumstances, you have the following data protection rights:</p>
       <ul style={{ marginLeft: "1.5rem", marginBottom: "1rem" }}>
-        <li>the right to access, update or to delete the information we have on you;</li>
-        <li>the right of rectification. You have the right to have your information rectified if that information is inaccurate or incomplete;</li>
-        <li>the right to object. You have the right to object to our processing of your Personal Data;</li>
-        <li>the right of restriction. You have the right to request that we restrict the processing of your personal information;</li>
-        <li>the right to data portability. You have the right to be provided with a copy of your Personal Data in a structured, machine-readable and commonly used format;</li>
-        <li>the right to withdraw consent. You also have the right to withdraw your consent at any time where we rely on your consent to process your personal information;</li>
+        <li>0.1. the right to access, update or to delete the information we have on you;</li>
+        <li>0.2. the right of rectification. You have the right to have your information rectified if that information is inaccurate or incomplete;</li>
+        <li>0.3. the right to object. You have the right to object to our processing of your Personal Data;</li>
+        <li>0.4. the right of restriction. You have the right to request that we restrict the processing of your personal information;</li>
+        <li>0.5. the right to data portability. You have the right to be provided with a copy of your Personal Data in a structured, machine-readable and commonly used format;</li>
+        <li>0.6. the right to withdraw consent. You also have the right to withdraw your consent at any time where we rely on your consent to process your personal information;</li>
       </ul>
       <p>Please note that we may ask you to verify your identity before responding to such requests. Please note, we may not able to provide Service without some necessary data.</p>
       <p>You have the right to complain to a Data Protection Authority about our collection and use of your Personal Data. For more information, please contact your local data protection authority in the European Economic Area (EEA).</p>
@@ -146,10 +146,10 @@ export default function PrivacyPage() {
       <p>CalOPPA is the first state law in the nation to require commercial websites and online services to post a privacy policy. The law's reach stretches well beyond California to require a person or company in the United States (and conceivable the world) that operates websites collecting personally identifiable information from California consumers to post a conspicuous privacy policy on its website stating exactly the information being collected and those individuals with whom it is being shared, and to comply with this policy.</p>
       <p>According to CalOPPA we agree to the following:</p>
       <ul style={{ marginLeft: "1.5rem", marginBottom: "1rem" }}>
-        <li>users can visit our site anonymously;</li>
-        <li>our Privacy Policy link includes the word "Privacy", and can easily be found on the home page of our website;</li>
-        <li>users will be notified of any privacy policy changes on our Privacy Policy Page;</li>
-        <li>users are able to change their personal information by emailing us at <b>support@illusionhost.net</b>.</li>
+        <li>0.1. users can visit our site anonymously;</li>
+        <li>0.2. our Privacy Policy link includes the word "Privacy", and can easily be found on the home page of our website;</li>
+        <li>0.3. users will be notified of any privacy policy changes on our Privacy Policy Page;</li>
+        <li>0.4. users are able to change their personal information by emailing us at <b>support@illusionhost.net</b>.</li>
       </ul>
       <p><b>Our Policy on "Do Not Track" Signals:</b></p>
       <p>We honor Do Not Track signals and do not track, plant cookies, or use advertising when a Do Not Track browser mechanism is in place. Do Not Track is a preference you can set in your web browser to inform websites that you do not want to be tracked.</p>
@@ -161,13 +161,13 @@ export default function PrivacyPage() {
       <h4><b>0.1. What personal information we have about you.</b></h4>
       <p>If you make this request, we will return to you:</p>
       <ul style={{ marginLeft: "1.5rem", marginBottom: "1rem" }}>
-        <li>The categories of personal information we have collected about you.</li>
-        <li>The categories of sources from which we collect your personal information.</li>
-        <li>The business or commercial purpose for collecting or selling your personal information.</li>
-        <li>The categories of third parties with whom we share personal information.</li>
-        <li>The specific pieces of personal information we have collected about you.</li>
-        <li>A list of categories of personal information that we have sold, along with the category of any other company we sold it to. If we have not sold your personal information, we will inform you of that fact.</li>
-        <li>A list of categories of personal information that we have disclosed for a business purpose, along with the category of any other company we shared it with.</li>
+        <li>0.0.1. The categories of personal information we have collected about you.</li>
+        <li>0.0.2. The categories of sources from which we collect your personal information.</li>
+        <li>0.0.3. The business or commercial purpose for collecting or selling your personal information.</li>
+        <li>0.0.4. The categories of third parties with whom we share personal information.</li>
+        <li>0.0.5. The specific pieces of personal information we have collected about you.</li>
+        <li>0.0.6. A list of categories of personal information that we have sold, along with the category of any other company we sold it to. If we have not sold your personal information, we will inform you of that fact.</li>
+        <li>0.0.7. A list of categories of personal information that we have disclosed for a business purpose, along with the category of any other company we shared it with.</li>
       </ul>
       <p>Please note, you are entitled to ask us to provide you with this information up to two times in a rolling twelve-month period. When you make this request, the information provided may be limited to the personal information we collected about you in the previous 12 months.</p>
 
