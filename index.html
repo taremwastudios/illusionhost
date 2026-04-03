@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IllusionHost</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <div class="container">
+
+   <div class="left">
+  <div class="slider-track">
+    <img src="icons.png" alt="">
+    <img src="campus1.png" alt="">
+    <img src="image.jpg" alt="">
+    <img src="phantom.jpeg" alt="">
+  </div>
+</div>
+   
+ <div class="right">
+
+  <!-- Background Video -->
+  <video autoplay muted loop class="bg-video">
+    <source src="bg.mp4" type="video/mp4">
+  </video>
+
+  <!-- Overlay (dark tint) -->
+  <div class="overlay"></div>
+
+  <!-- Auth Box -->
+  <div class="auth-box">
+    <h2 id="form-title">Login</h2>
+
+    <div id="login-form">
+      <input type="email" placeholder="Email">
+      <input type="password" placeholder="Password">
+      <button onclick="login()">Login</button>
+    </div>
+
+    <div id="register-form" style="display:none;">
+      <input type="email" placeholder="Email">
+      <input type="password" placeholder="Password">
+      <button onclick="register()">Register</button>
+    </div>
+
+    <p id="toggle-text">
+      Don't have an account?
+      <span id="toggle-btn">Register</span>
+    </p>
+
+    <!-- Sponsors -->
+    <div class="sponsors">
+      <img src="icons.png">
+      <img src="phantom.jpeg">
+      <img src="campus1.png">
+    
+    </div>
+
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
