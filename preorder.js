@@ -87,19 +87,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     // EMAIL (SAFE VERSION)
     // ==========================
     try {
-      await fetch("https://cwhimjygbagubhtdoobk.supabase.co/functions/v1/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "admin",
-          email: user.email,
-          subdomain: subdomain,
-          order_id: orderId
-        })
-      });
-    } catch (err) {
-      console.error("Email failed:", err);
-    }
+  await fetch("https://cwhimjygbagubhtdoobk.supabase.co/functions/v1/send-email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${supabaseKey}` // 👈 THIS FIXES 401
+    },
+    body: JSON.stringify({
+      type: "admin",
+      email: user.email,
+      subdomain: subdomain,
+      order_id: orderId
+    })
+  });
+} catch (err) {
+  console.error("Email failed:", err);
+}
 
     // ==========================
     // SUCCESS (NOW WILL ALWAYS RUN)
