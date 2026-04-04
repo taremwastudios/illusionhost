@@ -17,8 +17,8 @@ body, html { height: 100%; }
 /* LEFT SIDE */
 .left {
   width: 34%;
-  background: #111;
-  color: #fff;
+  background: white;
+  color: black;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -132,7 +132,7 @@ body, html { height: 100%; }
 
 @keyframes scroll-icons {
   0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+  100% { transform: translateX(-100%); } /* now moves the full width */
 }
 
 /* Footer links */

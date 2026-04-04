@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - IllusionHost</title>
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<h1>Admin Dashboard</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Subdomain</th>
+      <th>Order ID</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody id="orders-table">
+    <!-- Orders will load here -->
+  </tbody>
+</table>
+
+<script src="admin.js"></script>
+</body>
+</html>

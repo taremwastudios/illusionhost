@@ -1,0 +1,39 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #111;
+  color: #fff;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #333;
+  text-align: left;
+}
+
+button {
+  padding: 6px 12px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.confirm {
+  background: #3498db;
+  color: #fff;
+}
+
+.live {
+  background: #2ecc71;
+  color: #fff;
+}
