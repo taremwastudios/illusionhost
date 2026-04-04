@@ -55,9 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    // ==========================
-    // PREVENT DUPLICATE ORDER
-    // ==========================
+    // Prevent duplicate
     const { data: existing } = await supabase
       .from("orders")
       .select("*")
@@ -65,13 +63,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       .maybeSingle();
 
     if (existing) {
-      alert("You have already placed a preorder!");
+      alert("You already placed an order!");
       return;
     }
 
-    // ==========================
-    // INSERT ORDER
-    // ==========================
+    // Insert order
     const orderId = generateOrderId();
 
     const { error } = await supabase.from("orders").insert({
@@ -86,26 +82,32 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert(error.message);
       return;
     }
-  // send email to admin
-await fetch("https://cwhimjygbagubhtdoobk.supabase.co/functions/v1/send-email", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    type: "admin",
-    email: user.email,
-    subdomain: subdomain,
-    order_id: orderId
-  })
-});
 
     // ==========================
-    // SUCCESS
+    // EMAIL (SAFE VERSION)
     // ==========================
-    alert("Preorder placed! Await admin confirmation.");
+    try {
+      await fetch("https://cwhimjygbagubhtdoobk.supabase.co/functions/v1/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "admin",
+          email: user.email,
+          subdomain: subdomain,
+          order_id: orderId
+        })
+      });
+    } catch (err) {
+      console.error("Email failed:", err);
+    }
+
+    // ==========================
+    // SUCCESS (NOW WILL ALWAYS RUN)
+    // ==========================
+    alert("Preorder placed successfully!");
 
     subdomainInput.value = "";
 
-    // Reload counter
     await loadCounter();
 
   });
