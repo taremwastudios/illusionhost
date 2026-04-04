@@ -86,12 +86,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     // ==========================
     // EMAIL (SAFE VERSION)
     // ==========================
-    try {
+  try {
   await fetch("https://cwhimjygbagubhtdoobk.supabase.co/functions/v1/send-email", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${supabaseKey}` // 👈 THIS FIXES 401
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3aGltanlnYmFndWJodGRvb2JrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMjYzODMsImV4cCI6MjA5MDgwMjM4M30.6bQGU2hvWZT9L5tMNr4RMyoLsrY_izeUBHbcS1GF-a4"
     },
     body: JSON.stringify({
       type: "admin",
