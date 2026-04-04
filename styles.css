@@ -98,7 +98,7 @@ button {
 }
 
 #toggle-btn {
-  color: blue;
+  color: orange;
   cursor: pointer;
   font-weight: bold;
 }
@@ -184,4 +184,34 @@ button {
   width: 50px;
   margin: 5px;
   opacity: 0.8;
+}
+
+/* ==========================
+   MOBILE RESPONSIVE
+========================== */
+@media (max-width: 768px) {
+
+  .container {
+    flex-direction: column; /* stack instead of side-by-side */
+  }
+
+  .left {
+    height: 40vh; /* smaller top section */
+  }
+
+  .right {
+    height: 60vh;
+  }
+
+  .slider-track img {
+    height: 40vh; /* match left height */
+  }
+
+  .auth-box {
+    width: 90%;
+  }
+
+  .auth-box input {
+    width: 100%;
+  }
 }
