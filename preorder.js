@@ -86,8 +86,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // ==========================
     // EMAIL (SAFE VERSION)
     // ==========================
-  try {
-  await fetch("https://cwhimjygbagubhtdoobk.supabase.co/functions/v1/send-email", {
+ try {
+  const res = await fetch("https://cwhimjygbagubhtdoobk.supabase.co/functions/v1/send-email", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -100,10 +100,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       order_id: orderId
     })
   });
+
+  const data = await res.json();
+  console.log("FUNCTION RESPONSE:", data);
+
 } catch (err) {
   console.error("Email failed:", err);
 }
-
     // ==========================
     // SUCCESS (NOW WILL ALWAYS RUN)
     // ==========================
