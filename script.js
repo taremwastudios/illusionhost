@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // SUPABASE INIT
   // ==========================
   const supabaseUrl = "https://cwhimjygbagubhtdoobk.supabase.co";
-  const supabaseKey = "YOUR_ANON_KEY_HERE"; // replace with your anon key
+  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3aGltanlnYmFndWJodGRvb2JrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMjYzODMsImV4cCI6MjA5MDgwMjM4M30.6bQGU2hvWZT9L5tMNr4RMyoLsrY_izeUBHbcS1GF-a4"; // replace with your anon key
   const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
   // ==========================
