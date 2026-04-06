@@ -1,8 +1,7 @@
 {
-  "name": "illusionhost-preorder",
+  "name": "illusionhost-frontend",
   "version": "1.0.0",
-  "description": "Frontend-only preorder system for IllusionHost using Supabase and Formspree",
-  "type": "module",
+  "description": "Frontend-only IllusionHost preorder site",
   "scripts": {
     "start": "serve ."
   },
