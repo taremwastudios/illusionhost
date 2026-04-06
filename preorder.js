@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // SUPABASE INIT
   // ==========================
   const supabaseUrl = "https://cwhimjygbagubhtdoobk.supabase.co";
-  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3aGltanlnYmFndWJodGRvb2JrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMjYzODMsImV4cCI6MjA5MDgwMjM4M30.6bQGU2hvWZT9L5tMNr4RMyoLsrY_izeUBHbcS1GF-a4"; // <-- replace with your anon key
+  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3aGltanlnYmFndWJodGRvb2JrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMjYzODMsImV4cCI6MjA5MDgwMjM4M30.6bQGU2hvWZT9L5tMNr4RMyoLsrY_izeUBHbcS1GF-a4";
   const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
   const preorderBtn = document.getElementById("preorder-btn");
@@ -82,20 +82,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // ==========================
-    // SEND EMAIL (Test with EmailJS)
+    // SEND EMAIL via Supabase Edge Function + Resend
     // ==========================
     try {
-      await emailjs.send('service_ztp2faa', 'template_q8adg1h', {
-        user_email: user.email,
-        subdomain: subdomain,
-        order_id: orderId
+      await fetch("https://cwhimjygbagubhtdoobk.supabase.co/functions/v1/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: user.email,
+          subdomain: subdomain,
+          order_id: orderId
+        })
       });
-      console.log("Email sent to admin and user!");
+
+      console.log("Email sent successfully!");
     } catch (err) {
       console.error("Email failed:", err);
     }
 
-    alert("Preorder placed! Check your email (if using real EmailJS).");
+    alert("Preorder placed! Check your email.");
     subdomainInput.value = "";
     await loadCounter();
   });
