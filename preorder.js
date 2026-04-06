@@ -1,103 +1,107 @@
 document.addEventListener("DOMContentLoaded", async () => {
-
-  // ==========================
-  // SUPABASE INIT
-  // ==========================
   const supabaseUrl = "https://cwhimjygbagubhtdoobk.supabase.co";
-  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3aGltanlnYmFndWJodGRvb2JrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMjYzODMsImV4cCI6MjA5MDgwMjM4M30.6bQGU2hvWZT9L5tMNr4RMyoLsrY_izeUBHbcS1GF-a4"; // <-- replace with your anon key
+  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3aGltanlnYmFndWJodGRvb2JrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMjYzODMsImV4cCI6MjA5MDgwMjM4M30.6bQGU2hvWZT9L5tMNr4RMyoLsrY_izeUBHbcS1GF-a4";
   const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
+  const preorderForm = document.getElementById("preorder-form");
   const preorderBtn = document.getElementById("preorder-btn");
-  const counterText = document.getElementById("counter");
   const subdomainInput = document.getElementById("subdomain");
+  const counterText = document.getElementById("counter");
 
-  // ==========================
-  // LOAD COUNTER
-  // ==========================
-  async function loadCounter() {
-    const { count, error } = await supabase
+  const { data: sessionData } = await supabase.auth.getSession();
+  const session = sessionData.session;
+
+  if (!session) {
+    window.location.href = "/index.html";
+    return;
+  }
+
+  async function getExistingOrder(email) {
+    const { data, error } = await supabase
       .from("orders")
-      .select("*", { count: "exact", head: true });
+      .select("order_id, status, created_at")
+      .eq("email", email)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
 
-    if (!error) {
-      counterText.innerText = `${count} people already preordered!`;
+    if (error) {
+      console.error("Failed to check existing order:", error);
+      return null;
     }
+
+    return data;
+  }
+
+  const existingOrder = await getExistingOrder(session.user.email);
+  if (existingOrder) {
+    window.location.href = "/track.html";
+    return;
+  }
+
+  // Load preorder count (optional)
+  async function loadCounter() {
+    const { data, error } = await supabase
+      .from("orders")
+      .select("*", { count: "exact" });
+
+    if (error) {
+      console.error(error);
+      counterText.innerText = "0 people already preordered!";
+      return;
+    }
+
+    counterText.innerText = `${data.length} people already preordered!`;
   }
 
   await loadCounter();
 
-  // ==========================
-  // GENERATE ORDER ID
-  // ==========================
   function generateOrderId() {
-    const random = Math.random().toString(36).substring(2, 12).toUpperCase();
-    return `od-id-039${random}`;
+    return `OD-${Math.random().toString(36).substring(2, 12).toUpperCase()}`;
   }
 
-  // ==========================
-  // PREORDER CLICK
-  // ==========================
-  preorderBtn.addEventListener("click", async () => {
+  preorderForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
     const subdomain = subdomainInput.value.trim();
+    if (!subdomain) return alert("Enter a subdomain");
 
-    if (!subdomain) {
-      alert("Enter a subdomain");
-      return;
-    }
-
-    // Get logged in user
-    const { data: userData } = await supabase.auth.getUser();
-    const user = userData.user;
-
-    if (!user) {
-      alert("You must be logged in");
-      return;
-    }
-
-    // Prevent duplicate orders
-    const { data: existing } = await supabase
-      .from("orders")
-      .select("*")
-      .eq("user_id", user.id)
-      .maybeSingle();
-
-    if (existing) {
-      alert("You have already placed a preorder!");
-      return;
-    }
-
-    // Insert order
     const orderId = generateOrderId();
-    const { error } = await supabase.from("orders").insert({
-      user_id: user.id,
-      email: user.email,
-      subdomain: subdomain,
-      order_id: orderId,
-      status: "pending"
-    });
+    preorderBtn.disabled = true;
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
-
-    // ==========================
-    // SEND EMAIL (Test with EmailJS)
-    // ==========================
     try {
-      await emailjs.send('service_ztp2faa', 'template_q8adg1h', {
-        user_email: user.email,
-        subdomain: subdomain,
-        order_id: orderId
+      // Save order in Supabase
+      const { error } = await supabase.from("orders").insert([{
+        email: session.user.email,
+        subdomain,
+        order_id: orderId,
+        status: "pending"
+      }]);
+
+      if (error) throw error;
+
+      // Send email via Formspree
+      const res = await fetch("https://formspree.io/f/mqegwgol", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: session.user.email,
+          subdomain,
+          order_id: orderId,
+          message: `Your preorder was successful! Order ID: ${orderId}`
+        })
       });
-      console.log("Email sent to admin and user!");
+
+      if (!res.ok) throw new Error("Email failed");
+
+      alert(`Preorder submitted successfully. You will receive a confirmation soon. Order ID: ${orderId}`);
+      subdomainInput.value = "";
+      window.location.href = "/track.html";
     } catch (err) {
-      console.error("Email failed:", err);
+      console.error(err);
+      alert("Failed to place preorder. Try again.");
+    } finally {
+      preorderBtn.disabled = false;
     }
-
-    alert("Preorder placed! Check your email (if using real EmailJS).");
-    subdomainInput.value = "";
-    await loadCounter();
   });
-
 });

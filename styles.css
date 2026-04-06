@@ -166,6 +166,45 @@ button {
   border-radius: 5px;
   background: #00c3ff;
   color: white;
+  min-width: 140px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.auth-box button:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.btn-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: none;
+}
+
+.auth-box button.loading .btn-spinner {
+  display: inline-block;
+}
+
+.auth-box button.loading .btn-label {
+  opacity: 0.9;
+}
+
+#auth-status {
+  min-height: 20px;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #d7f2ff;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* Toggle */
@@ -215,4 +254,3 @@ button {
     width: 100%;
   }
 }
-

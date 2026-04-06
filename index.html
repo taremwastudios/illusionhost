@@ -41,15 +41,23 @@
       <div id="login-form">
         <input type="email" placeholder="Email">
         <input type="password" placeholder="Password">
-        <button type="button" onclick="login()">Login</button>
+        <button type="button" id="login-btn">
+          <span class="btn-label">Login</span>
+          <span class="btn-spinner" aria-hidden="true"></span>
+        </button>
       </div>
 
       <!-- REGISTER -->
       <div id="register-form" style="display:none;">
         <input type="email" placeholder="Email">
         <input type="password" placeholder="Password">
-        <button type="button" onclick="register()">Register</button>
+        <button type="button" id="register-btn">
+          <span class="btn-label">Register</span>
+          <span class="btn-spinner" aria-hidden="true"></span>
+        </button>
       </div>
+
+      <p id="auth-status" role="status" aria-live="polite"></p>
 
       <!-- TOGGLE -->
       <p>

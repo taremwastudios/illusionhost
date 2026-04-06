@@ -11,6 +11,64 @@ document.addEventListener("DOMContentLoaded", () => {
   const orderInput = document.getElementById("order-id");
   const result = document.getElementById("status-result");
 
+  function renderStatus(status) {
+    if (status === "pending") {
+      result.innerText = "🟡 Awaiting admin confirmation";
+      return;
+    }
+
+    if (status === "confirmed") {
+      result.innerText = "🔵 Confirmed! Preparing deployment";
+      return;
+    }
+
+    if (status === "live") {
+      result.innerText = "🟢 Your subdomain is live 🚀";
+      return;
+    }
+
+    result.innerText = "Status unavailable";
+  }
+
+  let userEmail = null;
+
+  async function guardAndLoadLatestOrder() {
+    const { data: sessionData } = await supabase.auth.getSession();
+    const session = sessionData.session;
+
+    if (!session) {
+      window.location.href = "/index.html";
+      return false;
+    }
+
+    userEmail = session.user.email;
+
+    const { data: latestOrder, error } = await supabase
+      .from("orders")
+      .select("order_id, status, created_at")
+      .eq("email", userEmail)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      console.error(error);
+      result.innerText = "Failed to load your latest order";
+      return false;
+    }
+
+    if (!latestOrder) {
+      window.location.href = "/preorder.html";
+      return false;
+    }
+
+    orderInput.value = latestOrder.order_id;
+    renderStatus(latestOrder.status);
+    return true;
+  }
+
+  guardAndLoadLatestOrder();
+
   // ==========================
   // TRACK BUTTON
   // ==========================
@@ -30,6 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .from("orders")
       .select("*")
       .eq("order_id", orderId)
+      .eq("email", userEmail)
       .single();
 
     if (error || !data) {
@@ -37,20 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // ==========================
-    // SHOW STATUS
-    // ==========================
-    if (data.status === "pending") {
-      result.innerText = "🟡 Awaiting admin confirmation";
-    }
-
-    if (data.status === "confirmed") {
-      result.innerText = "🔵 Confirmed! Preparing deployment";
-    }
-
-    if (data.status === "live") {
-      result.innerText = "🟢 Your subdomain is live 🚀";
-    }
+    renderStatus(data.status);
 
   });
 
