@@ -135,6 +135,32 @@ body, html { height: 100%; }
   100% { transform: translateX(-100%); } /* now moves the full width */
 }
 
+.travelling-icons {
+  align-items: flex-start;
+}
+
+.logo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 90px;
+  gap: 6px;
+}
+
+.logo-item img {
+  width: 50px;
+  height: auto;
+}
+
+.logo-item span {
+  font-size: 12px;
+  font-weight: 700; /* bold */
+  color: #fff;
+  letter-spacing: 0.2px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+  white-space: nowrap;
+}
+
 /* Footer links */
 .footer-links {
   position: relative;
