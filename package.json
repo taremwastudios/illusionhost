@@ -1,13 +1,12 @@
 {
-  "name": "illusionhost",
+  "name": "preorder-server",
   "version": "1.0.0",
-  "description": "IllusionHost web application",
-  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "node-fetch": "^3.3.2"
   }
 }

@@ -1,6 +1,4 @@
 // email.js
-import fetch from 'node-fetch'; // optional for Node <18
-
 export async function sendEmail({ email, subdomain, order_id }) {
   try {
     const response = await fetch('https://api.resend.com/send', {
@@ -10,10 +8,10 @@ export async function sendEmail({ email, subdomain, order_id }) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'taremwastudios@gmail.com', // replace with your verified sender
+        from: 'subdomains@illusionhost.com',
         to: email,
         subject: 'Preorder Confirmation',
-        html: `<p>Thank you for preordering! <strong>${subdomain}</strong>! Your order ID is <strong>${order_id}</strong>.</p>`,
+        html: `<p>Thank you for preordering <strong>${subdomain}</strong>! Your order ID is <strong>${order_id}</strong>.</p>`,
       }),
     });
 
