@@ -1,25 +1,21 @@
-// email.js
-export async function sendEmail({ email, subdomain, order_id }) {
-  try {
-    const response = await fetch('https://api.resend.com/send', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'subdomains@illusionhost.com',
-        to: email,
-        subject: 'Preorder Confirmation',
-        html: `<p>Thank you for preordering <strong>${subdomain}</strong>! Your order ID is <strong>${order_id}</strong>.</p>`,
-      }),
-    });
+import nodemailer from "nodemailer";
 
-    const data = await response.json();
-    if (!response.ok) throw new Error(JSON.stringify(data));
-    return data;
-  } catch (err) {
-    console.error('Email sending failed:', err);
-    throw err;
-  }
+export async function sendEmail({ email, subdomain, order_id }) {
+  // Replace with your Gmail or other SMTP credentials
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "your-email@gmail.com",
+      pass: "your-email-app-password"
+    }
+  });
+
+  const mailOptions = {
+    from: "your-email@gmail.com",
+    to: email,
+    subject: `Preorder Confirmation: ${order_id}`,
+    text: `Hello!\n\nYour preorder for ${subdomain} has been received.\nOrder ID: ${order_id}\n\nThanks!`
+  };
+
+  await transporter.sendMail(mailOptions);
 }

@@ -1,8 +1,7 @@
-// server.js
-import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { sendEmail } from './email.js';
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+import { sendEmail } from "./email.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,27 +10,33 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, "public")));
 
-// Email endpoint
-app.post('/send-email', async (req, res) => {
+// In-memory orders (replace with DB in future)
+let orders = [];
+
+app.post("/send-email", async (req, res) => {
   const { email, subdomain, order_id } = req.body;
-
-  if (!email || !subdomain || !order_id) {
-    return res.status(400).json({ error: 'Missing required fields' });
-  }
+  if (!email || !subdomain || !order_id)
+    return res.status(400).json({ success: false, error: "Missing parameters" });
 
   try {
-    const result = await sendEmail({ email, subdomain, order_id });
-    res.json({ success: true, result });
+    await sendEmail({ email, subdomain, order_id });
+    orders.push({ email, subdomain, order_id }); // store for counter
+    res.json({ success: true });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to send email' });
+    console.error(err);
+    res.status(500).json({ success: false, error: "Failed to send email" });
   }
 });
 
-// Fallback to index.html for SPA
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+app.get("/orders/count", (req, res) => {
+  res.json({ count: orders.length });
+});
+
+// Serve index.html for all other routes
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.listen(PORT, () => {
