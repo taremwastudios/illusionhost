@@ -1,7 +1,6 @@
 {
   "name": "illusionhost-frontend",
   "version": "1.0.0",
-  "description": "Frontend-only IllusionHost preorder site",
   "scripts": {
     "start": "serve ."
   },
