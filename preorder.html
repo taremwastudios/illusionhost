@@ -46,12 +46,17 @@
       <div class="bg-right"></div>
 
       <!-- Glass tile -->
-      <div class="preorder-tile">
-        <h2>Preorder Your Subdomain</h2>
-        <input type="text" id="subdomain" placeholder="e.g. system.illusionhost.net">
-        <button id="preorder-btn">Preorder</button>
-        <p id="counter">0 people already preordered!</p>
-      </div>
+      <!-- Only update the preorder tile -->
+<div class="preorder-tile">
+  <h2>Preorder Your Subdomain</h2>
+  <form id="preorder-form" action="https://formspree.io/f/mqegwgol" method="POST">
+    <input type="hidden" name="email" id="email">
+    <input type="text" name="subdomain" id="subdomain" placeholder="e.g. system.illusionhost.net" required>
+    <input type="hidden" name="order_id" id="order_id">
+    <button type="submit" id="preorder-btn">Preorder</button>
+  </form>
+  <p id="counter">0 people already preordered!</p>
+</div>
 
       <!-- Coming soon paragraph -->
       <p class="coming-soon">

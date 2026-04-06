@@ -1,45 +1,59 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const preorderBtn = document.getElementById("preorder-btn");
-  const counterText = document.getElementById("counter");
+  const form = document.getElementById("preorder-form");
+  const emailInput = document.getElementById("email");
+  const orderInput = document.getElementById("order_id");
   const subdomainInput = document.getElementById("subdomain");
+  const counterText = document.getElementById("counter");
 
-  async function loadCounter() {
-    const response = await fetch("/orders/count");
-    const data = await response.json();
-    counterText.innerText = `${data.count} people already preordered!`;
+  // Mock logged-in user (replace with your auth system)
+  const user = { email: "taremwastudios@gmail.com", id: "123" };
+
+  // Set email automatically
+  emailInput.value = user.email;
+
+  // Optional: load preorder count
+  let preorderCount = 0;
+  function loadCounter() {
+    counterText.innerText = `${preorderCount} people already preordered!`;
   }
-
-  await loadCounter();
+  loadCounter();
 
   function generateOrderId() {
-    return `od-id-039${Math.random().toString(36).substring(2, 12).toUpperCase()}`;
+    const random = Math.random().toString(36).substring(2, 12).toUpperCase();
+    return `od-id-039${random}`;
   }
 
-  preorderBtn.addEventListener("click", async () => {
+  form.addEventListener("submit", (e) => {
+    e.preventDefault(); // prevent normal reload
+
     const subdomain = subdomainInput.value.trim();
     if (!subdomain) return alert("Enter a subdomain");
 
-    // Replace with actual auth user
-    const user = { email: "test@example.com" };
-
+    // Generate order ID
     const orderId = generateOrderId();
+    orderInput.value = orderId;
 
-    try {
-      const result = await fetch("/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user.email, subdomain, order_id: orderId })
-      });
+    // Increment local counter
+    preorderCount++;
+    loadCounter();
 
-      const data = await result.json();
-      if (!data.success) throw new Error(data.error);
+    // Submit to Formspree
+    fetch(form.action, {
+      method: form.method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: user.email,
+        subdomain,
+        order_id: orderId
+      })
+    })
+    .then(res => res.ok ? alert(`Preorder placed! Order ID: ${orderId}`) : alert("Failed to send preorder."))
+    .catch(err => {
+      console.error(err);
+      alert("Failed to send preorder. Try again.");
+    });
 
-      alert("Preorder placed! Check your email.");
-      subdomainInput.value = "";
-      await loadCounter();
-    } catch (err) {
-      console.error("Email failed:", err);
-      alert("Failed to send email. Try again later.");
-    }
+    // Clear subdomain input
+    subdomainInput.value = "";
   });
 });
