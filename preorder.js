@@ -39,7 +39,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // Load preorder count (optional)
   async function loadCounter() {
     const { data, error } = await supabase
       .from("orders")
@@ -60,9 +59,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return `OD-${Math.random().toString(36).substring(2, 12).toUpperCase()}`;
   }
 
-  preorderForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
+  async function handlePreorder() {
     const subdomain = subdomainInput.value.trim();
     if (!subdomain) return alert("Enter a subdomain");
 
@@ -70,7 +67,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     preorderBtn.disabled = true;
 
     try {
-      // Save order in Supabase
       const { error } = await supabase.from("orders").insert([{
         email: session.user.email,
         subdomain,
@@ -80,7 +76,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (error) throw error;
 
-      // Send email via Formspree
       const res = await fetch("https://formspree.io/f/mqegwgol", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -98,10 +93,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       subdomainInput.value = "";
       window.location.href = "/track.html";
     } catch (err) {
-      console.error(err);
-      alert("Failed to place preorder. Try again.");
+      console.error("Preorder failed:", err);
+      alert(`Failed to place preorder: ${err.message || "Unknown error"}`);
     } finally {
       preorderBtn.disabled = false;
     }
-  });
+  }
+
+  preorderBtn.addEventListener("click", handlePreorder);
+  preorderForm.addEventListener("submit", (event) => event.preventDefault());
 });
