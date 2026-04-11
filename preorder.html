@@ -6,52 +6,69 @@
   <title>Preorder Subdomain - IllusionHost</title>
   <link rel="stylesheet" href="preorder.css">
   <link rel="icon" type="image/png" href="icon.png">
+
   <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script type="text/javascript">
-    (function(){ emailjs.init('iNXpiVBv9y8gZ3XJo'); })();
-  </script>
+<script type="text/javascript">
+  (function(){
+     emailjs.init('iNXpiVBv9y8gZ3XJo');
+  })();
+</script>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="preorder.js" defer></script>
 </head>
 <body>
+
   <div class="container">
+
     <div class="left">
       <img src="illusion.png" alt="Subdomain Provider" class="left-img">
       <div class="left-text">
         <h2>IllusionHost Subdomains</h2>
-        <p>...existing long paragraph...</p>
+        <p>We provide fast, reliable, and easy-to-connect subdomains for your apps. Preorder now to secure your preferred domain before launch! 
+  Many campus students often struggle to make a professional impression in their finals because they rely on generic "file"-based URLs or unbranded links that do not convey credibility. With IllusionHost subdomains, students, creators, and entrepreneurs can instantly have a trusted, professional-looking online presence that is recognized worldwide, complete with HTTPS security, DDoS protection, and an affordable monthly price. This is not just for students — small business portfolios, personal projects, or experimental applications can also benefit, potentially catching the eye of larger companies and even helping users land their first job. We sincerely thank <strong>CampusGroup</strong> for sponsoring this noble initiative. CampusGroup is one of the largest emerging organizations focusing on student welfare and prosperity worldwide, run by a small but dedicated team to ensure maximum efficiency and impact. This project comes together through the collaborative efforts of <strong>Taremwa Studios</strong> and <strong>Phantom Illusion Studios</strong>, who have answered the call of the people to bring this service to life, providing a reliable platform where students and creators alike can safely showcase their work, gain recognition, and step confidently into professional environments. The journey to a polished online presence is now just a click away, and we are committed to supporting every user as they claim their space in the digital world.
+</p>
+
         <div class="sponsors">
-          <img src="cloudflare.svg" alt="Cloudflare">
-          <img src="digitalocean.svg" alt="Digital Ocean">
-          <img src="koyeb.svg" alt="Koyeb">
+          <img src="campus1.png" alt="CampusGroup">
+          <img src="phantom.jpeg" alt="Phantom Illusions Studio">
+          <img src="icons.png" alt="Taremwa Studios">
         </div>
       </div>
     </div>
 
     <div class="right">
       <div class="bg-right"></div>
-      <div class="top-header">
-        <a href="preorder.html">Preorder</a>
-        <a href="track.html">Track</a>
-        <a href="documentation.html">Docs</a>
-      </div>
 
-      <div class="preorder-tile">
-        <h2>Preorder Your Subdomain</h2>
-        <form id="preorder-form" action="https://formspree.io/f/mqegwgol" method="POST">
-          <input type="hidden" name="email" id="email">
-          <input type="text" name="subdomain" id="subdomain" placeholder="e.g. system.illusionhost.net" required>
-          <input type="hidden" name="order_id" id="order_id">
-          <button type="submit" id="preorder-btn">Preorder</button>
-        </form>
-        <p id="counter">0 people already preordered!</p>
-      </div>
+<div class="preorder-tile">
+  <h2>Preorder Your Subdomain</h2>
+  <form id="preorder-form">
+    <input type="hidden" name="email" id="email">
+    <input type="text" name="subdomain" id="subdomain" placeholder="e.g. system.illusionhost.net" required>
+    <input type="hidden" name="order_id" id="order_id">
+    <button type="button" id="preorder-btn">Preorder</button>
+  </form>
+  <p id="counter">0 people already preordered!</p>
+</div>
 
-      <p class="coming-soon">Our service is coming soon! ...</p>
+      <p class="coming-soon">
+        Our service is coming soon! Preorder your subdomain now and be the first to get access when we launch.
+      </p>
 
       <div class="travelling-icons">
-        <!-- existing logos -->
-      </div>
+  <div class="logo-item"><img src="cloudflare.svg" alt="Cloudflare"><span>Cloudflare</span></div>
+  <div class="logo-item"><img src="digitalocean.svg" alt="DigitalOcean"><span>DigitalOcean</span></div>
+  <div class="logo-item"><img src="koyeb.svg" alt="Koyeb"><span>Koyeb</span></div>
+  <div class="logo-item"><img src="netlify.svg" alt="Netlify"><span>Netlify</span></div>
+  <div class="logo-item"><img src="render.svg" alt="Render"><span>Render</span></div>
+  <div class="logo-item"><img src="hostinger.svg" alt="Hostinger"><span>Hostinger</span></div>
+  <div class="logo-item"><img src="hetzner.svg" alt="Hetzner"><span>Hetzner</span></div>
+  <div class="logo-item"><img src="akamai.svg" alt="Akamai"><span>Akamai</span></div>
+  <div class="logo-item"><img src="contabo.svg" alt="Contabo"><span>Contabo</span></div>
+  <div class="logo-item"><img src="ionos.svg" alt="IONOS"><span>IONOS</span></div>
+  <div class="logo-item"><img src="railway.svg" alt="Railway"><span>Railway</span></div>
+  <div class="logo-item"><img src="upcloud.svg" alt="UpCloud"><span>UpCloud</span></div>
+</div>
 
       <div class="footer-links">
         <a href="privacypolicy.html">Privacy Policy</a>
@@ -59,7 +76,10 @@
         <a href="termsofservice.html">Terms of Service</a>
         <a href="documentation.html">Documentation</a>
       </div>
+
     </div>
+
   </div>
+
 </body>
 </html>
