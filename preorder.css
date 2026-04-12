@@ -191,13 +191,13 @@ body, html { height: 100%; }
 .right-header {
   position: fixed;
   top: 0;
-  width: 100%;
+  width: 90%;
   padding: 30px;
   display: flex;
   text-design: none;
   justify-content: space-between;
   align-items: center;
-  z-index: 1000;
+  z-index: 10;
   background: #000; /* solid black */
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
