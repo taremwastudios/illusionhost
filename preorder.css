@@ -187,3 +187,42 @@ body, html { height: 100%; }
   .left, .right { width: 100%; padding: 20px; }
   .travelling-icons { animation: none; justify-content: center; }
 }
+
+/* Right side header */
+.right-header {
+  position: sticky;   /* stays at top of right panel */
+  top: 0;
+  width: 100%;
+  padding: 15px 30px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+
+  z-index: 10;
+}
+
+/* Logo */
+.right-header .logo {
+  color: white;
+  font-size: 1.3rem;
+}
+
+/* Nav links */
+.right-header .nav {
+  display: flex;
+  gap: 20px;
+}
+
+.right-header .nav a {
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.right-header .nav a:hover {
+  color: #00bcd4;
+}
