@@ -36,7 +36,7 @@ body, html { height: 100%; }
 .left-text h2 { margin-bottom: 15px; }
 .left-text p { line-height: 1.5; margin-bottom: 20px; }
 
-/* Sponsors in left panel */
+/* Sponsors */
 .sponsors {
   display: flex;
   gap: 15px;
@@ -47,29 +47,58 @@ body, html { height: 100%; }
 /* RIGHT SIDE */
 .right {
   width: 68%;
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding-top: 80px;
   overflow-y: auto;
+  position: relative;
 }
 
+/* HEADER (clean, no overlap) */
+.right-header {
+  width: 100%;
+  height: 80px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+
+  background: #000;
+  color: white;
+
+  z-index: 10;
+}
+
+.right-header .nav {
+  display: flex;
+  gap: 25px;
+}
+
+.right-header .nav a {
+  color: white;
+  text-decoration: none;
+}
+
+/* Background */
 .bg-right {
   position: absolute;
-  top:0; left:0; width:100%; height:100%;
-  background-image: url('campus1.png'); /* your right-side background */
+  top: 80px; /* starts BELOW header */
+  left: 0;
+  width: 100%;
+  height: calc(100% - 80px);
+  background-image: url('campus1.png');
   background-size: cover;
   background-position: center;
-  z-index:0;
+  z-index: 0;
   filter: brightness(0.5);
 }
 
 /* Glass tile */
 .preorder-tile {
   position: relative;
-  z-index:1;
+  z-index: 1;
   width: 80%;
   max-width: 400px;
   background: rgba(255,255,255,0.1);
@@ -78,6 +107,7 @@ body, html { height: 100%; }
   padding: 30px;
   text-align: center;
   color: #fff;
+  margin-top: 40px;
   margin-bottom: 20px;
 }
 
@@ -108,10 +138,10 @@ body, html { height: 100%; }
   font-weight: bold;
 }
 
-/* Coming soon paragraph */
+/* Coming soon */
 .coming-soon {
   position: relative;
-  z-index:1;
+  z-index: 1;
   width: 80%;
   max-width: 500px;
   text-align: center;
@@ -124,19 +154,15 @@ body, html { height: 100%; }
 .travelling-icons {
   display: flex;
   gap: 30px;
-  width: max-content; /* instead of 80% or fixed width */
+  width: max-content;
   animation: scroll-icons 20s linear infinite;
+  position: relative;
+  z-index: 1;
 }
-
-.travelling-icons img { width: 50px; height: auto; }
 
 @keyframes scroll-icons {
   0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); } /* now moves the full width */
-}
-
-.travelling-icons {
-  align-items: flex-start;
+  100% { transform: translateX(-100%); }
 }
 
 .logo-item {
@@ -149,32 +175,29 @@ body, html { height: 100%; }
 
 .logo-item img {
   width: 50px;
-  height: auto;
 }
 
 .logo-item span {
   font-size: 12px;
-  font-weight: 700; /* bold */
+  font-weight: 700;
   color: black;
-  letter-spacing: 0.2px;
   text-shadow: 0 1px 2px rgba(0,0,0,0.35);
-  white-space: nowrap;
 }
 
-/* Footer links */
+/* Footer */
 .footer-links {
   position: relative;
-  z-index:1;
+  z-index: 1;
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
   justify-content: center;
+  margin-bottom: 20px;
 }
 
 .footer-links a {
   color: #fff;
   text-decoration: none;
-  font-size: 14px;
 }
 
 .footer-links a:hover {
@@ -186,28 +209,4 @@ body, html { height: 100%; }
   .container { flex-direction: column; }
   .left, .right { width: 100%; padding: 20px; }
   .travelling-icons { animation: none; justify-content: center; }
-}
-
-.right-header {
-  position: absolute;   
-  top: 0;
-  left: 0;
-  width: 90%;
-  height: 100px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 30px;
-  background: #000;
-  z-index: 100;
-}
-
-.right-header .nav {
-  display: flex;       
-  gap: 25px;           
-}
-
-.right-header .nav a {
-  color: white;
-  text-decoration: none;
 }
