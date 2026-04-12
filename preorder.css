@@ -189,17 +189,18 @@ body, html { height: 100%; }
 }
 
 .right-header {
-  position: fixed;
+  position: sticky;
   top: 0;
-  width: 90%;
-  padding: 30px;
-  display: flex;
+  width: 80%;
+  height: 100px;
   text-design: none;
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 10;
+  padding: 30px;
   background: #000; /* solid black */
   border-bottom: 1px solid rgba(255,255,255,0.1);
+  z-index: 100;
 }
 
 .right-header .logo {
