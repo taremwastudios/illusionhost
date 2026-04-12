@@ -51,7 +51,6 @@ body, html { height: 100%; }
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  overflow-y: auto;
   position: relative;
 }
 
@@ -77,8 +76,12 @@ body, html { height: 100%; }
 }
 
 .right-header .nav a {
-  color: green;
+  color: white;
   text-decoration: none;
+}
+
+.right-header .nav a:hover {
+  color: green;
 }
 
 /* Background */
