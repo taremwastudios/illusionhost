@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing - IllusionHost</title>
+  <link rel="stylesheet" href="pricing.css">
+  <script src="pricing.js" defer></script>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- LEFT -->
+  <div class="left">
+    <h2>Pricing & Payments</h2>
+    <p>
+      Choose your preferred payment method to activate your subdomain.
+      Payments are manually verified for now.
+    </p>
+
+    <!-- placeholders -->
+    <img src="mtn.png" alt="MTN">
+    <img src="airtel.png" alt="Airtel">
+    <img src="merchant.png" alt="Merchant">
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+
+    <header class="right-header">
+      <h2>Payments</h2>
+    </header>
+
+    <div class="payment-options">
+
+      <button onclick="selectMethod('mtn')">Pay with MTN</button>
+      <button onclick="selectMethod('airtel')">Pay with Airtel</button>
+      <button onclick="selectMethod('merchant')">Pay with Merchant</button>
+
+    </div>
+
+    <!-- Dynamic content -->
+    <div id="payment-content"></div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

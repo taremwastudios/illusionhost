@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (status === "live") {
-      result.innerText = "🟢 Your subdomain is live 🚀";
+      result.innerText = "🟢 Your subdomain is live";
       return;
     }
 
