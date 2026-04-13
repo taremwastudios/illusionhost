@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .single();
 
     if (error || !data) {
-      result.innerText = "❌ Invalid order ID";
+      result.innerText = "Invalid order ID";
       return;
     }
 
