@@ -8,16 +8,17 @@
 
 html, body {
   height: 100%;
-  overflow: hidden; /* keep page locked */
+  overflow: hidden; /* 🔥 disables FULL PAGE scrolling */
 }
 
-/* Container */
+/* Container split */
 .container {
   display: flex;
-  height: 100vh;
+  height: 100vh; /* 🔥 lock to screen height */
+  overflow: hidden;
 }
 
-/* LEFT SIDE (fixed) */
+/* LEFT SIDE (fixed panel) */
 .left {
   width: 34%;
   height: 100vh;
@@ -31,21 +32,43 @@ html, body {
 
   padding: 40px 20px;
 
-  overflow: hidden;
+  overflow: hidden; /* 🔥 no scroll inside left */
 }
 
-/* RIGHT SIDE (scrollable ONLY here) */
+.left-img {
+  width: 100%;
+  border-radius: 15px;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.left-text h2 { margin-bottom: 15px; }
+.left-text p { line-height: 1.5; margin-bottom: 20px; }
+
+/* Sponsors */
+.sponsors {
+  display: flex;
+  gap: 15px;
+}
+
+.sponsors img {
+  width: 60px;
+  height: auto;
+}
+
+/* RIGHT SIDE (fixed panel) */
 .right {
-  width: 66%;
+  width: 68%;
   height: 100vh;
 
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 
   position: relative;
 
-  overflow-y: auto;     /* ✅ ONLY this scrolls */
-  overflow-x: hidden;   /* ✅ prevents leaking */
+  overflow: hidden; /* 🔥 NO PAGE SCROLL ANYWHERE */
 }
 
 /* HEADER */
@@ -62,13 +85,9 @@ html, body {
   background: #000;
   color: white;
 
-  position: sticky;
-  top: 0;
-
   z-index: 10;
 }
 
-/* NAV */
 .right-header .nav {
   display: flex;
   gap: 25px;
@@ -83,14 +102,14 @@ html, body {
   color: green;
 }
 
-/* BACKGROUND */
+/* Background */
 .bg-right {
   position: absolute;
   top: 80px;
   left: 0;
 
   width: 100%;
-  height: 100%;
+  height: calc(100% - 80px);
 
   background-image: url('campus1.png');
   background-size: cover;
@@ -100,8 +119,16 @@ html, body {
   filter: brightness(0.5);
 }
 
-/* CONTENT (above background) */
-.right > *:not(.bg-right):not(.right-header) {
+/* CONTENT WRAPPER (IMPORTANT FIX) */
+.right-content {
+  width: 100%;
+  height: calc(100% - 80px);
+
+  overflow: hidden; /* 🔥 prevents scroll */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   position: relative;
   z-index: 1;
 }
@@ -120,10 +147,10 @@ html, body {
   text-align: center;
   color: #fff;
 
-  margin: 40px auto 20px;
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 
-/* Inputs */
 .preorder-tile input {
   width: 100%;
   padding: 10px;
@@ -133,22 +160,25 @@ html, body {
   border: none;
 }
 
-/* Buttons */
-.preorder-tile button,
-.sharp-btn {
-  padding: 10px 18px;
+.preorder-tile button {
+  padding: 10px 20px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
 
-  background: #ff3366;
-  color: white;
+  background-color: #ff3366;
+  color: #fff;
 
   cursor: pointer;
+  font-size: 16px;
 }
 
-.preorder-tile button:hover,
-.sharp-btn:hover {
-  background: #ff5599;
+.preorder-tile button:hover {
+  background-color: #ff5599;
+}
+
+#counter {
+  margin-top: 15px;
+  font-weight: bold;
 }
 
 /* Coming soon */
@@ -159,10 +189,11 @@ html, body {
   text-align: center;
   color: #fff;
 
-  margin: 20px auto;
+  margin-bottom: 20px;
+  line-height: 1.5;
 }
 
-/* ICONS */
+/* ICONS (clipped properly) */
 .travelling-icons {
   display: flex;
   gap: 30px;
@@ -170,9 +201,11 @@ html, body {
   width: max-content;
   animation: scroll-icons 20s linear infinite;
 
-  margin: 20px auto;
+  position: relative;
+  z-index: 1;
 
   max-width: 100%;
+  overflow: hidden;
 }
 
 @keyframes scroll-icons {
@@ -180,7 +213,6 @@ html, body {
   100% { transform: translateX(-100%); }
 }
 
-/* LOGO ITEMS */
 .logo-item {
   display: flex;
   flex-direction: column;
@@ -197,7 +229,9 @@ html, body {
 .logo-item span {
   font-size: 12px;
   font-weight: 700;
+
   color: black;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.35);
 }
 
 /* FOOTER */
@@ -207,7 +241,8 @@ html, body {
   flex-wrap: wrap;
   justify-content: center;
 
-  margin: 20px auto;
+  margin-top: auto;
+  margin-bottom: 20px;
 }
 
 .footer-links a {
@@ -215,24 +250,22 @@ html, body {
   text-decoration: none;
 }
 
-/* MOBILE FIX */
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* RESPONSIVE */
 @media(max-width: 768px){
-
-  html, body {
-    overflow: auto; /* restore normal scrolling */
-  }
-
   .container {
     flex-direction: column;
-    height: auto;
+  }
+
+  html, body {
+    overflow: auto; /* allow scroll only on small screens */
   }
 
   .left, .right {
     width: 100%;
     height: auto;
-  }
-
-  .right {
-    overflow: visible;
   }
 }
