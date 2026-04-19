@@ -57,7 +57,8 @@ body, html {
   align-items: center;
   justify-content: flex-start;
   padding: 50px 20px;
-  overflow: visible;
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
 .bg-right {
@@ -72,7 +73,7 @@ body, html {
 
 .top-header {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   width: 90%;
   max-width: 900px;
   margin-bottom: 16px;
@@ -148,6 +149,8 @@ body, html {
 
 /* Travelling icons */
 .travelling-icons {
+  position: relative;
+  z-index: 1;
   display: flex;
   gap: 30px;
   width: max-content; /* instead of 80% or fixed width */
@@ -155,6 +158,21 @@ body, html {
 }
 
 .travelling-icons img { width: 50px; height: auto; }
+
+.logo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 90px;
+  gap: 6px;
+}
+
+.logo-item span {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
 
 @keyframes scroll-icons {
   0% { transform: translateX(100%); }
